@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'hdfc', 'icici', 'itc', 'jsw', 'lt', 'sbi', 'vedanta'
   ];
   const conglomerates = conglomerateIds.map(id => ({
-    url: `${SITE_URL}/conglomerates/${id}`,
+    url: `${SITE_URL}/conglomerates/${encodeURIComponent(id)}`,
     lastModified,
     changeFrequency: 'daily' as const,
     priority: 0.8,
@@ -39,7 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 3. TOP STOCKS SCANNER
   const topStocks = ['gainers', 'losers', 'most-active'].map(type => ({
-    url: `${SITE_URL}/top-stocks/${type}`,
+    url: `${SITE_URL}/top-stocks/${encodeURIComponent(type)}`,
     lastModified,
     changeFrequency: 'always' as const,
     priority: 0.8,
@@ -80,7 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const uniqueStocks = Array.from(new Set(allStockGroups.flat()));
   const stocks = uniqueStocks.map(symbol => ({
-    url: `${SITE_URL}/stocks/${symbol}`,
+    url: `${SITE_URL}/stocks/${encodeURIComponent(symbol)}`,
     lastModified,
     changeFrequency: 'daily' as const,
     priority: 0.6,
@@ -89,7 +89,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 5. INDIVIDUAL INDICES
   const allIndices = [...INDICES, ...GLOBAL_INDICES];
   const indices = allIndices.map(idx => ({
-    url: `${SITE_URL}/indices/${idx.id}`,
+    url: `${SITE_URL}/indices/${encodeURIComponent(idx.id)}`,
     lastModified,
     changeFrequency: 'daily' as const,
     priority: 0.7,
@@ -97,7 +97,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 6. INDIVIDUAL CRYPTO
   const cryptos = CRYPTO_LIST.map(coin => ({
-    url: `${SITE_URL}/crypto/${coin.id}`,
+    url: `${SITE_URL}/crypto/${encodeURIComponent(coin.id)}`,
     lastModified,
     changeFrequency: 'daily' as const,
     priority: 0.7,
@@ -105,7 +105,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 7. INDIVIDUAL FOREX
   const forex = FOREX_PAIRS.map(pair => ({
-    url: `${SITE_URL}/forex/${pair.id}`,
+    url: `${SITE_URL}/forex/${encodeURIComponent(pair.id)}`,
     lastModified,
     changeFrequency: 'daily' as const,
     priority: 0.7,
@@ -113,7 +113,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 8. INDIVIDUAL COMMODITIES
   const commodities = COMMODITIES.map(comm => ({
-    url: `${SITE_URL}/commodities/${comm.id}`,
+    url: `${SITE_URL}/commodities/${encodeURIComponent(comm.id)}`,
     lastModified,
     changeFrequency: 'daily' as const,
     priority: 0.7,

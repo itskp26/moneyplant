@@ -54,7 +54,10 @@ export const metadata: Metadata = {
     "best stocks 2025 india",
   ],
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.ico", type: "image/x-icon" }
+    ],
     apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
