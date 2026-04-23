@@ -4,6 +4,7 @@ import { baseMetadata } from "@/lib/meta";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TickerBar from "@/components/TickerBar";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   ...baseMetadata,
@@ -104,6 +105,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" /> */}
       </head>
       <body className="bg-slate-950 text-slate-100 antialiased min-h-screen">
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-89J05EY8C9"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-89J05EY8C9');
+          `}
+        </Script>
         <TickerBar />
         <Navbar />
         <main className="min-h-screen">{children}</main>
