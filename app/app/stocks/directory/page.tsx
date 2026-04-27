@@ -99,6 +99,7 @@ export default function StockDirectoryPage() {
             <a 
               key={letter} 
               href={`#letter-${letter}`}
+              className="alphabet-link"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -112,14 +113,6 @@ export default function StockDirectoryPage() {
                 textDecoration: "none",
                 border: "1px solid rgba(59, 130, 246, 0.2)",
                 transition: "all 0.2s"
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.background = "#3b82f6";
-                e.currentTarget.style.color = "#fff";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.background = "#0f172a";
-                e.currentTarget.style.color = "#3b82f6";
               }}
             >
               {letter}
@@ -154,6 +147,7 @@ export default function StockDirectoryPage() {
                   <Link 
                     key={stock.symbol} 
                     href={`/stocks/${stock.symbol.toLowerCase()}`}
+                    className="stock-card-link"
                     style={{
                       padding: "1rem",
                       background: "rgba(15, 23, 42, 0.6)",
@@ -164,16 +158,6 @@ export default function StockDirectoryPage() {
                       display: "flex",
                       flexDirection: "column",
                       gap: "4px"
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.transform = "translateY(-2px)";
-                      e.currentTarget.style.borderColor = "rgba(59, 130, 246, 0.5)";
-                      e.currentTarget.style.background = "rgba(30, 41, 59, 0.8)";
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.transform = "none";
-                      e.currentTarget.style.borderColor = "rgba(51, 65, 85, 0.4)";
-                      e.currentTarget.style.background = "rgba(15, 23, 42, 0.6)";
                     }}
                   >
                     <div style={{ fontWeight: 700, color: "#f1f5f9", fontSize: "1.05rem" }}>
@@ -191,6 +175,18 @@ export default function StockDirectoryPage() {
           ))}
         </div>
       </div>
+
+      <style>{`
+        .alphabet-link:hover {
+          background: #3b82f6 !important;
+          color: #fff !important;
+        }
+        .stock-card-link:hover {
+          transform: translateY(-2px);
+          border-color: rgba(59, 130, 246, 0.5) !important;
+          background: rgba(30, 41, 59, 0.8) !important;
+        }
+      `}</style>
     </>
   );
 }
