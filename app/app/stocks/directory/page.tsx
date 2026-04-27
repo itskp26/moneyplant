@@ -43,7 +43,7 @@ export default function StockDirectoryPage() {
   const uniqueStocksMap = new Map();
   combined.forEach(stock => {
     // Only add if not unlisted and not already in map
-    if (!stock.unlisted && !uniqueStocksMap.has(stock.symbol)) {
+    if (!("unlisted" in stock && stock.unlisted) && !uniqueStocksMap.has(stock.symbol)) {
       uniqueStocksMap.set(stock.symbol, stock);
     }
   });
