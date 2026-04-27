@@ -9,7 +9,7 @@ import TaxCalculator from "@/components/TaxCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: `Income Tax Calculator FY 2024-25 & 2025-26 | New vs Old Regime | MoneyPlant`,
+  title: `Income Tax Calculator FY 2024-25 & 2025-26 | New vs Old Regime`,
   description: `Calculate your Indian Income Tax for FY 2024-25 (AY 2025-26). Compare between the New Tax Regime and Old Tax Regime to find the best tax savings for you today ${new Date().getFullYear()}.`,
   keywords: [
     "income tax calculator fy 2024-25", "income tax calculator india today",

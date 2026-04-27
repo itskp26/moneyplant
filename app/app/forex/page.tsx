@@ -9,7 +9,7 @@ import ForexTable from "@/components/ForexTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: `Forex Hub — World Currency Exchange Rates | Live USD/INR, EUR, GBP & Remittance ${new Date().getFullYear()} | MoneyPlant`,
+  title: `Forex Hub — World Currency Exchange Rates | Live USD/INR, EUR, GBP & Remittance ${new Date().getFullYear()}`,
   description: `Worldwide currency tracker and exchange rate terminal today ${new Date().getFullYear()}. Monitor live USD to INR, major international currency pairs, RBI reference rates, and NRI transfer rates.`,
   keywords: [
     "forex rate india today", "usd to inr today", "dollar to rupee today",

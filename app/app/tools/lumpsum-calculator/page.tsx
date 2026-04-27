@@ -9,7 +9,7 @@ import LumpsumCalculator from "@/components/LumpsumCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: `Lumpsum Calculator — Mutual Fund Returns Estimator ${new Date().getFullYear()} | MoneyPlant`,
+  title: `Lumpsum Calculator — Mutual Fund Returns Estimator ${new Date().getFullYear()}`,
   description: `Calculate potential returns on your one-time lumpsum mutual fund investments today ${new Date().getFullYear()}. Estimate future wealth based on expected return rates and time periods with precision.`,
   keywords: [
     "lumpsum calculator today", "one time investment calculator", "mutual fund lumpsum estimator",

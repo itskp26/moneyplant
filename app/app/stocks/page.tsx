@@ -12,7 +12,7 @@ import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { WideStatCard, GroupSidebar } from "@/components/VisualCards";
 
 export const metadata: Metadata = {
-  title: `Stocks Hub — Indian Share Market Live Today | Nifty 50, Sensex & All NSE/BSE Sectors ${new Date().getFullYear()} | MoneyPlant`,
+  title: `Stocks Hub — Indian Share Market Live Today | Nifty 50, Sensex & All NSE/BSE Sectors ${new Date().getFullYear()}`,
   description: `Comprehensive Indian stock market terminal today ${new Date().getFullYear()}. Track live prices for Nifty 50, all 13+ sectors, and 500+ top NSE stocks. Monitor world market impact on Indian share prices.`,
   keywords: [
     "indian stock market today", "nse live today", "bse share price today",
@@ -117,6 +117,16 @@ export default async function StocksHubPage() {
       ])} />
 
       <div className="container section">
+        {/* Page Title */}
+        <div style={{ marginBottom: "2rem" }}>
+          <h1 style={{ fontSize: "2.25rem", fontWeight: 800, color: "#f1f5f9", margin: 0, fontFamily: "var(--font-sora)" }}>
+            Indian Stock Market Live
+          </h1>
+          <p style={{ color: "#94a3b8", marginTop: "0.5rem", fontSize: "1.05rem" }}>
+            Track real-time prices for Nifty 50, Sensex, and all top performing NSE/BSE stocks.
+          </p>
+        </div>
+
         {/* Market Status Bar */}
         <div style={{ 
           background: isLive ? "rgba(16, 185, 129, 0.05)" : "rgba(239, 68, 68, 0.05)",

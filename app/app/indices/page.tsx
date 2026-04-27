@@ -12,7 +12,7 @@ import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { StatWidget, MiniTrekCard } from "@/components/VisualCards";
 
 export const metadata: Metadata = {
-  title: `Indices Hub — World Market Benchmarks Live | Nifty, Sensex, Dow, Nasdaq & Nikkei ${new Date().getFullYear()} | MoneyPlant`,
+  title: `Indices Hub — World Market Benchmarks Live | Nifty, Sensex, Dow, Nasdaq & Nikkei ${new Date().getFullYear()}`,
   description: `Real-time tracker for all major international stock market indices today ${new Date().getFullYear()}. Monitor Indian benchmarks alongside US, European, and Asian markets with professional analytics.`,
   keywords: [
     // India indices
@@ -137,7 +137,7 @@ export default async function IndicesHubPage() {
              <h3 style={{ fontSize: "1.25rem", fontWeight: 800, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "10px" }}>
                <Globe size={20} color="#3b82f6" /> Americas Benchmarks
              </h3>
-             <MarketTable quotes={usIndices} />
+             <MarketTable quotes={usIndices} linkPrefix="/indices" />
           </section>
 
           {/* Europe */}
@@ -145,7 +145,7 @@ export default async function IndicesHubPage() {
              <h3 style={{ fontSize: "1.25rem", fontWeight: 800, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "10px" }}>
                <Globe size={20} color="#f59e0b" /> Europe Benchmarks
              </h3>
-             <MarketTable quotes={europeIndices} />
+             <MarketTable quotes={europeIndices} linkPrefix="/indices" />
           </section>
 
           {/* Asia-Pacific */}
@@ -153,7 +153,7 @@ export default async function IndicesHubPage() {
              <h3 style={{ fontSize: "1.25rem", fontWeight: 800, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "10px" }}>
                <Globe size={20} color="#ec4899" /> Asia-Pacific Benchmarks
              </h3>
-             <MarketTable quotes={asiaIndices} />
+             <MarketTable quotes={asiaIndices} linkPrefix="/indices" />
           </section>
         </div>
 

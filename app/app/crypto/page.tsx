@@ -10,7 +10,7 @@ import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { StatWidget } from "@/components/VisualCards";
 
 export const metadata: Metadata = {
-  title: `Crypto Hub — Real-Time Cryptocurrency Prices INR & USD | Bitcoin, Ethereum ${new Date().getFullYear()} | MoneyPlant`,
+  title: `Crypto Hub — Real-Time Cryptocurrency Prices INR & USD | Bitcoin, Ethereum ${new Date().getFullYear()}`,
   description: `Live cryptocurrency market terminal today ${new Date().getFullYear()}. Track Bitcoin, Ethereum, and 1000+ digital assets with real-time INR/USD exchange rates and world market cap trends.`,
   keywords: [
     "crypto price today india", "bitcoin price india today", "bitcoin price inr",

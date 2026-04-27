@@ -13,7 +13,7 @@ import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { StatWidget } from "@/components/VisualCards";
 
 export const metadata: Metadata = {
-  title: `Commodities Hub — Live Gold, Silver & Crude Oil Prices | World Market Rates ${new Date().getFullYear()} | MoneyPlant`,
+  title: `Commodities Hub — Live Gold, Silver & Crude Oil Prices | World Market Rates ${new Date().getFullYear()}`,
   description: `Stay updated with real-time world commodity prices today ${new Date().getFullYear()}. Monitor live 24K/22K Gold, Silver, and Crude Oil (Brent/WTI) rates across Indian and international benchmarks.`,
   keywords: [
     // Gold

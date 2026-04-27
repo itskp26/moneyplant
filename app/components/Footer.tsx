@@ -26,7 +26,7 @@ const FOOTER_LINKS = {
     { label: "JSW Group Stocks", href: "/conglomerates/jsw" },
     { label: "Vedanta Group Stocks", href: "/conglomerates/vedanta" },
     { label: "Godrej Group Stocks", href: "/conglomerates/godrej" },
-    { label: "All NSE Stocks", href: "/stocks" },
+    { label: "A-Z Stocks Directory", href: "/stocks/directory" },
   ],
   "Crypto & Forex": [
     { label: "Bitcoin Price India", href: "/crypto/bitcoin" },

@@ -23,8 +23,9 @@ const YF_BASE = "https://query1.finance.yahoo.com";
 function toNseSymbol(symbol: string) {
   // Exclude indices (^), forex (=X), already-suffixed (.NS/.BO etc.)
   // and futures contracts (=F) like GC=F, SI=F, CL=F, BZ=F
-  if (symbol.startsWith("^") || symbol.includes("=X") || symbol.includes("=F") || symbol.includes(".")) return symbol;
-  return `${symbol}.NS`;
+  const upper = symbol.toUpperCase();
+  if (upper.startsWith("^") || upper.includes("=X") || upper.includes("=F") || upper.includes(".")) return upper;
+  return `${upper}.NS`;
 }
 
 export async function fetchQuote(symbol: string): Promise<Quote | null> {

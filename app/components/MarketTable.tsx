@@ -95,7 +95,7 @@ export default function MarketTable({ quotes, title, linkPrefix = "/stocks", sho
             {quotes.map((q, idx) => {
               const pos = q.changePercent > 0;
               const neg = q.changePercent < 0;
-              const symbol = q.symbol.replace(".NS", "").replace(".BO", "");
+              const symbol = q.symbol.replace(/\.NS$|\.BO$/i, "");
               return (
                 <motion.tr
                   key={q.symbol}

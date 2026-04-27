@@ -18,7 +18,7 @@ import { MiniTrekCard, WideStatCard, GroupSidebar } from "@/components/VisualCar
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: `Indian Stock Market Today ${new Date().getFullYear()} | NSE BSE Live | All Sectors & Groups | MoneyPlant`,
+  title: `Indian Stock Market Today ${new Date().getFullYear()} | NSE BSE Live | All Sectors & Groups`,
   description:
     `Track the complete Indian stock market live ${new Date().getFullYear()} — Nifty 50, Sensex, all NSE/BSE sectors (IT, Banking, Pharma, Auto, FMCG, Real Estate), conglomerates (Adani, Reliance, Tata, Bajaj, Birla, HDFC, ICICI, SBI, L&T, ITC, JSW, Vedanta, Godrej, Mahindra) and 500+ stocks in one place.`,
   keywords: [
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     `india market global outlook ${new Date().getFullYear()}`,
   ].join(", "),
   openGraph: {
-    title: `Indian Stock Market Today ${new Date().getFullYear()} | NSE BSE Live | All Sectors | MoneyPlant`,
+    title: `Indian Stock Market Today ${new Date().getFullYear()} | NSE BSE Live | All Sectors`,
     description: `Complete Indian stock market live ${new Date().getFullYear()} coverage — Nifty 50, Sensex, all sectors, conglomerates, and 500+ stocks.`,
     url: "https://moneyplant24.com/markets/india",
   },

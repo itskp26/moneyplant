@@ -19,7 +19,10 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { symbol } = await params;
   const stock = await fetchStockDetail(symbol);
-  if (!stock) return { title: "Stock Not Found | MoneyPlant" };
+  if (!stock) return { 
+    title: `Stock Not Found: ${symbol.toUpperCase()}`,
+    description: `We could not find data for the stock symbol ${symbol.toUpperCase()}. Please check the symbol and try again on MoneyPlant.`
+  };
 
   return getStockMeta(
     stock.symbol,

@@ -6,7 +6,7 @@ import Link from "next/link";
 import NewsImage from "@/components/NewsImage";
 
 export const metadata: Metadata = {
-  title: `Crypto News Today ${new Date().getFullYear()} — Live Bitcoin, Ethereum & Altcoin Updates | MoneyPlant`,
+  title: `Crypto News Today ${new Date().getFullYear()} — Live Bitcoin, Ethereum & Altcoin Updates`,
   description: `Get real-time cryptocurrency news today ${new Date().getFullYear()}, blockchain updates, and deep market analysis. Live coverage of Bitcoin, Ethereum, Solana, and Altcoin movements with global impact reports on MoneyPlant.`,
   keywords: [
     "crypto news today", "cryptocurrency news live", "bitcoin news today", "ethereum news today",

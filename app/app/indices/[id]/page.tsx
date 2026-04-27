@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { fetchQuote, fetchMultipleQuotes } from "@/lib/stocks";
 import { getIndexMeta } from "@/lib/meta";
-import { INDICES, NIFTY50_STOCKS, NIFTY_NEXT50, BANK_STOCKS, IT_STOCKS, PHARMA_STOCKS, AUTO_STOCKS, FMCG_STOCKS, REALTY_STOCKS, PSU_STOCKS } from "@/lib/constants";
+import { INDICES, GLOBAL_INDICES, NIFTY50_STOCKS, NIFTY_NEXT50, BANK_STOCKS, IT_STOCKS, PHARMA_STOCKS, AUTO_STOCKS, FMCG_STOCKS, REALTY_STOCKS, PSU_STOCKS } from "@/lib/constants";
 import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
@@ -27,12 +27,16 @@ const INDEX_COMPOSITION_MAP: Record<string, string[]> = {
   "psu-bank": PSU_STOCKS.filter(s => s.sector.includes("Bank")).map(s => s.symbol),
 };
 
+// Merged list for lookup
+const ALL_INDICES = [...INDICES, ...GLOBAL_INDICES];
+
 export async function generateMetadata(
   { params }: PageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { id } = await params;
-  const index = INDICES.find((i) => i.id === id);
+  const decodedId = decodeURIComponent(id).toUpperCase();
+  const index = ALL_INDICES.find((i) => i.id === id || i.symbol.toUpperCase() === decodedId);
   if (!index) return { title: "Index Not Found | MoneyPlant" };
   
   const quote = await fetchQuote(index.symbol);
@@ -49,7 +53,8 @@ export const revalidate = 60;
 
 export default async function IndexDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const index = INDICES.find((i) => i.id === id);
+  const decodedId = decodeURIComponent(id).toUpperCase();
+  const index = ALL_INDICES.find((i) => i.id === id || i.symbol.toUpperCase() === decodedId);
 
   if (!index) {
     return (

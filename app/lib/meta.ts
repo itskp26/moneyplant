@@ -254,7 +254,7 @@ export function getHomeMeta(): Metadata {
 
 // ─── STOCK PAGE META ──────────────────────────────────────────────────────────
 export function getStockMeta(symbol: string, name: string, price?: string, change?: string): Metadata {
-  const title = `${name} Share Price Today ${y()} | ${symbol} NSE Live Rate | ₹${price ?? "—"} | MoneyPlant`;
+  const title = `${name} Share Price Today ${y()} | ${symbol} NSE Live Rate | ₹${price ?? "—"}`;
   const description = `Live ${name} (${symbol}) share price today ${y()} on NSE/BSE. ₹${price ?? "—"} ${change ? `(${change}%)` : ""}. Monitor real-time chart, 52-week data, market cap, and expert stock analysis on MoneyPlant.`;
   const keywords = [
     // EXISTING
@@ -323,7 +323,7 @@ export function getConglomerateMeta(
   const groupName = names[group];
   const stockNames = stocks.map((s) => s.name).join(", ");
   const symbolList = stocks.map((s) => s.symbol).join(", ");
-  const title = `${groupName} Stocks ${y()} — Full Company List & Market Performance | MoneyPlant`;
+  const title = `${groupName} Stocks ${y()} — Full Company List & Market Performance`;
   const description = `Track the complete listed company portfolio of ${groupName} today ${y()}. Monitor real-time share prices, market cap, and performance of all group firms on NSE/BSE.`;
   const keywords = [
     // EXISTING
@@ -389,7 +389,7 @@ export function getConglomerateMeta(
 export function getIndexMeta(
   indexId: string, indexName: string, value?: string, change?: string
 ): Metadata {
-  const title = `${indexName} Live Today ${y()} | Market Benchmark ${value ? `— ${value} (${change}%)` : ""} | MoneyPlant`;
+  const title = `${indexName} Live Today ${y()} | Market Benchmark ${value ? `— ${value} (${change}%)` : ""}`;
   const description = `Track ${indexName} performance today ${y()} — ${value ?? "real-time index data"}. Access historical charts, top performing stocks, and complete market benchmark analysis for ${indexName}.`;
   const keywords = [
     // EXISTING
@@ -432,7 +432,7 @@ export function getIndexMeta(
 export function getCryptoMeta(
   coinId: string, coinName: string, symbol: string, priceInr?: string, priceUsd?: string, change?: string
 ): Metadata {
-  const title = `${coinName} (${symbol}) Price INR & USD Today ${y()} | ₹${priceInr ?? "—"} | MoneyPlant`;
+  const title = `${coinName} (${symbol}) Price INR & USD Today ${y()} | ₹${priceInr ?? "—"}`;
   const description = `Real-time ${coinName} (${symbol}) price today ${y()} — ₹${priceInr ?? "—"} INR | $${priceUsd ?? "—"} USD ${change ? `(${change}%)` : ""}. Track international crypto trends, market cap, and live technical charts.`;
   const keywords = [
     // EXISTING
@@ -488,7 +488,7 @@ export function getCryptoMeta(
 export function getForexMeta(
   pairId: string, pairName: string, base: string, quote: string, rate?: string
 ): Metadata {
-  const title = `${base} to ${quote} Today ${y()} | World Exchange Rate ${rate ? `— ${rate}` : ""} | MoneyPlant`;
+  const title = `${base} to ${quote} Today ${y()} | World Exchange Rate ${rate ? `— ${rate}` : ""}`;
   const description = `Live ${base} to ${quote} exchange rate today ${y()} — ${rate ? `1 ${base} = ${rate} ${quote}` : "real-time data"}. Monitor international currency trends, RBI rates, and remittance corridors.`;
   const keywords = [
     // EXISTING
@@ -545,7 +545,7 @@ export function getCommodityMeta(
 ): Metadata {
   const map: Record<string, { title: string; desc: string; keywords: string[] }> = {
     gold: {
-      title: `Gold Rate Today ${y()} — 24K & 22K Gold Prices | World Market Rates | MoneyPlant`,
+      title: `Gold Rate Today ${y()} — 24K & 22K Gold Prices | World Market Rates`,
       desc: `Live gold rate today ${y()} — ₹${priceInr ?? "—"} per 10g (24K). Track real-time prices for 22K/18K gold in India, Dubai, London, and USA with international market trends.`,
       keywords: [
         // EXISTING
@@ -606,7 +606,7 @@ export function getCommodityMeta(
       ],
     },
     silver: {
-      title: `Silver Rate Today ${y()} — Real-Time Price Per KG | International Silver Rates | MoneyPlant`,
+      title: `Silver Rate Today ${y()} — Real-Time Price Per KG | International Silver Rates`,
       desc: `Live silver rate today ${y()} — ₹${priceInr ?? "—"} per kg. Monitor silver price action in India and world markets including XAG/USD, MCX, and retail rates.`,
       keywords: [
         // EXISTING
@@ -646,7 +646,7 @@ export function getCommodityMeta(
       ],
     },
     "crude-oil": {
-      title: `Crude Oil Price Today ${y()} — Brent & WTI Live Rates | World Energy Tracker | MoneyPlant`,
+      title: `Crude Oil Price Today ${y()} — Brent & WTI Live Rates | World Energy Tracker`,
       desc: `Track real-time crude oil prices today ${y()} — Brent and WTI benchmarks. Monitor MCX oil rates, OPEC updates, and international energy market shifts.`,
       keywords: [
         // EXISTING
@@ -674,7 +674,7 @@ export function getCommodityMeta(
       ],
     },
     platinum: {
-      title: `Platinum Rate Today ${y()} in India | Platinum Price Per Gram | MoneyPlant`,
+      title: `Platinum Rate Today ${y()} in India | Platinum Price Per Gram`,
       desc: `Live platinum rate today ${y()} in India per gram and per tola. Track platinum 1-week price change, platinum vs gold comparison, MCX platinum, and investment outlook for platinum in India.`,
       keywords: [
         "platinum rate today india", "platinum price today", "platinum price per gram india",
@@ -699,7 +699,7 @@ export function getCommodityMeta(
 
 // ─── IPO META ─────────────────────────────────────────────────────────────────
 export function getIpoMeta(): Metadata {
-  const title = `IPO Tracker ${y()} — All Upcoming, Open & Recently Listed IPOs in India | MoneyPlant`;
+  const title = `IPO Tracker ${y()} — All Upcoming, Open & Recently Listed IPOs in India`;
   const description =
     `Ultimate IPO dashboard today ${y()}. Monitor upcoming Mainboard and SME IPOs, real-time Grey Market Premiums (GMP), allotment status, and listing gains live.`;
   const keywords = [
@@ -745,7 +745,7 @@ export function getIpoMeta(): Metadata {
 export function getTopStocksMeta(type: "gainers" | "losers" | "most-active"): Metadata {
   const map = {
     gainers: {
-      title: `Top 20 Gainers Today ${y()} — NSE/BSE Best Performing Stocks | MoneyPlant`,
+      title: `Top 20 Gainers Today ${y()} — NSE/BSE Best Performing Stocks`,
       description: `Live tracker for today's top 20 gaining stocks in India ${y()}. Monitor price action, volume spikes, and sectoral leaders on NSE and BSE benchmarks.`,
       keywords: [
         // EXISTING
@@ -770,7 +770,7 @@ export function getTopStocksMeta(type: "gainers" | "losers" | "most-active"): Me
       ].join(", "),
     },
     losers: {
-      title: `Top 20 Losers Today NSE/BSE ${y()} | Falling Stocks India Live | MoneyPlant`,
+      title: `Top 20 Losers Today NSE/BSE ${y()} | Falling Stocks India Live`,
       description: `View today's top 20 losing stocks on NSE and BSE ${y()}. Real-time list of top losers with price, % change, 1-week decline, 52-week low, volume and market cap. Identify falling stocks and short-selling opportunities.`,
       keywords: [
         // EXISTING
@@ -793,7 +793,7 @@ export function getTopStocksMeta(type: "gainers" | "losers" | "most-active"): Me
       ].join(", "),
     },
     "most-active": {
-      title: `Top 20 Most Active Stocks Today NSE/BSE ${y()} | Highest Volume | MoneyPlant`,
+      title: `Top 20 Most Active Stocks Today NSE/BSE ${y()} | Highest Volume`,
       description: `View most actively traded stocks on NSE and BSE today by volume and turnover ${y()}. High volume stocks signal institutional activity and breakout potential. Track live trading volumes across all sectors.`,
       keywords: [
         // EXISTING

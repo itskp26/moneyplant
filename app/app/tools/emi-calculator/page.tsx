@@ -7,7 +7,7 @@ import EmiCalculator from "@/components/EmiCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: `EMI Calculator — Home, Car & Personal Loan Planner ${new Date().getFullYear()} | MoneyPlant`,
+  title: `EMI Calculator — Home, Car & Personal Loan Planner ${new Date().getFullYear()}`,
   description: `Calculate your loan EMI instantly with our free EMI calculator today ${new Date().getFullYear()}. Plan your Home Loan, Car Loan, or Personal Loan repayments with detailed interest schedules and principal breakdowns.`,
   keywords: [
     "emi calculator today", "loan emi calculator live", "home loan emi calculator",

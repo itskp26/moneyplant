@@ -12,7 +12,7 @@ import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { StatWidget, PortalCard } from "@/components/VisualCards";
 
 export const metadata: Metadata = {
-  title: `Markets Hub — Universal Market Overview | Real-Time World Stock Market Tracker ${new Date().getFullYear()} | MoneyPlant`,
+  title: `Markets Hub — Universal Market Overview | Real-Time World Stock Market Tracker ${new Date().getFullYear()}`,
   description: `A centralized portal for world financial markets today ${new Date().getFullYear()}. Compare performance across Indian NSE/BSE and international exchanges including NYSE, NASDAQ, and LSE benchmarks.`,
   keywords: [
     "stock market india today", "live market india", "nse bse live today",
@@ -184,7 +184,7 @@ export default async function MarketsHubPage() {
               <h2 style={{ fontSize: "1.5rem", fontWeight: 800 }}>World Indices Performance</h2>
               <Link href="/markets/global" style={{ color: "#3b82f6", textDecoration: "none", fontSize: "0.9rem", fontWeight: 700 }}>View heatmap →</Link>
            </div>
-           <MarketTable quotes={worldIndices} linkPrefix="/markets" />
+           <MarketTable quotes={worldIndices} linkPrefix="/indices" />
         </div>
 
         {/* Asset Classes Grid */}

@@ -7,7 +7,7 @@ import SipCalculator from "@/components/SipCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: `SIP Calculator — Estimate Mutual Fund Returns ${new Date().getFullYear()} | MoneyPlant`,
+  title: `SIP Calculator — Estimate Mutual Fund Returns ${new Date().getFullYear()}`,
   description: `Use our free SIP calculator to estimate the future value of your mutual fund investments today ${new Date().getFullYear()}. Plan your retirement, child's education, and long-term wealth wealth with precision.`,
   keywords: [
     "sip calculator today", "mutual fund sip calculator", "sip returns estimator live",

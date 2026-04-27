@@ -5,7 +5,7 @@ import { RefreshCw, TrendingUp, Clock, Globe, Zap, ArrowRightLeft } from "lucide
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `Forex News Today ${new Date().getFullYear()} — Live Currency Rates, Fed Policy & Global Updates | MoneyPlant`,
+  title: `Forex News Today ${new Date().getFullYear()} — Live Currency Rates, Fed Policy & Global Updates`,
   description: `Stay updated with real-time USD/INR, EUR/USD, and global currency market news today ${new Date().getFullYear()}. Comprehensive coverage of central bank policies, inflation data, and forex trends on MoneyPlant.`,
   keywords: [
     "forex news today", "forex market news live", "currency news today", "fx news updates",

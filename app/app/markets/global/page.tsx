@@ -7,7 +7,7 @@ import JsonLd, { breadcrumbSchema, faqSchema } from "@/components/JsonLd";
 export const revalidate = 120;
 
 export const metadata: Metadata = {
-  title: `Global Stock Markets Live Today ${new Date().getFullYear()} | S&P 500, Dow Jones, Nikkei, FTSE, Hang Seng | MoneyPlant`,
+  title: `Global Stock Markets Live Today ${new Date().getFullYear()} | S&P 500, Dow Jones, Nikkei, FTSE, Hang Seng`,
   description:
     `Track all global stock market indices live ${new Date().getFullYear()} — S&P 500, Dow Jones, NASDAQ, FTSE 100, DAX, CAC 40, Nikkei 225, Hang Seng, Shanghai, KOSPI, ASX 200, Tadawul, DFM and all major world indices in real time. Weekly global market performance and 52-week highs.`,
   keywords: [
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     `highest return stock market ${new Date().getFullYear()} world`,
   ].join(", "),
   openGraph: {
-    title: `Global Stock Markets Live ${new Date().getFullYear()} | S&P 500, Dow, FTSE, Nikkei, Hang Seng | MoneyPlant`,
+    title: `Global Stock Markets Live ${new Date().getFullYear()} | S&P 500, Dow, FTSE, Nikkei, Hang Seng`,
     description: `All global stock market indices live ${new Date().getFullYear()} — USA, Europe, Asia, Middle East & more.`,
     url: "https://moneyplant24.com/markets/global",
   },

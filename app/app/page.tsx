@@ -221,7 +221,7 @@ export default async function HomePage() {
                   View All →
                 </Link>
               </div>
-              <MarketTable quotes={globalIndices} linkPrefix="/markets" />
+              <MarketTable quotes={globalIndices} linkPrefix="/indices" />
             </section>
 
             {/* FAQ Accordion (for SEO) */}
