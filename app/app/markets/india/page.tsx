@@ -17,85 +17,9 @@ import { MiniTrekCard, WideStatCard, GroupSidebar } from "@/components/VisualCar
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: `Indian Stock Market Today ${new Date().getFullYear()} | NSE BSE Live | All Sectors & Groups`,
-  description:
-    `Track the complete Indian stock market live ${new Date().getFullYear()} — Nifty 50, Sensex, all NSE/BSE sectors (IT, Banking, Pharma, Auto, FMCG, Real Estate), conglomerates (Adani, Reliance, Tata, Bajaj, Birla, HDFC, ICICI, SBI, L&T, ITC, JSW, Vedanta, Godrej, Mahindra) and 500+ stocks in one place.`,
-  keywords: [
-    "indian stock market today", "nse bse live today", "nifty 50 live", "sensex today",
-    "all indian stocks live", "india market today", "nse live market", "bse live market",
-    "adani reliance tata stocks", "top 50 stocks india", "nifty 50 stocks list price",
-    "nifty next 50 stocks", "it stocks india live", "banking stocks india live",
-    "pharma stocks india", "auto stocks nse", "fmcg stocks india", "psu stocks today",
-    "real estate stocks india", "top gainers india today", "top losers india today",
-    "most traded stocks india", "blue chip stocks india", "large cap stocks india",
-    "midcap stocks today", "smallcap stocks india",
-    `best stocks to buy today india ${new Date().getFullYear()}`,
-    "stock market india sectors", "nse sector performance today", "india equity market live",
-    "share market india update", "market breadth india", "advance decline ratio india",
-    "52 week high stocks india", "52 week low stocks india",
-    "stock market holiday india", "nse trading hours india", "bse trading hours india",
-    // NEW: Year-dynamic top-20
-    `top 20 stocks india ${new Date().getFullYear()}`,
-    `top 20 nse stocks ${new Date().getFullYear()}`,
-    `top 20 bse stocks ${new Date().getFullYear()}`,
-    `top 20 indian stocks to buy ${new Date().getFullYear()}`,
-    `best 20 stocks india ${new Date().getFullYear()}`,
-    `multibagger stocks ${new Date().getFullYear()} india`,
-    `stocks to watch ${new Date().getFullYear()} india`,
-    // NEW: Weekly time-period
-    "nifty 50 this week", "nifty 50 weekly gain loss", "nifty 50 1 week change",
-    "sensex this week", "sensex weekly performance", "sensex 1 week return",
-    "indian stocks this week", "best nse stocks this week", "top gainers this week nse",
-    "stocks rising this week india", "weekly top gainers bse", "market rally this week",
-    "stocks 52 week high this week", "breakout stocks this week india",
-    // NEW: Conglomerates
-    "adani group stocks live", "reliance group stocks live", "tata group stocks live",
-    "bajaj group stocks", "mahindra group stocks", "birla group stocks",
-    "hdfc group stocks", "icici group stocks", "sbi group stocks",
-    "lt group stocks", "itc stocks", "jsw group stocks",
-    "vedanta stocks", "godrej group stocks",
-    // NEW: Sector-specific
-    "nifty bank live", "bank stocks nse today", "psu bank stocks india",
-    "private bank stocks india", "tcs infosys wipro hcl share price",
-    "sun pharma cipla drreddy share price", "maruti tata motors mmm share price",
-    "hul nestle itc share price", "ongc ntpc coal india share price",
-    "dlf godrej properties oberoi realty share price",
-    // NEW: FII/DII
-    "fii buying today india", "dii buying today", "fii selling today", "dpi data today",
-    "foreign institutional investor india today", "institutional activity india",
-    // NEW: Results season
-    "quarterly results today india", "q4 results india", "earnings season india",
-    "results beat miss today india", "dividend declaration today",
-    // GLOBAL — NRI & International investors watching India
-    "india stock market from usa", "india stock market from uk",
-    "india stock market from dubai", "india stock market from canada",
-    "india stock market from singapore", "india stock market from australia",
-    "how to invest in indian market from abroad", "nri invest india stocks",
-    "foreign investor buy india stocks", "fpi india today",
-    "india market in usd today", "nifty 50 in usd today",
-    "sensex in usd today", "india market cap usd",
-    "india stock market world ranking", "india vs china stock market",
-    "india vs usa stock market comparison", "india emerging market",
-    "msci india index today", "ftse india index today",
-    // GLOBAL — India economic context
-    "india gdp growth today", "india inflation today",
-    "rbi interest rate india", "rbi monetary policy today",
-    "india budget impact stocks", "india forex reserves today",
-    "india trade balance today", "india rupee outlook today",
-    // GLOBAL — Specific countries watching India
-    "indian stocks popular in usa", "adani reliance tata global investors",
-    "tata motors jlr stock uk", "wipro infosys tcs stock usa",
-    "hdfc bank adr us", "infosys us market", "dr reddy us market",
-    `india market global outlook ${new Date().getFullYear()}`,
-  ].join(", "),
-  openGraph: {
-    title: `Indian Stock Market Today ${new Date().getFullYear()} | NSE BSE Live | All Sectors`,
-    description: `Complete Indian stock market live ${new Date().getFullYear()} coverage — Nifty 50, Sensex, all sectors, conglomerates, and 500+ stocks.`,
-    url: "https://moneyplant24.com/markets/india",
-  },
-  alternates: { canonical: "https://moneyplant24.com/markets/india" },
-};
+import { getMarketsMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getMarketsMeta("india");
 
 const SECTOR_SECTIONS = [
   { id: "conglomerates", label: "🏦 Conglomerates", desc: "Major Indian business groups" },

@@ -8,33 +8,9 @@ import {
 import LumpsumCalculator from "@/components/LumpsumCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
-export const metadata: Metadata = {
-  title: `Lumpsum Calculator — Mutual Fund Returns Estimator ${new Date().getFullYear()}`,
-  description: `Calculate potential returns on your one-time lumpsum mutual fund investments today ${new Date().getFullYear()}. Estimate future wealth based on expected return rates and time periods with precision.`,
-  keywords: [
-    "lumpsum calculator today", "one time investment calculator", "mutual fund lumpsum estimator",
-    "lump sum return calculator live", "investment returns estimator worldwide",
-    "finance tools moneyplant", "best lumpsum calculator 2025", "wealth growth calculator",
-    "calculate returns on 1 lakh", "calculate returns on 5 lakh", "calculate returns on 10 lakh",
-    "fd vs mutual fund lumpsum", "lumpsum return after 5 years", "lumpsum return after 10 years",
-    "lumpsum return after 20 years", "stock market lumpsum calculator",
-    "crypto lumpsum return calculator", "gold lumpsum returns india",
-    "compound interest lumpsum calculator", "future value of one time investment",
-    "retirement corpus lumpsum calculator", "child education lumpsum planner",
-    "lumpsum calculator india", "lumpsum calculator usa", "lumpsum calculator uk",
-    "lumpsum calculator uae", "lumpsum calculator saudi arabia",
-    "best way to invest 10 lakh today", "where to invest lumpsum money 2025",
-    "lumpsum returns 12 percent", "lumpsum returns 15 percent", "lumpsum returns 20 percent",
-    "inflation adjusted lumpsum calculator", "tax impact on lumpsum withdrawal india",
-    "major cap gain tax calculator", "lumpsum profit vs investment",
-    "mutual fund lumpsum returns chart", "historical lumpsum returns nse bse",
-    "nifty 50 lumpsum performance idag", "sensex lumpsum returns history",
-    "real estate vs lumpsum fund returns", "gold bullion vs lumpsum investment",
-    "lumpsum return formula", "how is lumpsum return calculated",
-    `best investment tools ${new Date().getFullYear()}`, `top 20 financial apps ${new Date().getFullYear()}`,
-    "moneyplant wealth estimator", "lumpsum returns on index funds",
-  ].join(", "),
-};
+import { getToolsMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getToolsMeta("Lumpsum");
 
 export default function LumpsumPage() {
   return (

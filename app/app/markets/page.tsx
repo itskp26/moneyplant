@@ -11,65 +11,9 @@ import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { StatWidget, PortalCard } from "@/components/VisualCards";
 
-export const metadata: Metadata = {
-  title: `Markets Hub — Universal Market Overview | Real-Time World Stock Market Tracker ${new Date().getFullYear()}`,
-  description: `A centralized portal for world financial markets today ${new Date().getFullYear()}. Compare performance across Indian NSE/BSE and international exchanges including NYSE, NASDAQ, and LSE benchmarks.`,
-  keywords: [
-    "stock market india today", "live market india", "nse bse live today",
-    "nifty 50 today", "sensex today", "bank nifty live",
-    "global markets live", "world indices today", "s&p 500 today",
-    "dow jones today", "nasdaq today", "ftse 100 today", "nikkei 225 today",
-    "forex rates today", "usd to inr today", "dollar rate today india",
-    "gold rate today india", "silver rate today india", "crude oil price today india",
-    "bitcoin price india today", "crypto price india today",
-    "top gainers today nse", "top losers today nse",
-    "52 week high stocks india", "52 week low stocks today",
-    "most active stocks india", "breakout stocks today",
-    "market sentiment today india", "fear greed index india",
-    "FII DII data today", "foreign investment india today",
-    "commodity prices today india", "mcx prices today",
-    "upcoming ipo 2025", "ipo listing today india", "ipo gmp today",
-    "india vs global markets today", "emerging markets today",
-    `top 20 stocks india ${new Date().getFullYear()}`,
-    `markets overview ${new Date().getFullYear()}`,
-    `best investment ${new Date().getFullYear()} india`,
-    "market weekly summary", "weekly market performance india",
-    "market this week india", "stocks this week india",
-    "gold this week", "bitcoin this week", "rupee this week",
-    "financial dashboard india", "real time market data india",
-    "portfolio tracker india", "investment tracker india",
-    "nse bse market overview", "market cap india total",
-    "india vix today", "advance decline ratio india",
-    "market breadth india", "sector performance india today",
-    // GLOBAL — USA
-    "us stock market today", "us market live", "new york stock exchange today",
-    "s&p 500 live today", "dow jones live today", "nasdaq live today",
-    "us market open today", "us pre market today", "us after hours today",
-    "apple nvidia tesla stock today", "us tech stocks today",
-    // GLOBAL — UK
-    "uk stock market today", "ftse 100 live today", "london stock exchange today",
-    "uk shares today", "british stocks today", "london market open today",
-    // GLOBAL — Europe
-    "european stock market today", "dax live today", "cac 40 live today",
-    "german stock market today", "french stock market today",
-    "euronext today", "european shares today",
-    // GLOBAL — Asia
-    "asian stock market today", "nikkei 225 live today", "hang seng live today",
-    "shanghai composite live today", "kospi live today", "asx 200 live today",
-    "japan stock market today", "china stock market today", "hong kong market today",
-    "singapore stock market today", "australian stock market today",
-    // GLOBAL — Middle East
-    "middle east stock market today", "saudi stock market today", "tadawul live",
-    "dubai stock market today", "dfm live today", "adx abu dhabi today",
-    "qatar stock exchange today", "kuwait stock exchange today",
-    // GLOBAL — Comparison & Macro
-    "india vs usa stock market", "nifty vs dow jones today",
-    "emerging markets vs developed markets", "asia vs europe stocks today",
-    "global market crash today", "global market rally today",
-    `world stock markets ${new Date().getFullYear()}`,
-    `global market overview ${new Date().getFullYear()}`,
-  ].join(", "),
-};
+import { getMarketsMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getMarketsMeta("all");
 
 export const revalidate = 60;
 

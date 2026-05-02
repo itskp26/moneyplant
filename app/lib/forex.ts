@@ -36,11 +36,21 @@ export async function fetchAllForexRates() {
 }
 
 // Gold and silver via Yahoo Finance MCX futures (approximate)
-export async function fetchCommodityPrice(commodity: "gold" | "silver" | "crude-oil") {
+export async function fetchCommodityPrice(commodity: "gold" | "silver" | "crude-oil" | "platinum" | "aluminum" | "zinc" | "lead" | "nickel" | "natural-gas" | "brent-oil" | "cotton" | "cpo" | "rubber") {
   const symbolMap: Record<string, string> = {
     gold: "GC=F",
     silver: "SI=F",
     "crude-oil": "CL=F",
+    platinum: "PL=F",
+    aluminum: "ALI=F",
+    zinc: "ZNC=F",
+    lead: "LED=F",
+    nickel: "NI=F",
+    "natural-gas": "NG=F",
+    "brent-oil": "BZ=F",
+    cotton: "CT=F",
+    cpo: "CPO=F",
+    rubber: "JR=F",
   };
   // Also fetch USD/INR to convert
   const [commodity_q, forex_q] = await Promise.all([
@@ -50,8 +60,8 @@ export async function fetchCommodityPrice(commodity: "gold" | "silver" | "crude-
   if (!commodity_q || !forex_q) return null;
   const usdInr = forex_q.price;
 
-  if (commodity === "gold") {
-    // Gold futures: troy oz USD → grams INR → 10 grams
+  if (commodity === "gold" || commodity === "platinum") {
+    // precious metals: troy oz USD → grams INR → 10 grams
     const pricePerOzUsd = commodity_q.price;
     const pricePerGramInr = (pricePerOzUsd / 31.1035) * usdInr;
     const pricePer10gInr = pricePerGramInr * 10;
@@ -62,7 +72,13 @@ export async function fetchCommodityPrice(commodity: "gold" | "silver" | "crude-
     const pricePerKgInr = (pricePerOzUsd / 31.1035) * 1000 * usdInr;
     return { price: pricePerKgInr, priceUsd: pricePerOzUsd, change: commodity_q.change, changePercent: commodity_q.changePercent, unit: "kg" };
   }
-  // Crude oil per barrel in INR
+  if (["aluminum", "zinc", "lead", "nickel", "copper"].includes(commodity)) {
+    // industrial metals: USD/lb → INR/kg (approx)
+    const priceInr = commodity_q.price * 2.2046 * usdInr;
+    return { price: priceInr, priceUsd: commodity_q.price, change: commodity_q.change, changePercent: commodity_q.changePercent, unit: "kg" };
+  }
+  
+  // Others: Brent/WTI per barrel, Gas per MMBtu, Cotton per bale, etc. in INR
   const priceInr = commodity_q.price * usdInr;
-  return { price: priceInr, priceUsd: commodity_q.price, change: commodity_q.change, changePercent: commodity_q.changePercent, unit: "barrel" };
+  return { price: priceInr, priceUsd: commodity_q.price, change: commodity_q.change, changePercent: commodity_q.changePercent, unit: "unit" };
 }

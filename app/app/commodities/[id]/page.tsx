@@ -31,7 +31,7 @@ export async function generateMetadata(
     : undefined;
 
   return getCommodityMeta(
-    commodity.id as "gold" | "silver" | "crude-oil" | "platinum",
+    commodity.id as any,
     inrPrice
   );
 }
@@ -46,6 +46,13 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   "natural-gas": <Zap size={28} color="#10b981" />,
   platinum: <Gem size={28} color="#e2e8f0" />,
   copper: <BarChart2 size={28} color="#f97316" />,
+  aluminum: <BarChart2 size={28} color="#94a3b8" />,
+  zinc: <BarChart2 size={28} color="#64748b" />,
+  lead: <BarChart2 size={28} color="#475569" />,
+  nickel: <BarChart2 size={28} color="#1e293b" />,
+  cotton: <BarChart2 size={28} color="#f8fafc" />,
+  cpo: <Droplet size={28} color="#ea580c" />,
+  rubber: <BarChart2 size={28} color="#0f172a" />,
 };
 
 export default async function CommodityDetailPage({ params }: PageProps) {

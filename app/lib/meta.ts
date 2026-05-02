@@ -1,33 +1,17 @@
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_TWITTER, OG_IMAGE } from "./constants";
 import type { Metadata } from "next";
+import {
+  mixWithGlobalKeywords, buildDynamicGlobalMarkets, buildDynamicHomeMetaKeywords,
+  buildDynamicCommodityKeywords, buildDynamicTopStocksKeywords, buildDynamicIpoKeywords,
+  buildDynamicStockKeywords, buildDynamicIndexKeywords, buildDynamicCryptoKeywords,
+  buildDynamicForexKeywords, buildDynamicConglomerateKeywords,
+  getGlobalIndexNames, getGlobalCurrencyTerms
+} from "./locationKeywords";
 
 // ─── DYNAMIC YEAR & TIME HELPERS ──────────────────────────────────────────────
 function y() { return new Date().getFullYear(); }           // e.g. 2025
 function yn() { return new Date().getFullYear() + 1; }     // e.g. 2026
-function yp() { return new Date().getFullYear() - 1; }     // e.g. 2024
-function month() { return new Date().toLocaleString("en-US", { month: "long" }); } // e.g. "April"
 
-// Generate year-aware keyword variants for any term
-function yearKeys(term: string): string[] {
-  return [term, `${term} ${y()}`, `${term} ${yn()}`, `${term} ${month()} ${y()}`];
-}
-
-// Generate time-period keywords (daily, weekly, monthly)
-function periodKeys(term: string): string[] {
-  return [
-    term,
-    `${term} today`,
-    `${term} this week`,
-    `${term} weekly`,
-    `${term} 1 week`,
-    `${term} 7 days`,
-    `${term} this month`,
-    `${term} monthly`,
-    `${term} 30 days`,
-    `${term} last 7 days`,
-    `${term} last 30 days`,
-  ];
-}
 
 // ─── SHARED BASE METADATA ─────────────────────────────────────────────────────
 export const baseMetadata: Metadata = {
@@ -114,121 +98,8 @@ export function getHomeMeta(): Metadata {
   const description =
     `Real-time international market tracker and India's NSE/BSE live terminal. Access benchmark data for stocks, Bitcoin, Gold rates, and world exchange rates. Your universal finance dashboard ${y()}.`;
   const keywords = [
-    // EXISTING (all preserved)
-    "nifty 50 today", "nifty 50 live price", "nifty today", "nifty 50 price today",
-    "sensex today", "sensex live", "bse sensex today", "stock market india today",
-    "nse live", "bse live", "share market today india", "top 10 stocks india",
-    "top 10 stocks nse today", "best stocks to buy today india", "nifty 50 stocks list",
-    "stock market opening today", "indian stock market news", "market today india",
-    "stock price today india", "bitcoin price india today", "bitcoin price in rupees",
-    "btc price inr", "ethereum price india", "crypto price in india",
-    "usd to inr today", "dollar rate today india", "gold rate today india",
-    "silver rate today india", "crude oil price india", "best shares to buy today",
-    "where to invest money india", "mutual funds india", "ipo today india",
-    "upcoming ipo 2025", "s&p 500 today", "dow jones today", "nasdaq today",
-    "global stock market today", "forex rate india today", "currency rate today india",
-    "moneyplant finance", "live market data india", "top gainers nse today",
-    "top losers nse today", "most active stocks india", "52 week high stocks india",
-    "52 week low stocks india", "market cap india", "india stock market index",
-    "nifty bank today", "bank nifty live", "nifty it today", "nifty pharma today",
-    "nifty auto today", "nifty fmcg", "nifty metal", "nifty real estate",
-    "smallcap stocks india", "midcap stocks india", "large cap stocks india",
-    "blue chip stocks india", "penny stocks india", "stock tips india",
-    "zerodha market watch", "groww market", "moneycontrol live",
-    "economic times markets", "screener.in stocks", "trading today india",
-    "intraday stocks today", "swing trading india", "value investing india",
-    "rakesh jhunjhunwala portfolio", "warren buffett india stocks",
-    "FII DII data today", "foreign institutional investors india",
-    // NEW: Dynamic year-based
-    `top 20 stocks india ${y()}`, `top 20 stocks ${y()}`, `top 20 stocks to buy ${y()}`,
-    `best 20 stocks india ${y()}`, `top 20 stocks nse ${y()}`, `top 20 stocks bse ${y()}`,
-    `top 20 stocks ${yn()}`, `best stocks to invest ${y()}`, `top stocks india ${y()}`,
-    `multibagger stocks ${y()}`, `best performing stocks ${y()}`, `stocks to watch ${y()}`,
-    `best investment ${y()}`, `where to invest in ${y()}`, `stock picks ${y()}`,
-    `top 20 gainers ${y()}`, `top 20 losers ${y()}`, `most active stocks ${y()}`,
-    // NEW: Tricky intent keywords
-    "52 week high stocks list today", "52 week high stocks list nse bse",
-    "stocks hitting 52 week high today", "breakout stocks today india",
-    "stocks at all time high today", "which stocks are up today",
-    "which stocks are down today", "stocks to buy today nse",
-    "stocks to avoid today india", "best intraday stock today",
-    "pre market gainers india", "after hours movers india",
-    "what is happening in stock market today", "why market is up today",
-    "why market is down today", "market crash today india",
-    "today stock market news", "market rally today india",
-    "real time market rates", "financial dashboard india",
-    "market overview today india", "fear and greed index india",
-    "inflation rate india today", "commodity prices today india",
-    "investment tracker india", "portfolio tracker india",
-    // NEW: Global + comparison
-    `dow jones vs nifty ${y()}`, `nasdaq vs sensex ${y()}`,
-    "india vs us stock market today", "emerging markets today",
-    "nifty 50 vs s&p 500", "global market impact india today",
-    // ─── GLOBAL — USA ───────────────────────────────────────────────────────────
-    "stock market usa today", "us market live", "s&p 500 live", "dow jones live",
-    "nasdaq live", "nyse today", "us stocks to buy today",
-    "bitcoin price usa", "btc price usd today", "gold price usa today",
-    "dollar rate today usa", "usd exchange rate world",
-    // ─── GLOBAL — UK ────────────────────────────────────────────────────────────
-    "stock market uk today", "ftse 100 live", "pound to dollar today",
-    "bitcoin price uk today", "gold price uk today", "pound rate today",
-    "gbp usd today", "uk shares live today",
-    // ─── GLOBAL — UAE / Dubai ───────────────────────────────────────────────────
-    "stock market uae today", "dfm today", "adx today",
-    "bitcoin price dubai today", "gold price dubai today", "gold rate uae today",
-    "aed to inr today", "aed to usd today", "dirham rate today",
-    "gold price in dubai per gram today", "22k gold rate dubai today",
-    // ─── GLOBAL — Saudi Arabia ──────────────────────────────────────────────────
-    "stock market saudi arabia today", "tadawul today", "tasi index today",
-    "bitcoin price saudi today", "gold price saudi today", "gold rate riyadh today",
-    "sar to inr today", "sar to usd today", "riyal rate today",
-    // ─── GLOBAL — Kuwait / Qatar / Bahrain / Oman ───────────────────────────────
-    "gold rate kuwait today", "gold price kuwait today", "kwd to inr today",
-    "gold rate qatar today", "gold price doha today", "qar to inr today",
-    "gold rate bahrain today", "gold rate oman today", "omr to inr today",
-    // ─── GLOBAL — Pakistan ──────────────────────────────────────────────────────
-    "stock market pakistan today", "kse 100 today", "psx today",
-    "bitcoin price pakistan today", "gold rate pakistan today", "gold price pkr today",
-    "dollar rate pakistan today", "pkr to usd today", "pkr to inr today",
-    // ─── GLOBAL — Bangladesh ────────────────────────────────────────────────────
-    "stock market bangladesh today", "dse today", "cse dhaka today",
-    "bitcoin price bangladesh today", "gold rate bangladesh today",
-    "dollar rate bangladesh today", "bdt to usd today",
-    // ─── GLOBAL — Singapore ─────────────────────────────────────────────────────
-    "stock market singapore today", "sti index today", "sgx today",
-    "bitcoin price singapore today", "gold rate singapore today",
-    "sgd to usd today", "sgd to inr today",
-    // ─── GLOBAL — Australia ─────────────────────────────────────────────────────
-    "stock market australia today", "asx 200 today", "asx live",
-    "bitcoin price australia today", "gold price australia today",
-    "aud to usd today", "aud to inr today",
-    // ─── GLOBAL — Canada ────────────────────────────────────────────────────────
-    "stock market canada today", "tsx today", "s&p tsx today",
-    "bitcoin price canada today", "gold price canada today",
-    "cad to usd today", "cad to inr today",
-    // ─── GLOBAL — Europe ────────────────────────────────────────────────────────
-    "stock market europe today", "dax today", "cac 40 today", "ftse today",
-    "bitcoin price europe today", "bitcoin price eur today",
-    "gold price europe today", "euro to dollar today", "eur usd today",
-    "germany stock market today", "france stock market today",
-    // ─── GLOBAL — Asia Pacific ──────────────────────────────────────────────────
-    "stock market japan today", "nikkei 225 today", "topix today",
-    "stock market china today", "shanghai index today", "hang seng today",
-    "stock market korea today", "kospi today", "kosdaq today",
-    "stock market malaysia today", "klci today",
-    "stock market indonesia today", "jci today",
-    "stock market philippines today", "pse index today",
-    "stock market thailand today", "set index today",
-    "stock market vietnam today", "vni index today",
-    // ─── GLOBAL — Africa ─────────────────────────────────────────────────────────
-    "stock market nigeria today", "ngx today", "bitcoin price nigeria today",
-    "stock market south africa today", "jse today",
-    "stock market kenya today", "nse kenya today", "gold rate nigeria today",
-    "stock market egypt today", "egx today",
-    // ─── GLOBAL — Americas ───────────────────────────────────────────────────────
-    "stock market brazil today", "bovespa today", "b3 today",
-    "stock market mexico today", "ipc index today",
-    "bitcoin price brazil today", "bitcoin price argentina today",
+    ...buildDynamicHomeMetaKeywords(y().toString(), yn().toString()),
+    ...buildDynamicGlobalMarkets(),
     // ─── GLOBAL — General World ──────────────────────────────────────────────────
     "world stock market live", "global financial news today",
     "world economy today", "global recession news", "world market hours today",
@@ -236,11 +107,12 @@ export function getHomeMeta(): Metadata {
     "global investment news today", "world markets live today",
     `world finance ${y()}`, `global investment ${y()}`,
     `top 20 stocks world ${y()}`, `best global assets ${y()}`,
-  ].join(", ");
+  ];
+  const finalKeywords = mixWithGlobalKeywords(keywords, ["finance", "stock market", "investment", "bitcoin price", "gold rate"]);
   return {
     title,
     description,
-    keywords,
+    keywords: finalKeywords,
     openGraph: {
       title,
       description,
@@ -256,41 +128,7 @@ export function getHomeMeta(): Metadata {
 export function getStockMeta(symbol: string, name: string, price?: string, change?: string): Metadata {
   const title = `${name} Share Price Today ${y()} | ${symbol} NSE Live Rate | ₹${price ?? "—"}`;
   const description = `Live ${name} (${symbol}) share price today ${y()} on NSE/BSE. ₹${price ?? "—"} ${change ? `(${change}%)` : ""}. Monitor real-time chart, 52-week data, market cap, and expert stock analysis on MoneyPlant.`;
-  const keywords = [
-    // EXISTING
-    `${name.toLowerCase()} share price`, `${symbol.toLowerCase()} share price today`,
-    `${name.toLowerCase()} stock price`, `${symbol.toLowerCase()} nse`, `${symbol.toLowerCase()} bse`,
-    `${name.toLowerCase()} today`, `${name.toLowerCase()} price today`, `${name.toLowerCase()} live price`,
-    `${name.toLowerCase()} stock`, `${name.toLowerCase()} share price today live`,
-    `${symbol.toLowerCase()} stock price`, `${name.toLowerCase()} 52 week high`,
-    `${name.toLowerCase()} 52 week low`, `${name.toLowerCase()} market cap`,
-    `${name.toLowerCase()} dividend`, `${name.toLowerCase()} annual report`,
-    `${name.toLowerCase()} target price`, `${name.toLowerCase()} chart`,
-    `${name.toLowerCase()} technical analysis`, `${name.toLowerCase()} fundamental analysis`,
-    `${name.toLowerCase()} eps`, `${name.toLowerCase()} pe ratio`,
-    `${name.toLowerCase()} book value`, `${name.toLowerCase()} roe`,
-    `${name.toLowerCase()} promoter holding`, `${name.toLowerCase()} fii holding`,
-    `${name.toLowerCase()} dii holding`, `${name.toLowerCase()} quarterly results`,
-    `${name.toLowerCase()} financial results`, `${name.toLowerCase()} stock analysis`,
-    `${name.toLowerCase()} buy or sell`, `${name.toLowerCase()} today news`,
-    `is ${name.toLowerCase()} good to buy`, `${symbol.toLowerCase()} price history`,
-    `${symbol.toLowerCase()} all time high`, `${symbol.toLowerCase()} nse share price`,
-    `${symbol.toLowerCase()} bse share price`, `${symbol.toLowerCase()} live`,
-    `${symbol.toLowerCase()} chart`, `buy ${name.toLowerCase()} stock india`,
-    `${name.toLowerCase()} investors`,
-    // NEW: Year-dynamic
-    ...yearKeys(`${name.toLowerCase()} target price`),
-    ...yearKeys(`${name.toLowerCase()} prediction`),
-    ...yearKeys(`${symbol.toLowerCase()} target`),
-    `${name.toLowerCase()} share price ${y()}`, `${name.toLowerCase()} stock ${y()}`,
-    `best time to buy ${name.toLowerCase()}`, `should i buy ${symbol.toLowerCase()} today`,
-    `${name.toLowerCase()} 1 week performance`, `${name.toLowerCase()} 1 month return`,
-    `${name.toLowerCase()} 52 week return`, `${name.toLowerCase()} 3 month performance`,
-    `${name.toLowerCase()} 6 month performance`, `${name.toLowerCase()} ytd return`,
-    `${name.toLowerCase()} weekly gain loss`, `${name.toLowerCase()} weekly change`,
-    `top 20 stocks india ${y()}`, `is ${name.toLowerCase()} in top 20 stocks`,
-    `${name.toLowerCase()} upcoming events`, `${name.toLowerCase()} next earnings date`,
-  ].join(", ");
+  const keywords = buildDynamicStockKeywords(symbol, name, y().toString(), yn().toString()).join(", ");
   const url = `${SITE_URL}/stocks/${symbol.toLowerCase()}`;
   return {
     title,
@@ -325,57 +163,7 @@ export function getConglomerateMeta(
   const symbolList = stocks.map((s) => s.symbol).join(", ");
   const title = `${groupName} Stocks ${y()} — Full Company List & Market Performance`;
   const description = `Track the complete listed company portfolio of ${groupName} today ${y()}. Monitor real-time share prices, market cap, and performance of all group firms on NSE/BSE.`;
-  const keywords = [
-    // EXISTING
-    `${groupName.toLowerCase()} stocks`, `${groupName.toLowerCase()} stocks list`,
-    `${groupName.toLowerCase()} share price`, `all ${groupName.toLowerCase()} companies`,
-    `${group} group stocks price today`, `${group} group companies nse`,
-    `top ${group} stocks`,
-    ...stocks.flatMap((s) => [
-      `${s.name.toLowerCase()} share price`, `${s.symbol.toLowerCase()} stock`,
-      `${s.name.toLowerCase()} today`,
-    ]),
-    symbolList, `how many companies does ${group} own`,
-    `${group} group company list`, `${group} group market cap`,
-    `invest in ${group} group`, `best ${group} stock to buy`, `${group} group stocks nse bse`,
-    // NEW: Year-dynamic
-    ...yearKeys(`best ${group} stock`),
-    ...yearKeys(`${groupName.toLowerCase()} stocks`),
-    `top 20 ${group} stocks ${y()}`, `${group} group stocks ${y()}`,
-    `${group} group market cap ${y()}`, `${group} group performance ${y()}`,
-    `${group} stocks 1 week performance`, `${group} stocks weekly gain loss`,
-    `${group} group 52 week high low`, `${group} group latest news ${y()}`,
-    `should i invest in ${group} group ${y()}`, `${group} group dividend ${y()}`,
-    `${group} top performing stock ${y()}`, `${group} worst performing stock today`,
-    `${group} group revenue profit ${y()}`,
-    // MASSIVE INDIAN CONGLOMERATE KEYWORDS
-    "adani reliance tata birla comparison", "best indian business group to invest",
-    "top 10 conglomerates in india", "list of all listed companies in india",
-    "conglomerate stocks nse bse today", "diversified business groups india",
-    "adani enterprises vs reliance industries", "tata motors vs mahindra",
-    "hdfc vs icici group performance", "bajaj finance vs jio financial",
-    "indian family business stocks", "wealth creators of india today",
-    "multibagger stocks from conglomerates", "blue chip conglomerate stocks india",
-    "adani group news live today", "reliance industries news live",
-    "tata group latest updates india", "birla group share price today",
-    "vedanta jsw steel group news", "lt hcl to infosys it sector",
-    "india business news today", "moneyplant conglomerate tracker",
-    "adani wealth of gautam adani today", "reliance mukesh ambani net worth impact",
-    "tata sons shareholding structure", "how to buy all adani stocks",
-    "best tata stocks for long term", "is reliance a good buy today",
-    "adani group debt news today", "tata group dividend history",
-    "conglomerate discount india stocks", "holding company discount india",
-    "nifty 50 conglomerate weightage", "sensex business group analysis",
-    "adani total gas vs gujarat gas", "reliance retail vs avenue supermarts",
-    "tata tech vs ltimindtree", "adani green vs tata power",
-    `top 20 indian conglomerates ${y()}`, `best business groups ${y()}`,
-    "adani hindenburg saga latest", "reliance disney merger impact",
-    "tata group semiconductor news", "adani airport biz news",
-    "conglomerate stocks price list today", "market cap of adani group today",
-    "market cap of tata group live", "reliance industries m-cap live",
-    "indian billionaire stocks today", "promoter holding of conglomerates",
-    "pledge shares of indian conglomerates", "debt to equity ratio conglomerates",
-  ].join(", ");
+  const keywords = buildDynamicConglomerateKeywords(groupName, stocks.map(s => s.name), y().toString(), yn().toString()).join(", ");
   const url = `${SITE_URL}/conglomerates/${group}`;
   return {
     title, description, keywords,
@@ -387,38 +175,74 @@ export function getConglomerateMeta(
 
 // ─── INDEX PAGE META ──────────────────────────────────────────────────────────
 export function getIndexMeta(
-  indexId: string, indexName: string, value?: string, change?: string
+  indexId?: string, indexName?: string, value?: string, change?: string
 ): Metadata {
+  if (!indexId || !indexName) {
+    const title = `Indices Hub — World Market Benchmarks Live | Nifty, Sensex, Dow, Nasdaq & Nikkei ${y()}`;
+    const description = `Real-time tracker for all major international stock market indices today ${y()}. Monitor Indian benchmarks alongside US, European, and Asian markets with professional analytics.`;
+    const specificKeywords = [
+      "nifty 50 live today", "nifty 50 live price", "nifty 50 chart today",
+      "sensex live today", "sensex live price", "bse sensex today",
+      "bank nifty live today", "bank nifty live price",
+      "nifty it today", "nifty pharma today", "nifty fmcg today", "nifty metal today",
+      "nifty realty today", "nifty auto today", "nifty psu bank today",
+      "nifty energy today", "nifty media today", "nifty infra today",
+      "nifty midcap 100 today", "nifty smallcap 100 today", "nifty next 50 today",
+      "nifty 200 today", "nifty 500 today", "bse 100 today", "bse 200 today", "bse 500 today",
+      "india vix today", "nifty pe ratio today", "sensex pe ratio today",
+      "nifty 50 weekly performance", "nifty 50 1 week return", "nifty 50 this week",
+      "sensex weekly gain loss", "sensex 1 week change", "sensex this week",
+      "bank nifty weekly change", "nifty 50 monthly return", "nifty 50 ytd return",
+      "nifty 50 52 week high", "nifty 50 52 week low", "sensex 52 week high",
+      "index performance this week", "indian market weekly summary",
+      "global stock market today", "s&p 500 today", "dow jones today", "nasdaq today",
+      "ftse 100 today", "dax today", "nikkei 225 today", "hang seng today",
+      "shanghai composite today", "kospi today", "asx 200 today",
+      "world indices live", "global indices today", "international stock market",
+      `top 20 index stocks ${y()}`, `best index fund india ${y()}`,
+      `nifty 50 ${y()}`, `sensex ${y()} target`,
+      "stock market indices india", "nse bse indices live",
+      "nifty beees price today", "sensex etf today",
+      "52 week high stocks nse bse", "52 week high stocks list today",
+      "stocks hitting 52 week high today", "breakout stocks today india",
+      "s&p 500 live index", "dow jones index today", "nasdaq composite index today",
+      "russell 2000 index today", "nyse composite today", "tsx canada index today",
+      "bovespa index today brazil", "mexbol mexico index today",
+      "ftse 100 index live", "dax 40 index today", "cac 40 index today",
+      "ibex 35 spain index today", "aex netherlands index today",
+      "smi switzerland index today", "omxs30 sweden index today",
+      "euro stoxx 50 today", "stoxx 600 europe today",
+      "nikkei 225 live index", "hang seng index live", "shanghai composite index",
+      "csi 300 china index today", "kospi south korea index today",
+      "asx 200 australia index today", "straits times index singapore",
+      "nzx 50 new zealand today", "set thailand index today",
+      "pse philippines index today", "klci malaysia index today",
+      "jci indonesia index today", "vni vietnam index today",
+      "tasi saudi arabia index today", "dfmgi dubai index today",
+      "adxgi abu dhabi index today", "tadawul index today",
+      "bist 100 turkey index today", "tel aviv 35 israel index today",
+      "jse south africa index today", "ngx nigeria index today",
+      "efg egypt index today",
+      "nifty vs s&p 500 comparison", "sensex vs dow jones comparison",
+      "india index vs world index performance", "best index in world today",
+      `global indices ${y()} performance`, `world stock market indices ${y()}`
+    ];
+    const keywords = mixWithGlobalKeywords(specificKeywords, [
+      ...getGlobalIndexNames(),
+      "Nifty 50", "Sensex", "Stock Market", "Indices", "World Market"
+    ]);
+    const url = `${SITE_URL}/indices`;
+    return {
+      title, description, keywords,
+      openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Indices Hub" }] },
+      twitter: { title, description },
+      alternates: { canonical: url },
+    };
+  }
+
   const title = `${indexName} Live Today ${y()} | Market Benchmark ${value ? `— ${value} (${change}%)` : ""}`;
   const description = `Track ${indexName} performance today ${y()} — ${value ?? "real-time index data"}. Access historical charts, top performing stocks, and complete market benchmark analysis for ${indexName}.`;
-  const keywords = [
-    // EXISTING
-    `${indexName.toLowerCase()} today`, `${indexName.toLowerCase()} live`,
-    `${indexName.toLowerCase()} price today`, `${indexName.toLowerCase()} chart`,
-    `${indexName.toLowerCase()} value today`, `${indexName.toLowerCase()} 52 week high`,
-    `${indexName.toLowerCase()} 52 week low`, `${indexName.toLowerCase()} all time high`,
-    `${indexName.toLowerCase()} historical data`, `${indexName.toLowerCase()} stocks list`,
-    `${indexName.toLowerCase()} composition`, `${indexName.toLowerCase()} weightage`,
-    `${indexName.toLowerCase()} performance today`, `${indexName.toLowerCase()} opening time`,
-    `${indexName.toLowerCase()} closing time`, "nse india live", "share market index today",
-    "stock index india", "indian stock market index today",
-    "nifty 50 today", "sensex today", "bank nifty today", "nse live chart",
-    "nifty pe ratio today", "nse index today", "bse index today",
-    // NEW: Time-period keywords
-    ...periodKeys(`${indexName.toLowerCase()} performance`),
-    ...periodKeys(`${indexName.toLowerCase()} return`),
-    `${indexName.toLowerCase()} weekly change`, `${indexName.toLowerCase()} weekly gain`,
-    `${indexName.toLowerCase()} weekly loss`, `${indexName.toLowerCase()} 1 week return`,
-    `${indexName.toLowerCase()} 1 month return`, `${indexName.toLowerCase()} 3 month return`,
-    `${indexName.toLowerCase()} ytd return ${y()}`, `${indexName.toLowerCase()} ${y()} return`,
-    // NEW: Year-dynamic
-    ...yearKeys(`${indexName.toLowerCase()} target`),
-    ...yearKeys(`${indexName.toLowerCase()} prediction`),
-    `${indexName.toLowerCase()} ${y()}`, `${indexName.toLowerCase()} ${yn()}`,
-    `${indexName.toLowerCase()} top 20 stocks ${y()}`,
-    `top 20 nifty stocks ${y()}`, `top 20 index stocks ${y()}`,
-    `best index fund india ${y()}`, `${indexName.toLowerCase()} etf india ${y()}`,
-  ].join(", ");
+  const keywords = buildDynamicIndexKeywords(indexName, y().toString(), yn().toString()).join(", ");
   const url = `${SITE_URL}/indices/${indexId}`;
   return {
     title, description, keywords,
@@ -430,54 +254,89 @@ export function getIndexMeta(
 
 // ─── CRYPTO PAGE META ─────────────────────────────────────────────────────────
 export function getCryptoMeta(
-  coinId: string, coinName: string, symbol: string, priceInr?: string, priceUsd?: string, change?: string
+  coinId?: string, coinName?: string, symbol?: string, priceInr?: string, priceUsd?: string, change?: string
 ): Metadata {
+  if (!coinId || !coinName || !symbol) {
+    const title = `Crypto Hub — Real-Time Cryptocurrency Prices INR & USD | Bitcoin, Ethereum ${y()}`;
+    const description = `Live cryptocurrency market terminal today ${y()}. Track Bitcoin, Ethereum, and 1000+ digital assets with real-time INR/USD exchange rates and world market cap trends.`;
+    const specificKeywords = [
+      "crypto price today india", "bitcoin price india today", "bitcoin price inr",
+      "btc price inr today", "ethereum price india", "ethereum to inr",
+      "crypto market today", "top cryptocurrencies india", "live crypto prices india",
+      "solana price india today", "xrp price india today", "bnb price india today",
+      "dogecoin price india today", "cardano price india", "polygon price india",
+      "crypto gainers today", "top crypto gainers today", "top crypto losers today",
+      "crypto market cap today", "total crypto market cap", "bitcoin dominance today",
+      "crypto price this week", "crypto 1 week performance", "bitcoin weekly gain loss",
+      "ethereum weekly change", "crypto monthly return", "best crypto this week",
+      "worst crypto this week", "crypto up this week", "crypto down this week",
+      `top 20 cryptocurrencies ${y()}`, `best crypto to buy ${y()}`,
+      `top 20 crypto ${y()}`, `crypto bull run ${y()}`,
+      "buy crypto india", "crypto investment india", "how to buy bitcoin india",
+      "wazirx prices", "coindcx prices", "zebpay prices", "binance india",
+      "crypto tax india", "30% crypto tax india", "tds crypto india",
+      "crypto regulations india 2025", "sebi crypto india", "rbi crypto india",
+      "altcoin season 2025", "defi tokens today", "nft market today", "web3 india",
+      "crypto fear greed index", "ethereum gas fees today", "bitcoin atm india",
+      "usdt to inr today", "tether price inr", "stablecoin india",
+      "crypto portfolio tracker india", "crypto market analysis today",
+      "live cryptocurrency rates india", "bitcoin to rupee today",
+      "bitcoin price usa", "bitcoin price usd today", "btc price usd",
+      "ethereum price usa", "crypto price usa today", "buy bitcoin usa",
+      "crypto exchange usa", "coinbase prices", "kraken crypto prices",
+      "best crypto usa 2025", "crypto tax usa", "irs crypto tax",
+      "bitcoin price uk today", "bitcoin price gbp", "btc price gbp",
+      "ethereum price uk", "crypto price uk", "buy bitcoin uk",
+      "crypto exchange uk", "binance uk", "coinbase uk",
+      "bitcoin price in pounds today", "crypto regulation uk",
+      "bitcoin price uae today", "bitcoin price dubai", "btc price aed",
+      "ethereum price uae", "crypto price dubai", "buy bitcoin dubai",
+      "crypto in uae", "crypto exchange dubai", "binance dubai",
+      "bitcoin price in dirhams", "crypto regulations uae",
+      "bitcoin price saudi arabia", "bitcoin price sar today", "btc sar price",
+      "crypto price riyadh", "crypto investment saudi arabia", "buy bitcoin saudi",
+      "bitcoin price pakistan today", "bitcoin price pkr", "btc pkr price",
+      "ethereum price pakistan", "crypto price pakistan", "buy bitcoin pakistan",
+      "crypto regulations pakistan", "sbp crypto pakistan",
+      "bitcoin price bangladesh today", "bitcoin price bdt", "btc bdt price",
+      "crypto price bangladesh", "buy bitcoin bangladesh",
+      "bitcoin price singapore", "bitcoin price sgd", "buy bitcoin singapore",
+      "crypto exchange singapore", "mas crypto singapore",
+      "bitcoin price australia today", "bitcoin price aud", "btc aud price",
+      "crypto price australia", "buy bitcoin australia", "swyftx crypto",
+      "bitcoin price canada today", "bitcoin price cad", "btc cad price",
+      "crypto price canada", "buy bitcoin canada",
+      "bitcoin price euro today", "bitcoin price eur", "btc eur price",
+      "ethereum price europe", "crypto price germany", "crypto price france",
+      "bitcoin price netherlands", "crypto regulation europe", "mica regulation crypto",
+      "bitcoin price nigeria today", "bitcoin price ngn", "crypto price nigeria",
+      "bitcoin price kenya", "bitcoin price south africa", "bitcoin price philippines",
+      "bitcoin price malaysia today", "bitcoin price indonesia", "btc price thailand",
+      "bitcoin price turkey", "bitcoin price brazil", "bitcoin price argentina",
+      "crypto price live world", "global crypto market today",
+      "world cryptocurrency prices", "international crypto exchange",
+      "crypto prices across countries", "bitcoin price in all currencies",
+      "crypto in dollars euros pounds dirhams",
+      `best crypto to buy worldwide ${y()}`,
+      `global crypto market ${y()}`
+    ];
+    const keywords = mixWithGlobalKeywords(specificKeywords, ["Crypto", "Bitcoin", "Ethereum", "Cryptocurrency"]);
+    const url = `${SITE_URL}/crypto`;
+    return {
+      title, description, keywords,
+      openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Crypto Hub" }] },
+      twitter: { title, description },
+      alternates: { canonical: url },
+    };
+  }
+
   const title = `${coinName} (${symbol}) Price INR & USD Today ${y()} | ₹${priceInr ?? "—"}`;
   const description = `Real-time ${coinName} (${symbol}) price today ${y()} — ₹${priceInr ?? "—"} INR | $${priceUsd ?? "—"} USD ${change ? `(${change}%)` : ""}. Track international crypto trends, market cap, and live technical charts.`;
-  const keywords = [
-    // EXISTING
-    `${coinName.toLowerCase()} price in india`, `${coinName.toLowerCase()} price today`,
-    `${coinName.toLowerCase()} price inr`, `${symbol.toLowerCase()} price`,
-    `${symbol.toLowerCase()} price india`, `${symbol.toLowerCase()} price in rupees`,
-    `${coinName.toLowerCase()} to inr`, `${coinName.toLowerCase()} live price`,
-    `1 ${coinName.toLowerCase()} in rupees`, `${coinId} price india`,
-    `${coinName.toLowerCase()} market cap`, `${coinName.toLowerCase()} all time high`,
-    `${coinName.toLowerCase()} chart inr`, `${coinName.toLowerCase()} buy india`,
-    `how to buy ${coinName.toLowerCase()} india`, `${coinName.toLowerCase()} prediction 2025`,
-    `${coinName.toLowerCase()} target 2025`, `${coinName.toLowerCase()} news today`,
-    "crypto price india today", "cryptocurrency price india", "best crypto to buy india",
-    "bitcoin price india today", "btc price inr today", "crypto in rupees",
-    "digital currency india", "crypto investment india", "blockchain india",
-    "cryptocurrency market india", "crypto tax india", "wazirx coindcx coinswitch india",
-    // NEW: Year-dynamic
-    ...yearKeys(`${coinName.toLowerCase()} price prediction`),
-    ...yearKeys(`${coinName.toLowerCase()} target price`),
-    ...yearKeys(`should i buy ${coinName.toLowerCase()}`),
-    `${coinName.toLowerCase()} ${y()} price`, `${coinName.toLowerCase()} ${yn()} price`,
-    `${symbol.toLowerCase()} price ${y()}`, `best crypto ${y()}`, `top 20 crypto ${y()}`,
-    `top 20 cryptocurrencies ${y()}`, `best crypto to buy ${y()}`,
-    // NEW: Time-period (weekly/monthly)
-    ...periodKeys(`${coinName.toLowerCase()} price change`),
-    `${coinName.toLowerCase()} 1 week price`, `${coinName.toLowerCase()} weekly gain`,
-    `${coinName.toLowerCase()} weekly loss`, `${coinName.toLowerCase()} 7 day change`,
-    `${coinName.toLowerCase()} 1 month return`, `${coinName.toLowerCase()} 30 day change`,
-    `${coinName.toLowerCase()} weekly performance`, `${symbol.toLowerCase()} 1 week`,
-    `${symbol.toLowerCase()} weekly chart`, `${coinName.toLowerCase()} down this week`,
-    `${coinName.toLowerCase()} up this week`, `${coinName.toLowerCase()} drop this week`,
-    // NEW: Tricky intent keywords
-    `why is ${coinName.toLowerCase()} falling today`, `why is ${coinName.toLowerCase()} rising today`,
-    `best time to buy ${coinName.toLowerCase()}`, `${coinName.toLowerCase()} dip today`,
-    `${coinName.toLowerCase()} correction today`, `${coinName.toLowerCase()} bull run ${y()}`,
-    `is ${coinName.toLowerCase()} a good investment ${y()}`,
-    `${coinName.toLowerCase()} vs bitcoin ${y()}`, `${symbol.toLowerCase()} usd inr converter`,
-    `convert ${symbol.toLowerCase()} to inr`, `${symbol.toLowerCase()} to usd`,
-    "altcoin season 2025", "defi tokens today", "crypto gainers today",
-    "top crypto this week", "which crypto is performing best this week",
-    "crypto fear greed index", "bitcoin dominance today", "crypto market cap today",
-  ].join(", ");
+  const keywords = buildDynamicCryptoKeywords(coinName, symbol, y().toString(), yn().toString());
+  const finalKeywords = mixWithGlobalKeywords(keywords, [coinName, `${coinName} price`, symbol]);
   const url = `${SITE_URL}/crypto/${coinId}`;
   return {
-    title, description, keywords,
+    title, description, keywords: finalKeywords,
     openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${coinName} Price India Today ${y()}` }] },
     twitter: { title, description },
     alternates: { canonical: url },
@@ -486,52 +345,106 @@ export function getCryptoMeta(
 
 // ─── FOREX PAGE META ──────────────────────────────────────────────────────────
 export function getForexMeta(
-  pairId: string, pairName: string, base: string, quote: string, rate?: string
+  pairId?: string, pairName?: string, base?: string, quote?: string, rate?: string
 ): Metadata {
-  const title = `${base} to ${quote} Today ${y()} | World Exchange Rate ${rate ? `— ${rate}` : ""}`;
+  if (!pairId || !pairName || !base || !quote) {
+    const title = `Forex Hub — World Currency Exchange Rates | Live USD/INR, EUR, GBP & Remittance ${y()}`;
+    const description = `Worldwide currency tracker and exchange rate terminal today ${y()}. Monitor live USD to INR, major international currency pairs, RBI reference rates, and NRI transfer rates.`;
+    const specificKeywords = [
+      "forex rate india today", "usd to inr today", "dollar to rupee today",
+      "dollar rate today india", "dollar price india today", "inr to usd today",
+      "usdt to inr today", "tether to inr", "rupee vs dollar today",
+      "euro to rupee today", "eur to inr today", "europe euro to inr",
+      "gbp to inr today", "pound to rupee today", "british pound to inr",
+      "aed to inr today", "dirham to rupee today", "uae dirham to inr",
+      "sar to inr today", "saudi riyal to rupee today", "saudi riyal to inr",
+      "kwd to inr today", "kuwait dinar to rupee", "kuwait dinar to inr",
+      "qar to inr today", "qatar riyal to rupee", "qatar riyal to inr",
+      "jpy to inr today", "yen to rupee today", "japanese yen to inr",
+      "cny to inr today", "yuan to rupee today", "chinese yuan to inr",
+      "aud to inr today", "australian dollar to rupee", "aud to inr rate",
+      "cad to inr today", "canadian dollar to rupee", "cad to inr rate",
+      "chf to inr today", "swiss franc to rupee", "swiss franc to inr",
+      "sgd to inr today", "singapore dollar to rupee", "sgd to inr rate",
+      "pkr to inr today", "pakistani rupee to inr", "pakistan currency rate",
+      "bdt to inr today", "bangladeshi taka to inr", "taka to rupee",
+      "live exchange rates india", "currency exchange rate india",
+      "rbi reference rate today", "rbi forex rate today", "rbi usd inr rate",
+      "forex market india", "forex trading india", "currency converter india",
+      "nri transfer rate today", "best remittance rate india", "sbi forex rate today",
+      "hdfc forex rate today", "icici forex rate today", "bank forex rate india",
+      "western union rate today india", "wise transfer rate india", "remittance india",
+      "usd to inr 1 week change", "dollar rupee weekly change", "dollar weekly performance",
+      "rupee vs dollar this week", "dollar 1 week gain loss", "rupee this week",
+      "currency rate this week india", "forex weekly report", "forex 7 days",
+      "dollar index today dxy", "dollar strength today",
+      `usd inr rate ${y()}`, `forex rates ${y()}`,
+      `top 20 currency pairs ${y()}`, "best exchange rate today",
+      "usd exchange rate today", "dollar rate usa", "buy usd in usa",
+      "usd to eur today", "usd to gbp today", "usd to jpy today",
+      "usd to cad today", "usd to aud today", "dollar index usa today",
+      "gbp exchange rate today", "pound sterling rate today", "pound to euro today",
+      "pound to dollar today", "pound to inr today", "pound to aed today",
+      "uk forex rates today", "rbs forex rate", "barclays forex rate",
+      "euro exchange rate today", "eur usd today", "eur gbp today",
+      "eur to inr today", "eur to jpy today", "ecb exchange rate today",
+      "euro rate germany", "euro rate france", "euro vs dollar today",
+      "aed exchange rate today", "dirham rate today", "aed to usd today",
+      "aed to inr today", "aed to gbp today", "aed to eur today",
+      "uae dirham exchange rate today", "dubai forex rate today",
+      "sar exchange rate today", "riyal rate today", "sar to usd today",
+      "sar to inr today", "sar to gbp today", "saudi riyal forex rate",
+      "kwd to usd today", "kwd to inr today", "kuwait dinar forex rate",
+      "qar to usd today", "qar to inr today", "qatar riyal exchange rate",
+      "omr to usd today", "omr to inr today", "oman rial exchange rate",
+      "bhd to usd today", "bahrain dinar exchange rate",
+      "pkr to usd today", "pkr exchange rate today", "pakistan rupee rate today",
+      "bdt to usd today", "bangladesh taka exchange rate today",
+      "lkr to usd today", "sri lanka rupee exchange rate",
+      "npr to usd today", "nepal rupee exchange rate",
+      "jpy to usd today", "yen exchange rate today", "japan yen rate today",
+      "cny to usd today", "chinese yuan exchange rate today",
+      "sgd to usd today", "singapore dollar exchange rate today",
+      "aud to usd today", "australian dollar exchange rate today",
+      "cad to usd today", "canadian dollar exchange rate today",
+      "myr to usd today", "ringgit exchange rate today",
+      "idr to usd today", "rupiah exchange rate today",
+      "php to usd today", "philippine peso exchange rate",
+      "thb to usd today", "thai baht exchange rate today",
+      "ngn to usd today", "nigeria naira exchange rate",
+      "zar to usd today", "south africa rand exchange rate",
+      "kes to usd today", "kenya shilling exchange rate",
+      "brl to usd today", "brazil real exchange rate",
+      "mxn to usd today", "mexican peso exchange rate",
+      "ars to usd today", "argentina peso exchange rate today",
+      "send money to india from usa", "send money to india from uk",
+      "send money to india from dubai", "send money to india from canada",
+      "nri money transfer rate", "international money transfer rate today",
+      "wise exchange rate today", "western union rate today",
+      "xoom transfer rate", "remitly rate today", "transferwise rate",
+      "best remittance rate worldwide", "cheapest way to send money internationally",
+      `global forex ${y()}`, `world currency rates ${y()}`
+    ];
+    const keywords = mixWithGlobalKeywords(specificKeywords, [
+      ...getGlobalCurrencyTerms(),
+      "Forex", "Currency Exchange", "USD to INR", "Remittance", "Exchange Rates"
+    ]);
+    const url = `${SITE_URL}/forex`;
+    return {
+      title, description, keywords,
+      openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Forex Hub" }] },
+      twitter: { title, description },
+      alternates: { canonical: url },
+    };
+  }
+
+  const title = `${pairName} Today ${y()} | World Exchange Rate ${rate ? `— ${rate}` : ""}`;
   const description = `Live ${base} to ${quote} exchange rate today ${y()} — ${rate ? `1 ${base} = ${rate} ${quote}` : "real-time data"}. Monitor international currency trends, RBI rates, and remittance corridors.`;
-  const keywords = [
-    // EXISTING
-    `${base.toLowerCase()} to ${quote.toLowerCase()}`, `${base.toLowerCase()} to ${quote.toLowerCase()} today`,
-    `${base.toLowerCase()} ${quote.toLowerCase()} live rate`, `${base.toLowerCase()} ${quote.toLowerCase()} exchange rate`,
-    `${base.toLowerCase()} rate today india`, `1 ${base.toLowerCase()} in ${quote.toLowerCase()}`,
-    `${base.toLowerCase()} to rupee`, `${base.toLowerCase()} vs ${quote.toLowerCase()}`,
-    `${pairName.toLowerCase()}`, `${base.toLowerCase()} ${quote.toLowerCase()} chart`,
-    `${base.toLowerCase()} ${quote.toLowerCase()} forecast`, `${base.toLowerCase()} ${quote.toLowerCase()} rbi rate`,
-    "forex rate india", "currency converter india", "live forex india",
-    "dollar rate today india", "usd inr today", "rbi reference rate",
-    "forex market india", "currency exchange rate india", "international money transfer india",
-    "send money to india", "currency rate india today", "live exchange rate india",
-    `${base.toLowerCase()} ${quote.toLowerCase()} buy sell`,
-    // NEW: Time-period (this is the tricky gold/currency weekly trick)
-    ...periodKeys(`${base.toLowerCase()} to ${quote.toLowerCase()} rate`),
-    `${base.toLowerCase()} ${quote.toLowerCase()} 1 week change`,
-    `${base.toLowerCase()} ${quote.toLowerCase()} weekly gain loss`,
-    `${base.toLowerCase()} ${quote.toLowerCase()} last 7 days change`,
-    `${base} weekly performance vs ${quote}`,
-    `how much did ${base.toLowerCase()} change this week`,
-    `${base.toLowerCase()} to ${quote.toLowerCase()} 1 month change`,
-    `${base.toLowerCase()} ${quote.toLowerCase()} monthly return`,
-    `${pairName.toLowerCase()} weekly chart`, `${pairName.toLowerCase()} 7 day chart`,
-    // NEW: Year-dynamic
-    ...yearKeys(`${base.toLowerCase()} to ${quote.toLowerCase()} rate`),
-    ...yearKeys(`${base.toLowerCase()} ${quote.toLowerCase()} forecast`),
-    `${base} to ${quote} rate ${y()}`, `${base} vs ${quote} ${y()}`,
-    `${base} to ${quote} ${yn()} outlook`, `${pairName} ${y()} prediction`,
-    // NEW: Tricky intent
-    `why is ${base.toLowerCase()} falling against ${quote.toLowerCase()}`,
-    `why is ${base.toLowerCase()} rising today`, `${base.toLowerCase()} strength today`,
-    `${base.toLowerCase()} weakness today`, `${base.toLowerCase()} all time high vs ${quote.toLowerCase()}`,
-    `best exchange rate ${base.toLowerCase()} to ${quote.toLowerCase()}`,
-    `bank forex rate ${base.toLowerCase()} to ${quote.toLowerCase()}`,
-    `sbi ${base.toLowerCase()} ${quote.toLowerCase()} rate today`,
-    `hdfc forex rate ${base.toLowerCase()}`, `nri transfer rate ${base.toLowerCase()} to inr`,
-    "dollar index today DXY", "us dollar strength weak",
-    `currency war ${y()}`, `forex trading india ${y()}`,
-  ].join(", ");
+  const keywords = buildDynamicForexKeywords(base, quote, y().toString(), yn().toString());
+  const finalKeywords = mixWithGlobalKeywords(keywords, [`${base} to ${quote}`, `${base} to inr`, `${base} rate`]);
   const url = `${SITE_URL}/forex/${pairId}`;
   return {
-    title, description, keywords,
+    title, description, keywords: finalKeywords,
     openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${base} to ${quote} Exchange Rate ${y()}` }] },
     twitter: { title, description },
     alternates: { canonical: url },
@@ -540,159 +453,184 @@ export function getForexMeta(
 
 // ─── COMMODITY META ───────────────────────────────────────────────────────────
 export function getCommodityMeta(
-  commodity: "gold" | "silver" | "crude-oil" | "platinum",
+  commodity: "gold" | "silver" | "crude-oil" | "platinum" | "aluminum" | "zinc" | "lead" | "nickel" | "natural-gas" | "brent-oil" | "cotton" | "cpo" | "rubber",
   priceInr?: string
 ): Metadata {
   const map: Record<string, { title: string; desc: string; keywords: string[] }> = {
     gold: {
       title: `Gold Rate Today ${y()} — 24K & 22K Gold Prices | World Market Rates`,
       desc: `Live gold rate today ${y()} — ₹${priceInr ?? "—"} per 10g (24K). Track real-time prices for 22K/18K gold in India, Dubai, London, and USA with international market trends.`,
-      keywords: [
-        // EXISTING
-        "gold rate today india", "gold price today", "gold rate today", "today gold rate",
-        "24k gold price", "22k gold price", "18k gold price", "gold price per gram india",
-        "gold price 10 gram india", "gold rate mumbai today", "gold rate delhi today",
-        "gold rate chennai", "gold rate bangalore", "gold rate hyderabad", "gold rate kolkata",
-        "gold rate ahmedabad", "gold rate pune", "mcx gold price", "gold etf india",
-        "sovereign gold bond", "digital gold india", "gold futures india", "gold import india",
-        "gold price history india", "international gold price", "gold price usd",
-        "today gold rate 22 carat", "today gold rate 24 carat", "1 tola gold price",
-        "gold rate soverign", "gold jewellery rate india", "is gold good investment india",
-        // NEW: Time-period (THE TRICK — weekly gold price)
-        ...periodKeys("gold rate"),
-        ...periodKeys("gold price"),
-        "gold price this week", "gold 1 week price", "gold price last 7 days",
-        "gold weekly price change", "gold weekly gain", "gold weekly loss",
-        "gold price increase this week", "gold price decrease this week",
-        "how much gold changed this week", "gold price 7 days chart",
-        "gold price 30 days chart", "gold price 1 month change",
-        "gold monthly performance", "gold vs last week", "gold price last month",
-        "gold price last year vs today", "gold price 1 year change",
-        "gold price 5 year chart india", "gold price 10 year chart india",
-        // NEW: Global gold prices
-        "gold price in dubai", "gold price dubai today", "dubai gold rate today",
-        "gold price in dubai today in rupees", "gold rate uae today",
-        "gold price in london", "london gold price today", "london gold fixing",
-        "gold price in usa today", "gold price in usd today", "gold price america",
-        "gold price in euro", "gold price in gbp", "gold price in sar",
-        "gold price saudi arabia today", "gold price in pakistan today",
-        "gold price in qatar today", "gold price in kuwait today",
-        "gold price in singapore today", "gold price hong kong today",
-        "international gold price today", "XAUUSD today", "gold vs dollar today",
-        "xau usd live", "spot gold price today", "gold bullion price",
-        "gold bar price india", "gold coin price india", "gold futures comex",
-        "gold price per ounce today", "gold price per troy ounce",
-        // NEW: Year-dynamic
-        ...yearKeys("gold price prediction"),
-        ...yearKeys("gold rate india"),
-        ...yearKeys("gold investment"),
-        `top 20 gold stocks ${y()}`, `gold stocks india ${y()}`,
-        `gold etf returns ${y()}`, `sovereign gold bond returns ${y()}`,
-        `best gold etf india ${y()}`, `gold vs equity ${y()}`, `gold vs fd ${y()}`,
-        `is gold good to buy in ${y()}`, `gold rate ${y()}`, `gold price ${y()}`,
-        `gold rate ${yn()}`, `gold forecast ${y()} ${yn()}`,
-        // NEW: Tricky intent
-        "why gold price rising today", "why gold price falling today",
-        "should i buy gold today", "is now good time to buy gold",
-        "gold rate prediction tomorrow", "gold rate next week",
-        "gold price on monday", "gold market holiday today",
-        "gold price vs inflation", "gold vs bitcoin which is better",
-        "gold vs silver price comparison", "gold silver ratio today",
-        "hallmark gold price today", "bis hallmark gold rate",
-        "22 carat vs 24 carat gold difference price",
-        "making charges gold jewellery india", "sgb vs gold etf vs digital gold",
-        "sone ka bhav aaj", "aaj ka sone ka rate", "sone ki kimat aaj",
-        "gold karo becho aaj ka rate", "gold price news today india",
-      ],
+      keywords: buildDynamicCommodityKeywords("gold", y().toString(), yn().toString()),
     },
     silver: {
       title: `Silver Rate Today ${y()} — Real-Time Price Per KG | International Silver Rates`,
       desc: `Live silver rate today ${y()} — ₹${priceInr ?? "—"} per kg. Monitor silver price action in India and world markets including XAG/USD, MCX, and retail rates.`,
-      keywords: [
-        // EXISTING
-        "silver rate today india", "silver price today", "silver rate today",
-        "silver price per kg india", "silver price per gram", "mcx silver price",
-        "silver futures india", "999 silver price", "silver bar price india",
-        "silver coin price india", "silver jewellery rate india",
-        "silver etf india", "investment silver india", "silver rate mumbai",
-        "silver rate delhi", "silver rate chennai", "silver medical uses",
-        // NEW: Time-period
-        ...periodKeys("silver rate"),
-        ...periodKeys("silver price"),
-        "silver price this week", "silver 1 week price", "silver price last 7 days",
-        "silver weekly price change", "silver weekly gain", "silver weekly loss",
-        "how much did silver change this week", "silver 7 days chart",
-        "silver 30 days chart", "silver 1 month change", "silver monthly performance",
-        "silver price last year vs today", "silver price 1 year change",
-        "silver price 5 year chart india", "silver 10 year history india",
-        // NEW: Global silver prices
-        "silver price in dubai today", "silver price usd today", "XAGUSD today",
-        "silver price in uae", "silver price london today", "silver price usa",
-        "silver spot price today", "silver bullion price", "silver price per ounce",
-        "silver vs gold ratio today", "gold silver ratio live",
-        "comex silver price today", "silver futures comex", "lme silver price",
-        // NEW: Year-dynamic
-        ...yearKeys("silver price prediction"),
-        ...yearKeys("silver rate india"),
-        `silver etf returns ${y()}`, `best silver etf india ${y()}`,
-        `silver vs gold ${y()}`, `silver investment ${y()}`,
-        `is silver good to buy in ${y()}`, `silver price ${y()}`, `silver ${yn()} forecast`,
-        // NEW: Tricky intent
-        "why silver price rising today", "why silver price falling today",
-        "should i buy silver today", "silver vs gold which is better",
-        "chandi ka bhav aaj", "aaj ka chandi ka rate",
-        "solar panel silver demand", "ev silver demand", "industrial silver demand",
-        "platinum price today", "palladium price today",
-      ],
+      keywords: buildDynamicCommodityKeywords("silver", y().toString(), yn().toString()),
     },
     "crude-oil": {
       title: `Crude Oil Price Today ${y()} — Brent & WTI Live Rates | World Energy Tracker`,
       desc: `Track real-time crude oil prices today ${y()} — Brent and WTI benchmarks. Monitor MCX oil rates, OPEC updates, and international energy market shifts.`,
-      keywords: [
-        // EXISTING
-        "crude oil price today", "crude oil price india", "crude oil rate today",
-        "wti crude oil price", "brent crude oil price", "mcx crude oil price",
-        "oil barrel price today", "oil price today india", "petroleum price india",
-        "crude oil futures india", "opec india", "crude oil chart",
-        "petrol price vs crude oil", "crude oil news today india",
-        // NEW: Time-period
-        ...periodKeys("crude oil price"),
-        "oil price this week", "oil price 1 week change", "crude oil weekly price",
-        "oil price weekly gain loss", "crude oil 7 day chart", "oil price last 7 days",
-        "oil price 1 month change", "crude oil monthly performance",
-        "brent crude weekly", "wti weekly price change",
-        // NEW: Year-dynamic
-        ...yearKeys("crude oil price prediction"),
-        ...yearKeys("oil price forecast"),
-        `crude oil price ${y()}`, `oil price ${yn()} outlook`, `opec news ${y()}`,
-        // NEW: Tricky intent
-        "why oil price rising today", "why crude oil falling today",
-        "petrol diesel price tomorrow", "opec production cut today",
-        "oil price vs rupee today", "crude oil russia ukraine", "iran oil ban news",
-        "natural gas price today india", "natural gas weekly price change",
-        "carbon credit price", "renewables vs crude oil trend",
-      ],
+      keywords: buildDynamicCommodityKeywords("crude-oil", y().toString(), yn().toString()),
     },
     platinum: {
       title: `Platinum Rate Today ${y()} in India | Platinum Price Per Gram`,
       desc: `Live platinum rate today ${y()} in India per gram and per tola. Track platinum 1-week price change, platinum vs gold comparison, MCX platinum, and investment outlook for platinum in India.`,
-      keywords: [
-        "platinum rate today india", "platinum price today", "platinum price per gram india",
-        "platinum vs gold price", "platinum jewellery india", "platinum investment india",
-        ...periodKeys("platinum price"), "platinum weekly price change",
-        "platinum 1 week performance", ...yearKeys("platinum price"),
-        `platinum price ${y()}`, "palladium price today", "platinum etf india",
-      ],
+      keywords: buildDynamicCommodityKeywords("platinum", y().toString(), yn().toString()),
+    },
+    aluminum: {
+      title: `Aluminum Price Today ${y()} — MCX Live Rate | International LME Aluminum`,
+      desc: `Live aluminum rate today ${y()} on MCX India. Track aluminum price per kg, international LME benchmarks, and global demand trends for aluminum ${y()}.`,
+      keywords: buildDynamicCommodityKeywords("aluminum", y().toString(), yn().toString()),
+    },
+    zinc: {
+      title: `Zinc Price Today ${y()} — MCX Live Rate | International LME Zinc`,
+      desc: `Track real-time zinc prices today ${y()} on MCX. Monitor international LME zinc benchmarks, inventory levels, and industrial demand for zinc.`,
+      keywords: buildDynamicCommodityKeywords("zinc", y().toString(), yn().toString()),
+    },
+    lead: {
+      title: `Lead Price Today ${y()} — MCX Live Rate | International LME Lead`,
+      desc: `Live lead rate today ${y()} in India per kg. Monitor international LME lead prices, battery sector demand, and global lead market shifts.`,
+      keywords: buildDynamicCommodityKeywords("lead", y().toString(), yn().toString()),
+    },
+    nickel: {
+      title: `Nickel Price Today ${y()} — MCX Live Rate | International LME Nickel`,
+      desc: `Track real-time nickel prices today ${y()} on MCX. Monitor stainless steel and EV battery demand impact on international LME nickel rates.`,
+      keywords: buildDynamicCommodityKeywords("nickel", y().toString(), yn().toString()),
+    },
+    "natural-gas": {
+      title: `Natural Gas Price Today ${y()} — MCX Live Rate | NYMEX Nat Gas`,
+      desc: `Live natural gas rate today ${y()} on MCX. Track NYMEX natural gas benchmarks, inventory reports, and global energy market trends.`,
+      keywords: buildDynamicCommodityKeywords("natural-gas", y().toString(), yn().toString()),
+    },
+    "brent-oil": {
+      title: `Brent Crude Oil Price Today ${y()} — Global Benchmark Live Rate`,
+      desc: `Track real-time Brent Crude oil prices today ${y()}. Monitor international North Sea benchmarks and global energy market news.`,
+      keywords: buildDynamicCommodityKeywords("brent-oil", y().toString(), yn().toString()),
+    },
+    cotton: {
+      title: `Cotton Price Today ${y()} — MCX Live Rate | ICE Cotton Benchmark`,
+      desc: `Live cotton rate today ${y()} on MCX. Track international ICE cotton benchmarks and local harvest impact on cotton prices in India.`,
+      keywords: buildDynamicCommodityKeywords("cotton", y().toString(), yn().toString()),
+    },
+    cpo: {
+      title: `Crude Palm Oil (CPO) Price Today ${y()} — MCX Live Rate | BMD Malaysia`,
+      desc: `Track real-time CPO prices today ${y()} on MCX. Monitor BMD (Malaysia) palm oil benchmarks and global edible oil market trends.`,
+      keywords: buildDynamicCommodityKeywords("cpo", y().toString(), yn().toString()),
+    },
+    rubber: {
+      title: `Rubber Price Today ${y()} — MCX Live Rate | Global Rubber Benchmarks`,
+      desc: `Live rubber rate today ${y()} in India. Monitor international rubber benchmarks and automotive sector impact on rubber prices ${y()}.`,
+      keywords: buildDynamicCommodityKeywords("rubber", y().toString(), yn().toString()),
     },
   };
   const data = map[commodity] ?? map.gold;
+  const finalKeywords = mixWithGlobalKeywords(data.keywords, [commodity, `${commodity} price`, `${commodity} rate`]);
   const url = `${SITE_URL}/commodities/${commodity}`;
   return {
     title: data.title,
     description: data.desc,
-    keywords: data.keywords.join(", "),
+    keywords: finalKeywords,
     openGraph: { title: data.title, description: data.desc, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: data.title }] },
     twitter: { title: data.title, description: data.desc },
+    alternates: { canonical: url },
+  };
+}
+
+
+// ─── COMMODITIES PAGE META ───────────────────────────────────────────────────
+export function getCommoditiesMeta(): Metadata {
+  const title = `Commodities Hub — Live Gold, Silver & Crude Oil Prices | World Market Rates ${y()}`;
+  const description = `Stay updated with real-time world commodity prices today ${y()}. Monitor live 24K/22K Gold, Silver, and Crude Oil (Brent/WTI) rates across Indian and international benchmarks.`;
+  const specificKeywords = [
+    "gold rate today india", "gold price today", "today gold rate", "live gold price",
+    "24k gold price today", "22k gold price today", "gold price per gram india",
+    "gold rate mumbai today", "gold rate delhi today", "gold rate chennai today",
+    "gold rate bangalore today", "gold rate hyderabad today", "gold rate kolkata today",
+    "gold price in dubai today", "gold price in london today", "gold price in usa today",
+    "gold price in usd today", "gold price in aed today", "gold price in sar today",
+    "XAUUSD today", "mcx gold price today", "spot gold price",
+    "gold price this week", "gold 1 week price change", "gold weekly gain loss",
+    "gold price prediction 2025", "sovereign gold bond", "digital gold price today",
+    "gold etf india", "sone ka bhav aaj", "gold price chart",
+    "silver rate today india", "silver price today", "today silver rate",
+    "silver price per gram today", "silver price per kg india",
+    "silver price in dubai today", "silver price usd today", "XAGUSD today",
+    "mcx silver price today", "silver 1 week price change", "silver weekly gain loss",
+    "chandi ka bhav aaj", "silver vs gold ratio today",
+    "crude oil price today india", "crude oil price today", "brent crude oil price today",
+    "wti crude oil price today", "mcx crude oil price today",
+    "oil barrel price today", "crude oil 1 week price change", "crude oil weekly change",
+    "petrol price india vs crude oil", "opec news today",
+    "natural gas price today india", "copper price today india",
+    "platinum price today india", "commodity market india live",
+    "mcx prices today", "commodity market live india",
+    `top 20 commodity stocks ${y()}`,
+    "commodity market news today", "precious metals price today",
+    "commodity prices this week", "commodity weekly change",
+    "gold price in usa today", "gold price in america", "gold price new york", "comex gold today",
+    "gold price in uk today", "gold price in london", "london gold fixing today",
+    "gold price in germany", "gold price in france", "gold price in europe today",
+    "gold price in canada today", "gold price in australia today", "gold price in aud",
+    "gold price in singapore today", "gold price in sgd",
+    "gold price in hong kong today", "gold price hkd",
+    "gold price in china today", "gold price in cny", "gold price in japan today",
+    "gold price in south korea today", "gold price in malaysia today",
+    "gold price in thailand today", "gold price in indonesia today",
+    "gold price in turkey today", "gold price in iran today",
+    "gold price in pakistan today", "gold price in pkr",
+    "gold price in bangladesh today", "gold price in bdt",
+    "gold price in sri lanka", "gold price in nepal today",
+    "gold price in nigeria today", "gold price in south africa today",
+    "gold price in kenya today", "gold price in egypt today",
+    "gold price in brazil today", "gold price in argentina today",
+    "gold price in mexico today", "gold price in russia today",
+    "gold price in philippines today", "gold price in vietnam today",
+    "silver price in usa today", "silver price usd per ounce",
+    "silver price in uk today", "silver price gbp",
+    "silver price in europe today", "silver price in germany",
+    "silver price in australia today", "silver price aud",
+    "silver price in canada today", "silver price cad",
+    "silver price in pakistan today", "silver price in uae today",
+    "silver price in saudi arabia today", "silver price in singapore today",
+    "crude oil price usa today", "crude oil price europe today",
+    "crude oil price middle east", "saudi aramco oil price",
+    "brent crude uk price today", "wti oil price america today",
+    "crude oil price australia today", "crude oil price japan today",
+    "crude oil price china today", "crude oil price germany today",
+    "opec monthly report", "oil price russia ukraine war impact",
+    "commodity prices worldwide", "global commodity market today",
+    "international commodity prices", "commodity exchange worldwide",
+    `commodity market ${y()} world`, `gold price ${y()} global`
+  ];
+  const keywords = mixWithGlobalKeywords(specificKeywords, ["Gold Rate", "Silver Rate", "Crude Oil Price", "Commodities", "Global Commodities"]);
+  const url = `${SITE_URL}/commodities`;
+  return {
+    title, description, keywords,
+    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Commodities Hub" }] },
+    twitter: { title, description },
+    alternates: { canonical: url },
+  };
+}
+
+// ─── STOCKS HUB META ─────────────────────────────────────────────────────────
+export function getStocksMeta(): Metadata {
+  const title = `Stocks Hub — Real-Time NSE & BSE Share Prices Today | Nifty 50, Sensex ${y()}`;
+  const description = `Live Indian stock market dashboard today ${y()}. Track Nifty 50, Sensex benchmarks, top gainers, losers, and most active stocks with detailed share price charts.`;
+  const specificKeywords = [
+    "stock market today india", "share price today nse bse", "nifty 50 stocks today",
+    "sensex stocks today", "top gainers today", "top losers today nse",
+    "most active stocks today", "52 week high stocks india", "52 week low stocks today",
+    "breakout stocks today", "intraday stocks for today", "best stocks to buy 2025",
+    "stock market live india", "nse live tracking", "bse live data",
+    "market cap ranking india", "blue chip stocks india", "penny stocks today india",
+    "dividend stocks india", "multibagger stocks 2025", "stock market news today india"
+  ];
+  const keywords = mixWithGlobalKeywords(specificKeywords, ["Stock Market", "Share Price", "NSE", "BSE", "Indian Stocks", "Multibagger Stocks"]);
+  const url = `${SITE_URL}/stocks`;
+  return {
+    title, description, keywords,
+    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Indian Stocks Hub" }] },
+    twitter: { title, description },
     alternates: { canonical: url },
   };
 }
@@ -702,36 +640,12 @@ export function getIpoMeta(): Metadata {
   const title = `IPO Tracker ${y()} — All Upcoming, Open & Recently Listed IPOs in India`;
   const description =
     `Ultimate IPO dashboard today ${y()}. Monitor upcoming Mainboard and SME IPOs, real-time Grey Market Premiums (GMP), allotment status, and listing gains live.`;
-  const keywords = [
-    // EXISTING
-    "ipo today india", "upcoming ipo 2025", "new ipo 2025", "ipo list 2025",
-    "ipo open today", "ipo subscription today", "ipo allotment status",
-    "ipo listing today", "nse ipo", "bse ipo", "ipo gmp today",
-    "grey market premium ipo", "ipo review", "best ipo to apply",
-    "sme ipo india", "mainboard ipo india", "ipo price band",
-    "ipo lot size", "ipo allotment date", "ipo listing date",
-    "ipo profit india", "how to apply ipo zerodha", "how to apply ipo groww",
-    "ipo status check", "ipo registrar status", "ipo news today india",
-    "upcoming ipo next week", "top ipo 2025 india", "ipo returns india",
-    // NEW: Year-dynamic
-    ...yearKeys("upcoming ipo india"),
-    ...yearKeys("new ipo india"),
-    ...yearKeys("best ipo to apply"),
-    `ipo ${y()} india`, `ipo ${yn()} india`, `upcoming ipo ${yn()}`,
-    `top 20 ipo ${y()}`, `top 20 upcoming ipo ${y()}`,
-    `best ipo gains ${y()}`, `ipo listing gain ${y()}`, `ipo returns ${y()}`,
-    `ipo calendar ${y()}`, `ipo pipeline ${y()} india`,
-    `ipo this week ${y()}`, `ipo next week ${y()}`, `ipo this month ${y()}`,
-    // NEW: Tricky intent
-    "ipo grey market premium today live", "ipo gmp list today",
-    "which ipo to apply this week", "best ipo to buy today",
-    "ipo allotment chances how to increase", "ipo cutoff price meaning",
-    "ipo hni qib retail subscription today", "ipo anchor allotment",
-    "should i apply ipo today", "ipo expected listing price today",
-    "ipo valuation expensive or cheap", "ipo refund when credited",
-    "ipo shares when credited to demat", "ipo unlocking date",
-    "ipo lock in period india", "promoter lock in ipo",
-  ].join(", ");
+  const specificKeywords = [
+    "ipo today india", "upcoming ipo list 2025", "live ipo gmp today",
+    "ipo allotment status check", "mainboard ipo vs sme ipo", "new ipo calendar 2025",
+    "how to apply for ipo today", "ipo listing gain calculator", "ipo reviews today"
+  ];
+  const keywords = mixWithGlobalKeywords(specificKeywords, ["IPO India", "Upcoming IPO", "IPO GMP", "Allotment Status"]);
   const url = `${SITE_URL}/ipo`;
   return {
     title, description, keywords,
@@ -747,72 +661,17 @@ export function getTopStocksMeta(type: "gainers" | "losers" | "most-active"): Me
     gainers: {
       title: `Top 20 Gainers Today ${y()} — NSE/BSE Best Performing Stocks`,
       description: `Live tracker for today's top 20 gaining stocks in India ${y()}. Monitor price action, volume spikes, and sectoral leaders on NSE and BSE benchmarks.`,
-      keywords: [
-        // EXISTING
-        "top gainers today", "nse top gainers", "bse top gainers", "best stocks today india",
-        "stocks up today india", "top gainers nse bse", "biggest gainers today india",
-        "stocks rising today", "top performing stocks india", "best stocks to trade today india",
-        // NEW: Year + top-20 dynamic
-        `top 20 gainers today ${y()}`, `top 20 stocks nse ${y()}`,
-        `top 20 gainers nse ${y()}`, `top 20 stocks india ${y()}`,
-        ...yearKeys("top gainers india"),
-        // NEW: Time-period
-        "top gainers this week", "top gainers 1 week nse", "weekly top gainers india",
-        "stocks with highest gain this week", "top gainers last 7 days nse",
-        "top gainers this month", "monthly top gainers nse bse",
-        // NEW: Tricky
-        "52 week high stocks today", "stocks hitting new high today",
-        "breakout stocks today india", "upper circuit stocks today",
-        "stocks with huge volume today", "institutional buying stocks today",
-        "fii bought stocks today", "delivery based gainers today",
-        "which stocks are best today", "stocks rallying today india",
-        `top 20 stocks to buy ${y()}`, `best 20 stocks ${y()}`,
-      ].join(", "),
+      keywords: buildDynamicTopStocksKeywords("gainers", y().toString(), yn().toString()).join(", "),
     },
     losers: {
       title: `Top 20 Losers Today NSE/BSE ${y()} | Falling Stocks India Live`,
       description: `View today's top 20 losing stocks on NSE and BSE ${y()}. Real-time list of top losers with price, % change, 1-week decline, 52-week low, volume and market cap. Identify falling stocks and short-selling opportunities.`,
-      keywords: [
-        // EXISTING
-        "top losers today", "nse top losers", "bse top losers", "stocks down today india",
-        "falling stocks india", "biggest losers today india", "stocks declining today",
-        "worst performing stocks india", "stocks to avoid today", "bearish stocks india",
-        // NEW: Year + top-20 dynamic
-        `top 20 losers today ${y()}`, `top 20 falling stocks ${y()}`,
-        ...yearKeys("top losers india"),
-        // NEW: Time-period
-        "top losers this week", "weekly top losers india", "stocks losing this week",
-        "stocks with largest decline this week", "top losers last 7 days",
-        "top losers this month", "monthly losers nse bse",
-        // NEW: Tricky
-        "52 week low stocks today", "stocks hitting new lows today",
-        "lower circuit stocks today", "stocks crashing today india",
-        "why stock price falling today", "stocks to short today india",
-        "which stocks to sell today", "fii selling stocks today",
-        `top 20 stocks to avoid ${y()}`, `worst 20 stocks ${y()}`,
-      ].join(", "),
+      keywords: buildDynamicTopStocksKeywords("losers", y().toString(), yn().toString()).join(", "),
     },
     "most-active": {
       title: `Top 20 Most Active Stocks Today NSE/BSE ${y()} | Highest Volume`,
       description: `View most actively traded stocks on NSE and BSE today by volume and turnover ${y()}. High volume stocks signal institutional activity and breakout potential. Track live trading volumes across all sectors.`,
-      keywords: [
-        // EXISTING
-        "most active stocks today", "high volume stocks india", "most traded stocks nse",
-        "highest volume stocks bse", "most active stocks nse today",
-        "stocks with high volume", "institutional activity stocks india",
-        "breakout stocks india", "intraday stocks high volume",
-        // NEW: Year + top-20 dynamic
-        `top 20 most active stocks ${y()}`, `top 20 volume stocks nse ${y()}`,
-        ...yearKeys("most active stocks india"),
-        // NEW: Time-period
-        "most active stocks this week", "weekly volume leaders nse",
-        "highest traded stocks this week india", "top volume stocks last 7 days",
-        // NEW: Tricky
-        "operator stocks today india", "bulk deals nse today", "block deals bse today",
-        "delivery percentage stocks today", "fno stocks with high oi today",
-        "options chain high oi stocks", "open interest analysis today",
-        `top 20 active stocks ${y()}`, `most traded ${y()}`,
-      ].join(", "),
+      keywords: buildDynamicTopStocksKeywords("most-active", y().toString(), yn().toString()).join(", "),
     },
   };
   const d = map[type];
@@ -824,5 +683,249 @@ export function getTopStocksMeta(type: "gainers" | "losers" | "most-active"): Me
     openGraph: { title: d.title, description: d.description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: d.title }] },
     twitter: { title: d.title, description: d.description },
     alternates: { canonical: url },
+  };
+}
+// ─── NEWS PAGE META ───────────────────────────────────────────────────────────
+export function getNewsMeta(category?: string): Metadata {
+  const catText = category && category !== "All" ? `${category} News & ` : "";
+  const title = `${catText}Live Financial Intelligence ${y()} | Global Market Updates — MoneyPlant`;
+  const description = `Access real-time ${category?.toLowerCase() ?? "global"} financial news, corporate earnings, and economic indicators. Stay ahead with MoneyPlant's live intelligence feed.`;
+
+  let specificKeywords = ["financial news", "market updates", "breaking news", "economy news"];
+  if (category === "Crypto") {
+    specificKeywords = ["crypto news today", "bitcoin news live", "ethereum updates", "crypto regulation india", "altcoin news"];
+  } else if (category === "Stocks") {
+    specificKeywords = ["stock market news india", "nifty 50 news today", "sensex updates live", "corporate earnings news", "bonus issue news"];
+  } else if (category === "IPO") {
+    specificKeywords = ["ipo news today", "upcoming ipo updates", "gmp live news", "ipo allotment news", "listing gains news"];
+  }
+
+  const keywords = mixWithGlobalKeywords([], specificKeywords);
+  const url = `${SITE_URL}/news${category && category !== "All" ? `?cat=${category}` : ""}`;
+  return {
+    title, description, keywords,
+    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global News Hub" }] },
+    twitter: { title, description },
+    alternates: { canonical: url },
+  };
+}
+
+// ─── MARKETS PAGE META ────────────────────────────────────────────────────────
+export function getMarketsMeta(type: "global" | "india" | "all"): Metadata {
+  const typeText = type === "global" ? "Global" : type === "india" ? "India" : "All";
+  const title = `${typeText} Market Dashboard ${y()} | Live Indices & Benchmark Tracking`;
+  const description = `Monitor ${typeText.toLowerCase()} market health with real-time dashboards. Track Nifty, Sensex, Dow Jones, and NASDAQ in a single premium terminal view.`;
+
+  let specificKeywords: string[] = [];
+
+  if (type === "india") {
+    specificKeywords = [
+      "indian stock market live", "nifty 50 today", "sensex live tracking", "nse bse live data",
+      "indian indices performance", "bank nifty live", "midcap nifty today", "nifty next 50 live",
+      "stock market india today", "live market india", "nse bse live today",
+      "india stock market world ranking", "nse ranking in world", "bse vs nse live"
+    ];
+  } else if (type === "global") {
+    specificKeywords = [
+      "global markets live", "s&p 500 today", "dow jones live", "nasdaq tracking", "world market performance",
+      "us market open today", "us pre market today", "us after hours today", "us tech stocks today",
+      "apple nvidia tesla stock today", "uk stock market today", "ftse 100 live", "london stock exchange today",
+      "european stock market", "dax live today", "cac 40 live", "nikkei 225 live", "hang seng live today",
+      "asx 200 live", "emerging markets vs developed markets", "global market ranking 2025"
+    ];
+  } else {
+    // MARKETS HUB (All) - EXHAUSTIVE RESTORATION
+    specificKeywords = [
+      "stock market india today", "live market india", "nse bse live today",
+      "nifty 50 today", "sensex today", "bank nifty live",
+      "global markets live", "world indices today", "s&p 500 today",
+      "dow jones today", "nasdaq today", "ftse 100 today", "nikkei 225 today",
+      "forex rates today", "usd to inr today", "dollar rate today india",
+      "gold rate today india", "silver rate today india", "crude oil price today india",
+      "bitcoin price india today", "crypto price india today",
+      "top gainers today nse", "top losers today nse",
+      "52 week high stocks india", "52 week low stocks today",
+      "most active stocks india", "breakout stocks today",
+      "s&p 500 live today", "dow jones live today", "nasdaq live today",
+      "us market open today", "us pre market today", "us after hours today",
+      "apple nvidia tesla stock today", "us tech stocks today",
+      "uk stock market today", "ftse 100 live today", "london stock exchange today",
+      "uk shares today", "british stocks today", "london market open today",
+      "european stock market today", "dax live today", "cac 40 live today",
+      "german stock market today", "french stock market today",
+      "euronext today", "european shares today",
+      "asian stock market today", "nikkei 225 live today", "hang seng live today",
+      "shanghai composite live today", "kospi live today", "asx 200 live today",
+      "japan stock market today", "china stock market today", "hong kong market today",
+      "singapore market today", "australian stock market today",
+      "middle east stock market today", "saudi stock market today", "tadawul live",
+      "dubai stock market today", "dfm live today", "adx abu dhabi today",
+      "qatar stock exchange today", "kuwait stock exchange today",
+      "india vs usa stock market", "nifty vs dow jones today",
+      "emerging markets vs developed markets", "asia vs europe stocks today",
+      "global market crash today", "global market rally today",
+      `world stock markets ${y()}`, `global market overview ${y()}`,
+      "india stock market world ranking", "top stock exchanges ranking", "world's largest stock markets",
+    ];
+  }
+
+  const dynamicMarkets = buildDynamicGlobalMarkets();
+  const keywords = mixWithGlobalKeywords([...specificKeywords, ...dynamicMarkets], [
+    "Stock Market", "Market Dashboard", "World Markets", "Indian Market"
+  ]);
+  const url = `${SITE_URL}/markets${type !== "all" ? `/${type}` : ""}`;
+  return {
+    title, description, keywords,
+    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Market Dashboard" }] },
+    twitter: { title, description },
+    alternates: { canonical: url },
+  };
+}
+
+// ─── TOOLS PAGE META ──────────────────────────────────────────────────────────
+export function getToolsMeta(toolName?: string): Metadata {
+  let specificKeywords: string[] = ["financial tools", "calculators", "money tools"];
+  let title = `Financial Calculators & Tools ${y()} | SIP, EMI, Tax & Lumpsum`;
+  let description = "Access a suite of professional financial calculators including SIP, EMI, Tax, and Lumpsum tools for your investment planning.";
+
+  if (toolName === "SIP") {
+    title = `SIP Calculator ${y()} | Estimate Mutual Fund Returns — MoneyPlant`;
+    description = `Use our advanced SIP calculator to estimate the future value of your mutual fund investments today ${y()}. Plan your retirement and long-term wealth with precision.`;
+    specificKeywords = [
+      "sip calculator today", "mutual fund sip calculator", "sip returns estimator live",
+      "wealth builder calculator", "investment calculator india", "monthly sip planner",
+      "sip calculator online free", "best sip calculator 2025", "sip maturity amount calculator",
+      "how much wealth will i have after 10 years", "sip calculator 1000 per month",
+      "sip calculator 5000 per month", "sip calculator 10000 per month",
+      "retirement planner sip", "child future planner sip", "higher education sip planner",
+      "marriage fund sip calculator", "house purchase sip planner today",
+      "sip returns 12 percent", "sip returns 15 percent", "sip returns 18 percent",
+      "sip vs fd returns calculator", "sip vs rd returns", "sip vs gold returns",
+      "sip vs real estate returns", "stock market sip calculator", "bitcoin sip calculator",
+      "gold sip calculator india", "ppf vs sip calculator", "nps vs sip returns",
+      "elss sip tax saving calculator", "sip calculator for beginners",
+      "compound interest sip calculator", "inflation adjusted sip calculator",
+      "step up sip calculator", "sip step up yearly 10 percent", "top up sip calculator",
+      "quatrterly sip calculator", "weekly sip calculator today",
+      "daily sip calculator returns", "best mutual funds for sip 2025",
+      "top 20 sip stocks india", "index fund sip calculator today",
+      "nifty 50 sip calculator", "sensex sip calculator live",
+      "sip calculator usa", "sip calculator uk", "sip calculator uae dubai",
+      "sip calculator australia", "sip calculator canada", "global mutual fund planner",
+      "wealth tracker moneyplant", "sip profit vs investment calculator",
+      `best wealth tools ${y()}`, `top 20 sip apps ${y()}`,
+      "sip return chart nse bse", "historical sip returns data"
+    ];
+  } else if (toolName === "EMI") {
+    title = `EMI Calculator ${y()} | Home, Car & Personal Loan Planner`;
+    description = `Calculate your loan EMI instantly today ${y()}. Plan your Home Loan, Car Loan, or Personal Loan repayments with detailed interest schedules and principal breakdowns.`;
+    specificKeywords = [
+      "emi calculator today", "loan emi calculator live", "home loan emi calculator",
+      "car loan emi calculator", "personal loan emi planner", "education loan emi calculator",
+      "bike loan emi calculator", "mortgage emi calculator", "instant emi quote",
+      "emi calculator india", "emi calculator usa", "emi calculator uk", "emi calculator uae",
+      "emi calculator dubai", "emi calculator saudi arabia", "emi calculator canada",
+      "emi calculator australia", "sbi home loan emi calculator", "hdfc car loan emi",
+      "icici personal loan emi", "axis bank emi planner today", "bajaj finance emi calculator",
+      "loan repayment calculator global", "interest only loan calculator", "reducing balance emi",
+      "flat rate vs reducing rate calculator", "loan amortization schedule today",
+      "how to calculate emi manually", "formula for emi calculation",
+      "emi for 10 lakh home loan", "emi for 20 lakh home loan", "emi for 30 lakh home loan",
+      "emi for 50 lakh home loan", "emi for 1 crore home loan", "loan eligibility calculator",
+      "prepayment impact on emi", "part payment vs emi reduction", "loan tenure impact on interest",
+      "low interest loan emi calculator", "best banks for emi in india",
+      "foreclosure charges calculator", "lap loan against property emi",
+      "gold loan emi calculator today", "business loan emi planner",
+      "startup loan emi calculator", "msme loan emi calculator",
+      "property loan emi calculator", "emi starting from today",
+      `best loan planner ${y()}`, `top 20 emi calculators ${y()}`,
+      "emi calculator online free", "emi calculator with graph and table",
+      "emi calculator monthly reducing", "yearly vs monthly emi"
+    ];
+  } else if (toolName === "Income Tax") {
+    title = `Income Tax Calculator FY 2024-25 & 2025-26 | New vs Old Regime`;
+    description = `Compare New vs Old Tax Regimes for FY 2024-25 (AY 2025-26) today ${y()}. Check which regime saves you more money based on your salary and investments.`;
+    specificKeywords = [
+      "income tax calculator today", "new tax regime calculator india", "old tax regime vs new tax regime",
+      "tax planner fy 2024-25", "income tax slabs 2025 india", "section 80c calculator",
+      "standard deduction india today", "tax savings calculator", "tax for 10 lakh salary",
+      "income tax calculator fy 2024-25", "income tax calculator india today",
+      "new vs old tax regime calculator", "income tax slabs 2024-25 budget",
+      "income tax calculator ay 2025-26", "tax savings calculator india",
+      "salary tax calculator india", "take home salary calculator india",
+      "standard deduction fy 2024-25", "section 80c tax savings list",
+      "calculate tax on 10 lakh salary", "calculate tax on 15 lakh salary",
+      "calculate tax on 5 lakh salary", "calculate tax on 20 lakh salary",
+      "new tax regime slabs budget 2024", "rebate section 87a income tax",
+      "marginal relief calculator india", "hra exemption calculator",
+      "home loan interest tax benefit section 24b", "80d health insurance tax saving",
+      "nps tax benefit section 80ccd", "tax on capital gains india",
+      "stcg ltcg tax calculator india", "tax on share market profit",
+      "tax on mutual fund returns india", "crypto tax india 2025",
+      "30 percent crypto tax india", "tds on crypto today",
+      "income tax return itr 1 filing today", "itr 2 tax calculator",
+      "business income tax calculator india", "freelance tax calculator india",
+      "professional tax calculator india", "tax planning for salaried employees",
+      "best tax saving investments today", "ppf vs nps vs elss for tax saving",
+      "income tax refund status today", "calculate surcharge on high income",
+      "health and education cess calculator", "income tax calculator sbi",
+      "income tax calculator moneycontrol", "cleartax income tax calculator alternative",
+      "income tax india gov in calculator", "tax planning guide 2025 india",
+      `income tax fy 2025-26 ${y()}`, `tax planning ${y()}`,
+      "new tax regime benefits", "how to save 1 lakh tax in india",
+      "tax zero on 7 lakh income how", "standard deduction for pensioners",
+      "senior citizen tax slabs fy 2024-25", "super senior citizen tax calculator"
+    ];
+  } else if (toolName === "Lumpsum") {
+    title = `Lumpsum Calculator ${y()} | Mutual Fund Returns Estimator`;
+    description = `Calculate potential returns on your one-time lumpsum mutual fund investments today ${y()}. Plan your wealth growth with precision and compare with SIP.`;
+    specificKeywords = [
+      "lumpsum calculator today", "one time investment calculator", "mutual fund lumpsum estimator",
+      "lump sum return calculator live", "investment returns estimator worldwide",
+      "finance tools moneyplant", "best lumpsum calculator 2025", "wealth growth calculator",
+      "calculate returns on 1 lakh", "calculate returns on 5 lakh", "calculate returns on 10 lakh",
+      "fd vs mutual fund lumpsum", "lumpsum return after 5 years", "lumpsum return after 10 years",
+      "lumpsum return after 20 years", "stock market lumpsum calculator",
+      "crypto lumpsum return calculator", "gold lumpsum returns india",
+      "compound interest lumpsum calculator", "future value of one time investment",
+      "retirement corpus lumpsum calculator", "child education lumpsum planner",
+      "lumpsum calculator india", "lumpsum calculator usa", "lumpsum calculator uk",
+      "lumpsum calculator uae", "lumpsum calculator saudi arabia",
+      "best way to invest 10 lakh today", "where to invest lumpsum money 2025",
+      "lumpsum returns 12 percent", "lumpsum returns 15 percent", "lumpsum returns 20 percent",
+      "inflation adjusted lumpsum calculator", "tax impact on lumpsum withdrawal india",
+      "major cap gain tax calculator", "lumpsum profit vs investment",
+      "mutual fund lumpsum returns chart", "historical lumpsum returns nse bse",
+      "nifty 50 lumpsum performance idag", "sensex lumpsum returns history",
+      "real estate vs lumpsum fund returns", "gold bullion vs lumpsum investment",
+      "lumpsum return formula", "how is lumpsum return calculated",
+      `best investment tools ${y()}`, `top 20 financial apps ${y()}`,
+      "moneyplant wealth estimator", "lumpsum returns on index funds"
+    ];
+  }
+
+  const keywords = mixWithGlobalKeywords(specificKeywords, [
+    toolName ? `${toolName} Calculator` : "Financial Tools",
+    "Investment Calculator", "Wealth Planner"
+  ]);
+  const url = `${SITE_URL}/tools${toolName ? `/${toolName.toLowerCase().replace(" ", "-")}` : ""}`;
+
+  return {
+    title, description, keywords,
+    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: toolName || "Financial Tools" }] },
+    twitter: { title, description },
+    alternates: { canonical: url },
+  };
+}
+
+// ─── COMMON PAGES META ────────────────────────────────────────────────────────
+export function getCommonMeta(pageName: string, path: string): Metadata {
+  const title = `${pageName} | MoneyPlant — Premium Finance Portal ${y()}`;
+  const description = `Read our ${pageName.toLowerCase()} and understand how we operate. MoneyPlant is committed to transparency and excellence in financial data.`;
+  return {
+    title, description,
+    openGraph: { title, description, url: `${SITE_URL}${path}` },
+    twitter: { title, description },
+    alternates: { canonical: `${SITE_URL}${path}` },
   };
 }

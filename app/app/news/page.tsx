@@ -9,10 +9,12 @@ import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { fetchMarketNews } from "@/lib/news";
 import NewsImage from "@/components/NewsImage";
 
-export const metadata: Metadata = {
-  title: "Financial News Hub — Live Stocks, Crypto & Forex Updates | MoneyPlant",
-  description: "Stay ahead of the markets with real-time financial news, expert analysis, and global economic updates on MoneyPlant News Hub.",
-};
+import { getNewsMeta } from "@/lib/meta";
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { cat } = await searchParams;
+  return getNewsMeta(cat);
+}
 
 interface Props {
   searchParams: Promise<{ cat?: string }>;

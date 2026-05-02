@@ -8,38 +8,9 @@ import {
 import TaxCalculator from "@/components/TaxCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
-export const metadata: Metadata = {
-  title: `Income Tax Calculator FY 2024-25 & 2025-26 | New vs Old Regime`,
-  description: `Calculate your Indian Income Tax for FY 2024-25 (AY 2025-26). Compare between the New Tax Regime and Old Tax Regime to find the best tax savings for you today ${new Date().getFullYear()}.`,
-  keywords: [
-    "income tax calculator fy 2024-25", "income tax calculator india today",
-    "new vs old tax regime calculator", "income tax slabs 2024-25 budget",
-    "income tax calculator ay 2025-26", "tax savings calculator india",
-    "salary tax calculator india", "take home salary calculator india",
-    "standard deduction fy 2024-25", "section 80c tax savings list",
-    "calculate tax on 10 lakh salary", "calculate tax on 15 lakh salary",
-    "calculate tax on 5 lakh salary", "calculate tax on 20 lakh salary",
-    "new tax regime slabs budget 2024", "rebate section 87a income tax",
-    "marginal relief calculator india", "hra exemption calculator",
-    "home loan interest tax benefit section 24b", "80d health insurance tax saving",
-    "nps tax benefit section 80ccd", "tax on capital gains india",
-    "stcg ltcg tax calculator india", "tax on share market profit",
-    "tax on mutual fund returns india", "crypto tax india 2025",
-    "30 percent crypto tax india", "tds on crypto today",
-    "income tax return itr 1 filing today", "itr 2 tax calculator",
-    "business income tax calculator india", "freelance tax calculator india",
-    "professional tax calculator india", "tax planning for salaried employees",
-    "best tax saving investments today", "ppf vs nps vs elss for tax saving",
-    "income tax refund status today", "calculate surcharge on high income",
-    "health and education cess calculator", "income tax calculator sbi",
-    "income tax calculator moneycontrol", "cleartax income tax calculator alternative",
-    "income tax india gov in calculator", "tax planning guide 2025 india",
-    `income tax fy 2025-26 ${new Date().getFullYear()}`, `tax planning ${new Date().getFullYear()}`,
-    "new tax regime benefits", "how to save 1 lakh tax in india",
-    "tax zero on 7 lakh income how", "standard deduction for pensioners",
-    "senior citizen tax slabs fy 2024-25", "super senior citizen tax calculator",
-  ].join(", "),
-};
+import { getToolsMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getToolsMeta("Income Tax");
 
 export default function TaxPage() {
   return (

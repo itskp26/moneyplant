@@ -6,86 +6,14 @@ import {
   BarChart2, Info, Globe, ShieldCheck, Zap, Gem, Droplet
 } from "lucide-react";
 import { fetchQuote, fetchMultipleQuotes } from "@/lib/stocks";
-import { getCommodityMeta } from "@/lib/meta";
+import { getCommoditiesMeta } from "@/lib/meta";
 import { COMMODITIES } from "@/lib/constants";
 import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { StatWidget } from "@/components/VisualCards";
 
-export const metadata: Metadata = {
-  title: `Commodities Hub — Live Gold, Silver & Crude Oil Prices | World Market Rates ${new Date().getFullYear()}`,
-  description: `Stay updated with real-time world commodity prices today ${new Date().getFullYear()}. Monitor live 24K/22K Gold, Silver, and Crude Oil (Brent/WTI) rates across Indian and international benchmarks.`,
-  keywords: [
-    // Gold
-    "gold rate today india", "gold price today", "today gold rate", "live gold price",
-    "24k gold price today", "22k gold price today", "gold price per gram india",
-    "gold rate mumbai today", "gold rate delhi today", "gold rate chennai today",
-    "gold rate bangalore today", "gold rate hyderabad today", "gold rate kolkata today",
-    "gold price in dubai today", "gold price in london today", "gold price in usa today",
-    "gold price in usd today", "gold price in aed today", "gold price in sar today",
-    "XAUUSD today", "mcx gold price today", "spot gold price",
-    "gold price this week", "gold 1 week price change", "gold weekly gain loss",
-    "gold price prediction 2025", "sovereign gold bond", "digital gold price today",
-    "gold etf india", "sone ka bhav aaj", "gold price chart",
-    // Silver
-    "silver rate today india", "silver price today", "today silver rate",
-    "silver price per gram today", "silver price per kg india",
-    "silver price in dubai today", "silver price usd today", "XAGUSD today",
-    "mcx silver price today", "silver 1 week price change", "silver weekly gain loss",
-    "chandi ka bhav aaj", "silver vs gold ratio today",
-    // Crude Oil
-    "crude oil price today india", "crude oil price today", "brent crude oil price today",
-    "wti crude oil price today", "mcx crude oil price today",
-    "oil barrel price today", "crude oil 1 week price change", "crude oil weekly change",
-    "petrol price india vs crude oil", "opec news today",
-    // Others
-    "natural gas price today india", "copper price today india",
-    "platinum price today india", "commodity market india live",
-    "mcx prices today", "commodity market live india",
-    `top 20 commodity stocks ${new Date().getFullYear()}`,
-    "commodity market news today", "precious metals price today",
-    "commodity prices this week", "commodity weekly change",
-    // GLOBAL — Gold by Country
-    "gold price in usa today", "gold price in america", "gold price new york", "comex gold today",
-    "gold price in uk today", "gold price in london", "london gold fixing today",
-    "gold price in germany", "gold price in france", "gold price in europe today",
-    "gold price in canada today", "gold price in australia today", "gold price in aud",
-    "gold price in singapore today", "gold price in sgd",
-    "gold price in hong kong today", "gold price hkd",
-    "gold price in china today", "gold price in cny", "gold price in japan today",
-    "gold price in south korea today", "gold price in malaysia today",
-    "gold price in thailand today", "gold price in indonesia today",
-    "gold price in turkey today", "gold price in iran today",
-    "gold price in pakistan today", "gold price in pkr",
-    "gold price in bangladesh today", "gold price in bdt",
-    "gold price in sri lanka", "gold price in nepal today",
-    "gold price in nigeria today", "gold price in south africa today",
-    "gold price in kenya today", "gold price in egypt today",
-    "gold price in brazil today", "gold price in argentina today",
-    "gold price in mexico today", "gold price in russia today",
-    "gold price in philippines today", "gold price in vietnam today",
-    // GLOBAL — Silver by Country
-    "silver price in usa today", "silver price usd per ounce",
-    "silver price in uk today", "silver price gbp",
-    "silver price in europe today", "silver price in germany",
-    "silver price in australia today", "silver price aud",
-    "silver price in canada today", "silver price cad",
-    "silver price in pakistan today", "silver price in uae today",
-    "silver price in saudi arabia today", "silver price in singapore today",
-    // GLOBAL — Crude Oil
-    "crude oil price usa today", "crude oil price europe today",
-    "crude oil price middle east", "saudi aramco oil price",
-    "brent crude uk price today", "wti oil price america today",
-    "crude oil price australia today", "crude oil price japan today",
-    "crude oil price china today", "crude oil price germany today",
-    "opec monthly report", "oil price russia ukraine war impact",
-    // GLOBAL — Commodity General
-    "commodity prices worldwide", "global commodity market today",
-    "international commodity prices", "commodity exchange worldwide",
-    `commodity market ${new Date().getFullYear()} world`,
-    `gold price ${new Date().getFullYear()} global`,
-  ].join(", "),
-};
+export const metadata: Metadata = getCommoditiesMeta();
+
 
 export const revalidate = 300; // Commodities update every 5 mins
 

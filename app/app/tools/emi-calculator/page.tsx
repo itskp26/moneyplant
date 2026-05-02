@@ -6,33 +6,9 @@ import {
 import EmiCalculator from "@/components/EmiCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
-export const metadata: Metadata = {
-  title: `EMI Calculator — Home, Car & Personal Loan Planner ${new Date().getFullYear()}`,
-  description: `Calculate your loan EMI instantly with our free EMI calculator today ${new Date().getFullYear()}. Plan your Home Loan, Car Loan, or Personal Loan repayments with detailed interest schedules and principal breakdowns.`,
-  keywords: [
-    "emi calculator today", "loan emi calculator live", "home loan emi calculator",
-    "car loan emi calculator", "personal loan emi planner", "education loan emi calculator",
-    "bike loan emi calculator", "mortgage emi calculator", "instant emi quote",
-    "emi calculator india", "emi calculator usa", "emi calculator uk", "emi calculator uae",
-    "emi calculator dubai", "emi calculator saudi arabia", "emi calculator canada",
-    "emi calculator australia", "sbi home loan emi calculator", "hdfc car loan emi",
-    "icici personal loan emi", "axis bank emi planner today", "bajaj finance emi calculator",
-    "loan repayment calculator global", "interest only loan calculator", "reducing balance emi",
-    "flat rate vs reducing rate calculator", "loan amortization schedule today",
-    "how to calculate emi manually", "formula for emi calculation",
-    "emi for 10 lakh home loan", "emi for 20 lakh home loan", "emi for 30 lakh home loan",
-    "emi for 50 lakh home loan", "emi for 1 crore home loan", "loan eligibility calculator",
-    "prepayment impact on emi", "part payment vs emi reduction", "loan tenure impact on interest",
-    "low interest loan emi calculator", "best banks for emi in india",
-    "foreclosure charges calculator", "lap loan against property emi",
-    "gold loan emi calculator today", "business loan emi planner",
-    "startup loan emi calculator", "msme loan emi calculator",
-    "property loan emi calculator", "emi starting from today",
-    `best loan planner ${new Date().getFullYear()}`, `top 20 emi calculators ${new Date().getFullYear()}`,
-    "emi calculator online free", "emi calculator with graph and table",
-    "emi calculator monthly reducing", "yearly vs monthly emi",
-  ].join(", "),
-};
+import { getToolsMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getToolsMeta("EMI");
 
 export default function EmiCalculatorPage() {
   return (

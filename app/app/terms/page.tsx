@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Terms of Service | MoneyPlant",
-  description: "Terms of Service for MoneyPlant.",
-};
+import { getCommonMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getCommonMeta("Terms of Service", "/terms");
 
 export default function TermsPage() {
   return (

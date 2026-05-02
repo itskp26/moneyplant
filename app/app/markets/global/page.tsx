@@ -6,83 +6,9 @@ import JsonLd, { breadcrumbSchema, faqSchema } from "@/components/JsonLd";
 
 export const revalidate = 120;
 
-export const metadata: Metadata = {
-  title: `Global Stock Markets Live Today ${new Date().getFullYear()} | S&P 500, Dow Jones, Nikkei, FTSE, Hang Seng`,
-  description:
-    `Track all global stock market indices live ${new Date().getFullYear()} — S&P 500, Dow Jones, NASDAQ, FTSE 100, DAX, CAC 40, Nikkei 225, Hang Seng, Shanghai, KOSPI, ASX 200, Tadawul, DFM and all major world indices in real time. Weekly global market performance and 52-week highs.`,
-  keywords: [
-    "global stock market today", "world stock markets live",
-    "s&p 500 today", "dow jones today", "nasdaq today",
-    "ftse 100 today", "dax today", "nikkei 225 today",
-    "hang seng today", "shanghai composite today", "kospi today",
-    "asx 200 today", "cac 40 today", "ibex 35 today",
-    "us stock market live", "european stock market live", "asian stock market live",
-    "middle east stock market", "global indices live", "world indices live",
-    "international stock market", "nyse live", "nasdaq live",
-    "london stock exchange live", "tokyo stock exchange live",
-    "hong kong stock exchange live", "global stock market india time",
-    "world market today india", "us market closing today",
-    "pre market us stock market", "after hours us stock market",
-    "vix today", "russell 2000 today", "euro stoxx 50 today",
-    "bovespa today", "tsx canada today", "tadawul today",
-    "dfm dubai today", "sensex vs dow jones", "nifty vs s&p 500",
-    // NEW: Year-dynamic
-    `global markets ${new Date().getFullYear()}`, `world stock market ${new Date().getFullYear()}`,
-    `top 20 global stocks ${new Date().getFullYear()}`, `best global indices ${new Date().getFullYear()}`,
-    `s&p 500 ${new Date().getFullYear()} performance`, `dow jones ${new Date().getFullYear()}`,
-    `nasdaq ${new Date().getFullYear()} outlook`, `nikkei 225 ${new Date().getFullYear()}`,
-    // NEW: Weekly market performance
-    "s&p 500 this week", "s&p 500 weekly gain loss", "s&p 500 1 week return",
-    "dow jones this week", "dow jones weekly performance", "dow jones 1 week change",
-    "nasdaq this week", "nasdaq weekly gain loss", "nasdaq 1 week return",
-    "ftse 100 this week", "ftse 100 weekly change", "nikkei this week",
-    "global market weekly summary", "world market this week",
-    "best performing market this week", "worst performing market this week",
-    "global stocks 52 week high", "us stocks 52 week high today",
-    // NEW: US stocks
-    "apple share price today", "microsoft share price today", "nvidia share price today",
-    "amazon share price today", "tesla share price today", "google share price today",
-    "meta share price today", "us stock market india impact",
-    // NEW: Market hours
-    "us market open time india", "us market close time india",
-    "london market open time india", "tokyo market open time india",
-    "what time does us market open india", "global market hours ist",
-    // NEW: Global macro
-    "fed rate decision today", "ecb rate decision", "bank of england news",
-    "dollar index dxy today", "us treasury yield today", "10 year bond yield today",
-    "global inflation today", "world recession news", "emerging markets news today",
-    // COUNTRY-LEVEL STOCK MARKET SEARCHES
-    "us stock market today", "uk stock market today", "japan stock market today",
-    "china stock market today", "germany stock market today", "france stock market today",
-    "canada stock market today", "australia stock market today", "south korea stock market today",
-    "hong kong stock market today", "singapore stock market today", "india stock market today",
-    "brazil stock market today", "saudi arabia stock market today", "uae stock market today",
-    "malaysia stock market today", "indonesia stock market today", "thailand stock market today",
-    "philippines stock market today", "vietnam stock market today", "turkey stock market today",
-    "nigeria stock market today", "south africa stock market today", "egypt stock market today",
-    "mexico stock market today", "argentina stock market today", "russia stock market today",
-    "pakistan stock market today", "bangladesh stock market today", "sri lanka stock market today",
-    "new zealand stock market today", "taiwan stock market today", "israel stock market today",
-    // SEARCH PATTERNS BY COUNTRY
-    "best stocks to buy in usa today", "best stocks to buy in uk today",
-    "best stocks to buy in australia today", "best stocks to buy in canada today",
-    "which stocks are rising today usa", "which stocks are rising today uk",
-    "sp500 stocks up today", "ftse 100 stocks up today", "nikkei stocks up today",
-    "hang seng stocks up today", "dax stocks up today",
-    // GLOBAL COMPARISONS
-    "best stock market in the world today", "top performing country stock market today",
-    "worst performing stock market today", "global market winners losers today",
-    "stock market open now world", "which country market is open now",
-    `best stock market ${new Date().getFullYear()} country`,
-    `highest return stock market ${new Date().getFullYear()} world`,
-  ].join(", "),
-  openGraph: {
-    title: `Global Stock Markets Live ${new Date().getFullYear()} | S&P 500, Dow, FTSE, Nikkei, Hang Seng`,
-    description: `All global stock market indices live ${new Date().getFullYear()} — USA, Europe, Asia, Middle East & more.`,
-    url: "https://moneyplant24.com/markets/global",
-  },
-  alternates: { canonical: "https://moneyplant24.com/markets/global" },
-};
+import { getMarketsMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getMarketsMeta("global");
 
 const FLAG: Record<string, string> = {
   USA: "🇺🇸", UK: "🇬🇧", Germany: "🇩🇪", France: "🇫🇷", Spain: "🇪🇸",

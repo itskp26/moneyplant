@@ -6,35 +6,9 @@ import {
 import SipCalculator from "@/components/SipCalculator";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 
-export const metadata: Metadata = {
-  title: `SIP Calculator — Estimate Mutual Fund Returns ${new Date().getFullYear()}`,
-  description: `Use our free SIP calculator to estimate the future value of your mutual fund investments today ${new Date().getFullYear()}. Plan your retirement, child's education, and long-term wealth wealth with precision.`,
-  keywords: [
-    "sip calculator today", "mutual fund sip calculator", "sip returns estimator live",
-    "wealth builder calculator", "investment calculator india", "monthly sip planner",
-    "sip calculator online free", "best sip calculator 2025", "sip maturity amount calculator",
-    "how much wealth will i have after 10 years", "sip calculator 1000 per month",
-    "sip calculator 5000 per month", "sip calculator 10000 per month",
-    "retirement planner sip", "child future planner sip", "higher education sip planner",
-    "marriage fund sip calculator", "house purchase sip planner today",
-    "sip returns 12 percent", "sip returns 15 percent", "sip returns 18 percent",
-    "sip vs fd returns calculator", "sip vs rd returns", "sip vs gold returns",
-    "sip vs real estate returns", "stock market sip calculator", "bitcoin sip calculator",
-    "gold sip calculator india", "ppf vs sip calculator", "nps vs sip returns",
-    "elss sip tax saving calculator", "sip calculator for beginners",
-    "compound interest sip calculator", "inflation adjusted sip calculator",
-    "step up sip calculator", "sip step up yearly 10 percent", "top up sip calculator",
-    "quatrterly sip calculator", "weekly sip calculator today",
-    "daily sip calculator returns", "best mutual funds for sip 2025",
-    "top 20 sip stocks india", "index fund sip calculator today",
-    "nifty 50 sip calculator", "sensex sip calculator live",
-    "sip calculator usa", "sip calculator uk", "sip calculator uae dubai",
-    "sip calculator australia", "sip calculator canada", "global mutual fund planner",
-    "wealth tracker moneyplant", "sip profit vs investment calculator",
-    `best wealth tools ${new Date().getFullYear()}`, `top 20 sip apps ${new Date().getFullYear()}`,
-    "sip return chart nse bse", "historical sip returns data",
-  ].join(", "),
-};
+import { getToolsMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getToolsMeta("SIP");
 
 export default function SipCalculatorPage() {
   return (

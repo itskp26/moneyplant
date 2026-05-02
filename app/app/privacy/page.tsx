@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | MoneyPlant",
-  description: "Privacy Policy for MoneyPlant. Learn how we handle and protect your data.",
-};
+import { getCommonMeta } from "@/lib/meta";
+
+export const metadata: Metadata = getCommonMeta("Privacy Policy", "/privacy");
 
 export default function PrivacyPage() {
   return (

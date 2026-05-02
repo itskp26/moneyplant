@@ -6,76 +6,13 @@ import {
 } from "lucide-react";
 import { fetchMultipleQuotes, fetchQuote } from "@/lib/stocks";
 import { INDICES, NIFTY50_STOCKS } from "@/lib/constants";
-import { getHomeMeta } from "@/lib/meta"; // or create a specfic one
+import { getStocksMeta } from "@/lib/meta";
 import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { WideStatCard, GroupSidebar } from "@/components/VisualCards";
 
-export const metadata: Metadata = {
-  title: `Stocks Hub — Indian Share Market Live Today | Nifty 50, Sensex & All NSE/BSE Sectors ${new Date().getFullYear()}`,
-  description: `Comprehensive Indian stock market terminal today ${new Date().getFullYear()}. Track live prices for Nifty 50, all 13+ sectors, and 500+ top NSE stocks. Monitor world market impact on Indian share prices.`,
-  keywords: [
-    "indian stock market today", "nse live today", "bse share price today",
-    "nifty 50 stocks live", "top stocks india today", "share market dashboard",
-    "live stock prices india", "stock screener india",
-    // 52-week
-    "52 week high stocks nse today", "52 week high stocks bse today",
-    "52 week high stocks list", "stocks hitting 52 week high today",
-    "52 week low stocks nse", "52 week low stocks today",
-    "breakout stocks today india", "stocks at all time high today",
-    // Gainers/losers
-    "top gainers today nse", "top gainers today bse", "top losers today nse",
-    "top losers today bse", "most active stocks nse today",
-    `top 20 gainers today ${new Date().getFullYear()}`,
-    `top 20 losers today ${new Date().getFullYear()}`,
-    `top 20 stocks india ${new Date().getFullYear()}`,
-    `best 20 stocks to buy ${new Date().getFullYear()}`,
-    // Time-period
-    "stocks up this week india", "stocks down this week india",
-    "top performing stocks this week nse", "weekly top gainers india",
-    "stocks 1 week performance", "best stocks last 7 days nse",
-    "monthly top gainers india", "stocks 1 month return nse",
-    // Category
-    "large cap stocks india", "mid cap stocks india", "small cap stocks india",
-    "blue chip stocks india", "penny stocks india", "multibagger stocks india",
-    "dividend stocks india", "growth stocks india", "value stocks india",
-    "intraday stocks today", "swing trade stocks today", "f&o stocks today",
-    "tech stocks india today", "it stocks nse today", "pharma stocks india",
-    "banking stocks today", "fmcg stocks today", "auto stocks india today",
-    "psu stocks today", "defence stocks india", "ev stocks india",
-    "pre market gainers india", "after hours movers india",
-    "bulk deals nse today", "block deals bse today",
-    "upper circuit stocks today", "lower circuit stocks today",
-    "operator stocks today india", "high delivery stocks today",
-    `best stocks to invest ${new Date().getFullYear()} india`,
-    `stocks to watch ${new Date().getFullYear()}`,
-    "nifty 50 performance today", "sensex today live",
-    // GLOBAL — USA Stocks
-    "us stocks today", "apple share price today", "microsoft share price today",
-    "nvidia share price today", "amazon share price today", "tesla share price today",
-    "meta share price today", "google share price today", "berkshire hathaway today",
-    "s&p 500 stocks today", "nasdaq 100 stocks today", "dow jones stocks today",
-    "us tech stocks today", "us bank stocks today", "us pharma stocks today",
-    // GLOBAL — UK Stocks
-    "uk stocks today", "ftse 100 stocks list", "london listed stocks today",
-    "bp share price today", "shell share price today", "hsbc share price today",
-    "barclays share price today", "astrazeneca share price today",
-    // GLOBAL — Europe Stocks
-    "european stocks today", "german stocks today", "dax stocks list",
-    "siemens share price today", "volkswagen share price today",
-    "lvmh share price today", "nestle share price today",
-    // GLOBAL — Asia Stocks
-    "japanese stocks today", "nikkei stocks list", "toyota share price today",
-    "sony share price today", "hong kong stocks today", "hang seng stocks",
-    "alibaba share price today", "tencent share price today", "samsung share price today",
-    "china stocks today", "korea stocks today", "singapore stocks today",
-    // GLOBAL — General
-    "global top stocks today", "world best performing stocks today",
-    "international stock picks today", "foreign stocks to buy today",
-    `top 20 global stocks ${new Date().getFullYear()}`,
-    `best stocks worldwide ${new Date().getFullYear()}`,
-  ].join(", "),
-};
+export const metadata: Metadata = getStocksMeta();
+
 
 export const revalidate = 60;
 
