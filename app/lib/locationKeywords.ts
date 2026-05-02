@@ -11,111 +11,58 @@ function getGlobalLocations(): string[] {
 
   const locations = new Set<string>();
 
-  // 1. ALL Countries (e.g., USA, India, Japan, UK)
+  // 1. PRIORITY GLOBAL FINANCIAL HUBS (Added first to ensure they are never sliced out)
+  const priorityGlobal = [
+    "london", "new york", "dubai", "tokyo", "paris", "frankfurt", "hong kong", "sydney",
+    "singapore", "shanghai", "beijing", "toronto", "zurich", "san francisco", "chicago",
+    "boston", "seoul", "amsterdam", "los angeles", "geneva", "washington dc", "riyadh",
+    "doha", "abu dhabi", "kuwait city", "manama", "muscat", "jakarta", "kuala lumpur",
+    "bangkok", "manila", "ho chi minh city", "hanoi", "taipei", "melbourne", "auckland",
+    "sao paulo", "buenos aires", "mexico city", "santiago", "bogota", "lima", "cape town",
+    "johannesburg", "cairo", "nairobi", "lagos", "casablanca", "tel aviv", "istanbul",
+    "moscow", "warsaw", "prague", "budapest", "vienna", "milan", "rome", "madrid",
+    "barcelona", "lisbon", "dublin", "stockholm", "copenhagen", "oslo", "helsinki",
+    "brussels", "luxembourg", "munich", "berlin", "hamburg", "edinburgh"
+  ];
+  priorityGlobal.forEach(c => locations.add(c.toLowerCase()));
+
+  // 2. PRIORITY INDIAN CITIES (Added next)
+  const priorityIndian = ["mumbai", "delhi", "bangalore", "hyderabad", "ahmedabad", "chennai", "kolkata", "surat", "pune", "jaipur"];
+  priorityIndian.forEach(c => locations.add(c.toLowerCase()));
+
+  // 3. ALL Countries
   const allCountries = Country.getAllCountries();
   for (const c of allCountries) {
     locations.add(c.name.toLowerCase());
   }
 
-  // 2. All States in India
+  // 4. All States in India
   const indiaStates = State.getStatesOfCountry("IN");
   for (const s of indiaStates) {
     locations.add(s.name.toLowerCase());
   }
 
-  // 3. Top Major Indian Cities (from the user's previous lists and general top)
-  const topIndianCities = [
-    "mumbai", "delhi", "bangalore", "hyderabad", "ahmedabad", "chennai", "kolkata",
-    "surat", "pune", "jaipur", "lucknow", "kanpur", "nagpur", "indore", "thane",
-    "bhopal", "visakhapatnam", "pimpri-chinchwad", "patna", "vadodara", "ghaziabad",
-    "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot", "kalyan-dombivli",
-    "vasai-virar", "varanasi", "srinagar", "aurangabad", "dhanbad", "amritsar",
-    "navi mumbai", "allahabad", "howrah", "ranchi", "gwalior", "jabalpur", "coimbatore",
-    "vijayawada", "jodhpur", "madurai", "raipur", "kota", "guwahati", "chandigarh",
-    "solapur", "hubli-dharwad", "bareilly", "moradabad", "mysore", "gurgaon", "aligarh",
-    "jalandhar", "tiruchirappalli", "bhubaneswar", "salem", "mira-bhayandar", "warangal",
-    "thiruvananthapuram", "guntur", "bhiwandi", "saharanpur", "gorakhpur", "bikaner",
-    "amravati", "noida", "jamshedpur", "bhilai", "cuttack", "firozabad", "kochi",
-    "bhavnagar", "dehradun", "durgapur", "asansol", "nanded", "kolhapur", "ajmer",
-    "gulbarga", "jamnagar", "ujjain", "loni", "siliguri", "jhansi", "ulhasnagar",
-    "nellore", "jammu", "sangli-miraj", "belgaum", "mangalore", "ambattur", "tirunelveli",
-    "malegaon", "gaya", "jalgaon", "udaipur", "maheshtala", "davangere", "kozhikode",
-    "kurnool", "rajpur sonarpur", "rajahmundry", "bokaro", "south dumdum", "bellary",
-    "patiala", "gopalpur", "agartala", "bhagalpur", "muzaffarnagar", "bhatpara",
-    "panihati", "latur", "dhule", "tirupati", "rohtak", "korba", "bhilwara", "berhampur",
-    "muzaffarpur", "ahmednagar", "mathura", "kollam", "avadi", "kadapa", "kamarhati",
-    "sambalpur", "bilaspur", "shahjahanpur", "satara", "bijapur", "rampur", "shivamogga",
-    "chandrapur", "junagadh", "thrissur", "alwar", "bardhaman", "kulti", "kakinada",
-    "nizamabad", "parbhani", "tumkur", "khammam", "uzhavarkarai", "bihar sharif",
-    "panipat", "darbhanga", "bally", "aizawl", "dewas", "ichalkaranji", "karnal",
-    "bathinda", "jalna", "eluru", "barasat", "kirari suleman nagar", "purnia",
-    "satna", "mau", "sonipat", "farrukhabad", "sagar", "rourkela", "durg", "imphal",
-    "ratlam", "hapur", "arrah", "karimnagar", "anantapur", "etawah", "ambernath",
-    "bharatpur", "begusarai", "new delhi", "gandhinagar", "barmer", "sikar", "cleveland",
-    "pali", "vapi", "navsari", "morbi", "bhuj", "gandhidham", "porbandar", "godhra",
-    "bharuch", "anand", "nadiad", "surendranagar", "valsad"
+  // 5. EXHAUSTIVE INDIAN CITIES (Full List Restored)
+  const exhaustiveIndianCities = [
+    "lucknow", "kanpur", "nagpur", "indore", "thane", "bhopal", "visakhapatnam", "pimpri-chinchwad", "patna", "vadodara", "ghaziabad",
+    "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot", "kalyan-dombivli", "vasai-virar", "varanasi", "srinagar", "aurangabad", 
+    "dhanbad", "amritsar", "navi mumbai", "allahabad", "howrah", "ranchi", "gwalior", "jabalpur", "coimbatore", "vijayawada", "jodhpur", 
+    "madurai", "raipur", "kota", "guwahati", "chandigarh", "solapur", "hubli-dharwad", "bareilly", "moradabad", "mysore", "gurgaon", 
+    "aligarh", "jalandhar", "tiruchirappalli", "bhubaneswar", "salem", "mira-bhayandar", "warangal", "thiruvananthapuram", "guntur", 
+    "bhiwandi", "saharanpur", "gorakhpur", "bikaner", "amravati", "noida", "jamshedpur", "bhilai", "cuttack", "firozabad", "kochi",
+    "bhavnagar", "dehradun", "durgapur", "asansol", "nanded", "kolhapur", "ajmer", "gulbarga", "jamnagar", "ujjain", "loni", "siliguri", 
+    "jhansi", "ulhasnagar", "nellore", "jammu", "sangli-miraj", "belgaum", "mangalore", "ambattur", "tirunelveli", "malegaon", "gaya", 
+    "jalgaon", "udaipur", "maheshtala", "davangere", "kozhikode", "kurnool", "rajpur sonarpur", "rajahmundry", "bokaro", "south dumdum", 
+    "bellary", "patiala", "gopalpur", "agartala", "bhagalpur", "muzaffarnagar", "bhatpara", "panihati", "latur", "dhule", "tirupati", 
+    "rohtak", "korba", "bhilwara", "berhampur", "muzaffarpur", "ahmednagar", "mathura", "kollam", "avadi", "kadapa", "kamarhati",
+    "sambalpur", "bilaspur", "shahjahanpur", "satara", "bijapur", "rampur", "shivamogga", "chandrapur", "junagadh", "thrissur", "alwar", 
+    "bardhaman", "kulti", "kakinada", "nizamabad", "parbhani", "tumkur", "khammam", "uzhavarkarai", "bihar sharif", "panipat", "darbhanga", 
+    "bally", "aizawl", "dewas", "ichalkaranji", "karnal", "bathinda", "jalna", "eluru", "barasat", "kirari suleman nagar", "purnia",
+    "satna", "mau", "sonipat", "farrukhabad", "sagar", "rourkela", "durg", "imphal", "ratlam", "hapur", "arrah", "karimnagar", "anantapur", 
+    "etawah", "ambernath", "bharatpur", "begusarai", "new delhi", "gandhinagar", "barmer", "sikar", "cleveland", "pali", "vapi", "navsari", 
+    "morbi", "bhuj", "gandhidham", "porbandar", "godhra", "bharuch", "anand", "nadiad", "surendranagar", "valsad"
   ];
-  for (const city of topIndianCities) {
-    locations.add(city.toLowerCase());
-  }
-
-  // 4. Structured Global Financial Hubs & Major Cities
-  const GLOBAL_CITY_MAP: Record<string, string[]> = {
-    "United Kingdom": [
-      "london", "birmingham", "manchester", "glasgow", "liverpool", "leeds", "sheffield", "edinburgh", "bristol", "leicester",
-      "coventry", "belfast", "cardiff", "nottingham", "newcastle", "hull", "plymouth", "stoke-on-trent", "wolverhampton", "derby"
-    ],
-    "United States": [
-      "new york", "los angeles", "chicago", "houston", "phoenix", "philadelphia", "san antonio", "san diego", "dallas", "san jose",
-      "austin", "jacksonville", "fort worth", "columbus", "charlotte", "san francisco", "indianapolis", "seattle", "denver", "washington dc",
-      "boston", "nashville", "el paso", "detroit", "portland", "las vegas", "oklahoma city", "memphis", "louisville", "baltimore",
-      "milwaukee", "albuquerque", "tucson", "fresno", "sacramento", "mesa", "atlanta", "kansas city", "colorado springs", "miami"
-    ],
-    "United Arab Emirates": ["dubai", "abu dhabi", "sharjah", "ajman", "al ain"],
-    "Saudi Arabia": ["riyadh", "jeddah", "mecca", "medina", "dammam"],
-    "Canada": ["toronto", "vancouver", "montreal", "calgary", "ottawa", "edmonton", "winnipeg", "quebec city"],
-    "Australia": ["sydney", "melbourne", "perth", "brisbane", "adelaide", "gold coast", "canberra"],
-    "Germany": ["berlin", "munich", "hamburg", "frankfurt", "stuttgart", "dusseldorf", "leipzig"],
-    "France": ["paris", "marseille", "lyon", "toulouse", "nice", "nantes", "strasbourg"],
-    "Japan": ["tokyo", "osaka", "yokohama", "nagoya", "sapporo", "fukuoka", "kobe"],
-    "China": ["shanghai", "beijing", "guangzhou", "shenzhen", "chengdu", "hangzhou", "wuhan", "tianjin"],
-    "Singapore": ["singapore"],
-    "Hong Kong": ["hong kong"],
-    "South Korea": ["seoul", "busan", "incheon", "daegu"],
-    "Malaysia": ["kuala lumpur", "georgetown", "ipoh", "johor bahru"],
-    "Indonesia": ["jakarta", "surabaya", "bandung", "medan"],
-    "Philippines": ["manila", "quezon city", "davao city", "cebu city"],
-    "Thailand": ["bangkok", "nonthaburi", "nakhon ratchasima"],
-    "Vietnam": ["ho chi minh city", "hanoi", "da nang"],
-    "Brazil": ["sao paulo", "rio de janeiro", "brasilia", "salvador", "fortaleza"],
-    "Russia": ["moscow", "saint petersburg", "novosibirsk", "yekaterinburg"],
-    "Italy": ["rome", "milan", "naples", "turin", "palermo", "florence"],
-    "Spain": ["madrid", "barcelona", "valencia", "seville", "zaragoza"],
-    "South Africa": ["johannesburg", "cape town", "durban", "pretoria"],
-    "Egypt": ["cairo", "alexandria", "giza"],
-    "Qatar": ["doha"],
-    "Kuwait": ["kuwait city"],
-    "Oman": ["muscat"],
-    "Ireland": ["dublin", "cork", "galway"],
-    "Netherlands": ["amsterdam", "rotterdam", "the hague"],
-    "Switzerland": ["zurich", "geneva", "basel"],
-    "Sweden": ["stockholm", "gothenburg", "malmo"],
-    "Norway": ["oslo", "bergen"],
-    "Denmark": ["copenhagen", "aarhus"],
-    "Finland": ["helsinki"],
-    "Belgium": ["brussels", "antwerp"],
-    "Austria": ["vienna", "salzburg"],
-    "Portugal": ["lisbon", "porto"],
-    "Poland": ["warsaw", "krakow", "wroclaw"],
-    "Turkey": ["istanbul", "ankara", "izmir", "antalya"],
-    "Mexico": ["mexico city", "guadalajara", "monterrey", "cancun"],
-    "Argentina": ["buenos aires", "cordoba", "rosario"],
-  };
-
-  // Add all cities from the map
-  Object.values(GLOBAL_CITY_MAP).flat().forEach(city => {
-    locations.add(city.toLowerCase());
-  });
+  exhaustiveIndianCities.forEach(c => locations.add(c.toLowerCase()));
 
   // 5. Broad Global Regions (like 'europe', 'asia')
   const regions = ["europe", "asia", "africa", "north america", "south america", "middle east"];
@@ -225,15 +172,14 @@ const TEMPLATES = [
  * Builds LLM-style long-tail keywords for an asset combined with global locations.
  * @param baseAsset The core asset name (e.g. "bitcoin", "gold", "usd to inr")
  */
-export function buildGlobalSeoKeywords(baseAsset: string): string[] {
-  const locations = getGlobalLocations();
+export function buildGlobalSeoKeywords(baseAsset: string, locationCount: number = 300, templateCount: number = 5): string[] {
+  const locations = getGlobalLocations().slice(0, locationCount);
+  const templates = TEMPLATES.slice(0, templateCount);
   const keywords: string[] = [];
-
   const asset = baseAsset.toLowerCase();
 
-  // Loop through all locations and apply the LLM-style templates
   for (const location of locations) {
-    for (const template of TEMPLATES) {
+    for (const template of templates) {
       keywords.push(template.replace(/{asset}/g, asset).replace(/{location}/g, location));
     }
   }
@@ -243,18 +189,38 @@ export function buildGlobalSeoKeywords(baseAsset: string): string[] {
 
 /**
  * Combines existing keywords with the newly generated location-based keywords.
- * Assures no loss of the old keywords.
+ * Uses a tiered approach to prevent 'Single item size exceeds maxSize' errors while maintaining high reach.
  */
 export function mixWithGlobalKeywords(existing: string[], assetNames: string[]): string {
   let combined = [...existing];
   
-  for (const asset of assetNames) {
-    const globalKeys = buildGlobalSeoKeywords(asset);
-    combined = combined.concat(globalKeys);
+  // TIER 1: Top 5 assets get global coverage (All locations, Top 8 templates)
+  // This produces 5 * 300 * 8 = 12,000 keywords (~480KB)
+  const tier1 = assetNames.slice(0, 5);
+  for (const asset of tier1) {
+    combined = combined.concat(buildGlobalSeoKeywords(asset, 300, 8));
   }
 
-  // Remove duplicates and join into a comma-separated string for meta.ts
-  return unique(combined).join(", ");
+  // TIER 2: Next 10 assets get moderate coverage (Top 50 locations, Top 3 templates)
+  // This produces 10 * 50 * 3 = 1,500 keywords (~60KB)
+  const tier2 = assetNames.slice(5, 15);
+  for (const asset of tier2) {
+    combined = combined.concat(buildGlobalSeoKeywords(asset, 50, 3));
+  }
+
+  // TIER 3: Remaining assets get basic coverage (Just name and price)
+  const tier3 = assetNames.slice(15);
+  for (const asset of tier3) {
+    combined.push(asset, `${asset} price`, `${asset} live`, `${asset} rate today`);
+  }
+
+  // Final Safeguard: Remove duplicates and join. 
+  // We cap at 800,000 chars to ensure the build never fails again.
+  const joined = unique(combined).join(", ");
+  if (joined.length > 800000) {
+    return joined.substring(0, 800000);
+  }
+  return joined;
 }
 
 export const GLOBAL_MARKET_DATA = [
