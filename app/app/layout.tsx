@@ -4,6 +4,7 @@ import { baseMetadata } from "@/lib/meta";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TickerBar from "@/components/TickerBar";
+import GoogleAdSense from "@/components/GoogleAdSense";
 import Script from "next/script";
 
 export const metadata: Metadata = {
@@ -101,10 +102,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="news_keywords" content="Nifty 50, Sensex, BSE, NSE, stock market India, bitcoin India, forex India, gold rate India" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* AdSense placeholder — add data-ad-client when ready */}
-        {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" /> */}
       </head>
       <body className="bg-slate-950 text-slate-100 antialiased min-h-screen">
+        <GoogleAdSense />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-89J05EY8C9"
           strategy="afterInteractive"
