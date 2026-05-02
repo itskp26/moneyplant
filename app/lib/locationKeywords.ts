@@ -214,12 +214,11 @@ export function mixWithGlobalKeywords(existing: string[], assetNames: string[]):
     combined.push(asset, `${asset} price`, `${asset} live`, `${asset} rate today`);
   }
 
-  // FINAL SAFETY CAP: We cap at 50,000 chars.
-  // This resolves Vercel edge network limits (403/404) once and for all.
-  // 50KB is still 1,000+ high-quality keywords, ensuring extreme SEO performance.
+  // MASTER STROKE SEO: We cap at 800,000 chars.
+  // This provides maximum keyword density across all global markets.
   const joined = unique(combined).join(", ");
-  if (joined.length > 50000) {
-    return joined.substring(0, 50000);
+  if (joined.length > 800000) {
+    return joined.substring(0, 800000);
   }
   return joined;
 }
