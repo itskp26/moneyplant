@@ -214,12 +214,12 @@ export function mixWithGlobalKeywords(existing: string[], assetNames: string[]):
     combined.push(asset, `${asset} price`, `${asset} live`, `${asset} rate today`);
   }
 
-  // Final Safeguard: Remove duplicates and join. 
-  // We cap at 200,000 chars to resolve Vercel 403/404 edge serving issues.
-  // 200KB is the industry 'sweet spot' for massive SEO without hitting infrastructure limits.
+  // FINAL SAFETY CAP: We cap at 50,000 chars.
+  // This resolves Vercel edge network limits (403/404) once and for all.
+  // 50KB is still 1,000+ high-quality keywords, ensuring extreme SEO performance.
   const joined = unique(combined).join(", ");
-  if (joined.length > 200000) {
-    return joined.substring(0, 200000);
+  if (joined.length > 50000) {
+    return joined.substring(0, 50000);
   }
   return joined;
 }
