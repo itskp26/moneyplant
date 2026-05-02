@@ -215,11 +215,11 @@ export function mixWithGlobalKeywords(existing: string[], assetNames: string[]):
   }
 
   // Final Safeguard: Remove duplicates and join. 
-  // We cap at 400,000 chars to ensure the build and runtime (npm run start) never fails.
-  // 400KB is still massive for SEO (approx 8,000 - 10,000 keywords per page).
+  // We cap at 200,000 chars to resolve Vercel 403/404 edge serving issues.
+  // 200KB is the industry 'sweet spot' for massive SEO without hitting infrastructure limits.
   const joined = unique(combined).join(", ");
-  if (joined.length > 400000) {
-    return joined.substring(0, 400000);
+  if (joined.length > 200000) {
+    return joined.substring(0, 200000);
   }
   return joined;
 }
