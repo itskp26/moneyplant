@@ -7,6 +7,7 @@ import {
 import { fetchAllForexRates } from "@/lib/forex";
 import ForexTable from "@/components/ForexTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
+import { getForexMeta } from "@/lib/meta";
 
 export const metadata: Metadata = getForexMeta();
 
