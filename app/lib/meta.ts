@@ -38,6 +38,9 @@ export const baseMetadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
     locale: "en_IN",
     images: [
       {
@@ -117,9 +120,10 @@ export function getHomeMeta(): Metadata {
       title,
       description,
       url: SITE_URL,
+      type: "website",
       images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "MoneyPlant Live Finance India" }],
     },
-    twitter: { title, description, images: [OG_IMAGE] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: SITE_URL },
   };
 }
@@ -136,6 +140,7 @@ export function getStockMeta(symbol: string, name: string, price?: string, chang
     keywords,
     openGraph: {
       title, description, url,
+      type: "article",
       images: [{ url: `${SITE_URL}/og/stocks/${symbol.toLowerCase()}.png`, width: 1200, height: 630, alt: `${name} Share Price Today` }],
     },
     twitter: { title, description },
@@ -234,8 +239,8 @@ export function getIndexMeta(
     const url = `${SITE_URL}/indices`;
     return {
       title, description, keywords,
-      openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Indices Hub" }] },
-      twitter: { title, description },
+      openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Indices Hub" }] },
+      twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
       alternates: { canonical: url },
     };
   }
@@ -246,8 +251,8 @@ export function getIndexMeta(
   const url = `${SITE_URL}/indices/${indexId}`;
   return {
     title, description, keywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${indexName} Live Today ${y()}` }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "article", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${indexName} Live Today ${y()}` }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -324,8 +329,8 @@ export function getCryptoMeta(
     const url = `${SITE_URL}/crypto`;
     return {
       title, description, keywords,
-      openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Crypto Hub" }] },
-      twitter: { title, description },
+      openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Crypto Hub" }] },
+      twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
       alternates: { canonical: url },
     };
   }
@@ -337,8 +342,8 @@ export function getCryptoMeta(
   const url = `${SITE_URL}/crypto/${coinId}`;
   return {
     title, description, keywords: finalKeywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${coinName} Price India Today ${y()}` }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "article", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${coinName} Price India Today ${y()}` }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -432,8 +437,8 @@ export function getForexMeta(
     const url = `${SITE_URL}/forex`;
     return {
       title, description, keywords,
-      openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Forex Hub" }] },
-      twitter: { title, description },
+      openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Forex Hub" }] },
+      twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
       alternates: { canonical: url },
     };
   }
@@ -445,8 +450,8 @@ export function getForexMeta(
   const url = `${SITE_URL}/forex/${pairId}`;
   return {
     title, description, keywords: finalKeywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${base} to ${quote} Exchange Rate ${y()}` }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "article", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${base} to ${quote} Exchange Rate ${y()}` }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -530,8 +535,8 @@ export function getCommodityMeta(
     title: data.title,
     description: data.desc,
     keywords: finalKeywords,
-    openGraph: { title: data.title, description: data.desc, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: data.title }] },
-    twitter: { title: data.title, description: data.desc },
+    openGraph: { title: data.title, description: data.desc, url, type: "article", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: data.title }] },
+    twitter: { card: "summary_large_image", title: data.title, description: data.desc, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -606,8 +611,8 @@ export function getCommoditiesMeta(): Metadata {
   const url = `${SITE_URL}/commodities`;
   return {
     title, description, keywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Commodities Hub" }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global Commodities Hub" }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -629,8 +634,8 @@ export function getStocksMeta(): Metadata {
   const url = `${SITE_URL}/stocks`;
   return {
     title, description, keywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Indian Stocks Hub" }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Indian Stocks Hub" }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -649,8 +654,8 @@ export function getIpoMeta(): Metadata {
   const url = `${SITE_URL}/ipo`;
   return {
     title, description, keywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `IPO India ${y()}` }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `IPO India ${y()}` }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -680,8 +685,8 @@ export function getTopStocksMeta(type: "gainers" | "losers" | "most-active"): Me
     title: d.title,
     description: d.description,
     keywords: d.keywords,
-    openGraph: { title: d.title, description: d.description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: d.title }] },
-    twitter: { title: d.title, description: d.description },
+    openGraph: { title: d.title, description: d.description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: d.title }] },
+    twitter: { card: "summary_large_image", title: d.title, description: d.description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -704,8 +709,8 @@ export function getNewsMeta(category?: string): Metadata {
   const url = `${SITE_URL}/news${category && category !== "All" ? `?cat=${category}` : ""}`;
   return {
     title, description, keywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global News Hub" }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Global News Hub" }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -776,8 +781,8 @@ export function getMarketsMeta(type: "global" | "india" | "all"): Metadata {
   const url = `${SITE_URL}/markets${type !== "all" ? `/${type}` : ""}`;
   return {
     title, description, keywords,
-    openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Market Dashboard" }] },
-    twitter: { title, description },
+    openGraph: { title, description, url, type: "website", images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Market Dashboard" }] },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
