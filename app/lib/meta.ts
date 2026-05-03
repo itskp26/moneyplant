@@ -141,7 +141,7 @@ export function getStockMeta(symbol: string, name: string, price?: string, chang
     openGraph: {
       title, description, url,
       type: "article",
-      images: [{ url: `${SITE_URL}/og/stocks/${symbol.toLowerCase()}.png`, width: 1200, height: 630, alt: `${name} Share Price Today` }],
+      images: [{ url: `/og/stocks/${symbol.toLowerCase()}.png`, width: 1200, height: 630, alt: `${name} Share Price Today` }],
     },
     twitter: { title, description },
     alternates: { canonical: url },

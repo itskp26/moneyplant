@@ -3,7 +3,7 @@ export const SITE_URL = "https://moneyplant24.com";
 export const SITE_DESCRIPTION =
   "MoneyPlant — India's premier live finance portal. Track Nifty 50, Sensex, BSE/NSE stocks, crypto prices in INR, forex rates, gold & silver prices, IPOs, mutual funds and global markets in real time.";
 export const SITE_TWITTER = "@moneyplantindia";
-export const OG_IMAGE = `${SITE_URL}/og/default.png`;
+export const OG_IMAGE = "/og/default.png";
 
 // ─── ADANI GROUP (14+ companies) ─────────────────────────────────────────────
 export const ADANI_STOCKS = [
