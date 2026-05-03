@@ -14,6 +14,7 @@ function yn() { return new Date().getFullYear() + 1; }     // e.g. 2026
 
 
 // ─── SHARED BASE METADATA ─────────────────────────────────────────────────────
+
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
@@ -141,9 +142,9 @@ export function getStockMeta(symbol: string, name: string, price?: string, chang
     openGraph: {
       title, description, url,
       type: "article",
-      images: [{ url: `/og/stocks/${symbol.toLowerCase()}.png`, width: 1200, height: 630, alt: `${name} Share Price Today` }],
+      images: [{ url: `${SITE_URL}/og/stocks/${symbol.toLowerCase()}.png`, width: 1200, height: 630, alt: `${name} Share Price Today` }],
     },
-    twitter: { title, description },
+    twitter: { card: "summary_large_image", title, description, images: [`${SITE_URL}/og/stocks/${symbol.toLowerCase()}.png`] },
     alternates: { canonical: url },
   };
 }
@@ -173,7 +174,7 @@ export function getConglomerateMeta(
   return {
     title, description, keywords,
     openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${groupName} Stocks ${y()}` }] },
-    twitter: { title, description },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -918,7 +919,7 @@ export function getToolsMeta(toolName?: string): Metadata {
   return {
     title, description, keywords,
     openGraph: { title, description, url, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: toolName || "Financial Tools" }] },
-    twitter: { title, description },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: url },
   };
 }
@@ -930,7 +931,7 @@ export function getCommonMeta(pageName: string, path: string): Metadata {
   return {
     title, description,
     openGraph: { title, description, url: `${SITE_URL}${path}` },
-    twitter: { title, description },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: `${SITE_URL}${path}` },
   };
 }
