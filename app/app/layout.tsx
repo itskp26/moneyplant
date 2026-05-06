@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import TickerBar from "@/components/TickerBar";
 import GoogleAdSense from "@/components/GoogleAdSense";
 import Script from "next/script";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   ...baseMetadata,
@@ -66,10 +67,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f172a",
+  themeColor: "#020817",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

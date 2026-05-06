@@ -356,6 +356,7 @@ export function buildDynamicHomeMetaKeywords(y: string, yn: string): string[] {
 
   // GROUP 1: India-centric stock market queries
   const indiaStockBases = [
+    "MoneyPlant24", "MoneyPlant", "MoneyPlant Finance", "Money Plant India", "MoneyPlant App",
     "nifty 50 today", "nifty 50 live price", "nifty today", "nifty 50 price today",
     "sensex today", "sensex live", "bse sensex today", "stock market today",
     "nse live", "bse live", "share market today", "top 10 stocks",

@@ -40,6 +40,7 @@ export default async function TickerBar() {
 
   return (
     <div
+      className="ticker-bar"
       style={{
         background: "#020817",
         borderBottom: "1px solid rgba(51,65,85,0.4)",

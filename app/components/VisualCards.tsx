@@ -1,6 +1,6 @@
 "use client";
 import React, { isValidElement } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Landmark } from "lucide-react";
 
@@ -385,7 +385,100 @@ export function GroupSidebar({ groups }: { groups: GroupItem[] }) {
     </div>
   );
 }
-// --- PREMIUM FEATURE CARD (USED IN IPO/TOOLS) ---
+// --- DYNAMIC INTELLIGENCE CARD (SHUFFLING MESSAGES) ---
+interface IntelligenceCardProps {
+  title: string;
+  messages: string[];
+  icon: React.ReactNode;
+  href: string;
+  accentColor: string;
+  interval?: number;
+}
+
+export function IntelligenceCard({ title, messages, icon, href, accentColor, interval = 5000 }: IntelligenceCardProps) {
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % messages.length);
+    }, interval);
+    return () => clearInterval(timer);
+  }, [messages.length, interval]);
+
+  return (
+    <Link href={href} style={{ textDecoration: "none", height: "100%", display: "block" }}>
+      <motion.div 
+        whileHover={{ y: -5 }}
+        className="card card-hover" 
+        style={{ 
+          padding: "1.25rem", 
+          border: `1px solid ${accentColor}33`, 
+          background: "rgba(15, 23, 42, 0.4)",
+          backdropFilter: "blur(20px)",
+          borderRadius: "20px",
+          height: "100%", 
+          display: "flex", 
+          flexDirection: "column",
+          position: "relative",
+          overflow: "hidden"
+        }}
+      >
+        {/* Subtle top glow */}
+        <div style={{
+          position: "absolute", top: 0, left: "10%", right: "10%", height: "1px",
+          background: `linear-gradient(90deg, transparent, ${accentColor}66, transparent)`,
+        }} />
+
+        <div style={{ color: accentColor, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "10px" }}>
+          {icon}
+          <span style={{ fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.8 }}>
+            Real-Time Intelligence
+          </span>
+        </div>
+        
+        <h3 style={{ fontSize: "1.1rem", fontWeight: 900, marginBottom: "0.5rem", color: "#f8fafc", letterSpacing: "-0.01em" }}>
+          {title}
+        </h3>
+        
+        <div style={{ height: "4.5rem", position: "relative" }}>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={index}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              style={{ 
+                fontSize: "0.9rem", 
+                color: "#94a3b8", 
+                lineHeight: 1.6, 
+                position: "absolute", 
+                top: 0, 
+                left: 0,
+                margin: 0
+              }}
+            >
+              {messages[index]}
+            </motion.p>
+          </AnimatePresence>
+        </div>
+
+        <div style={{ 
+          marginTop: "auto", 
+          fontSize: "0.85rem", 
+          color: accentColor, 
+          fontWeight: 800, 
+          paddingTop: "1.5rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px"
+        }}>
+          Explore Terminal <ArrowRight size={16} />
+        </div>
+      </motion.div>
+    </Link>
+  );
+}
 interface PremiumFeatureCardProps {
   title: string;
   desc: string;

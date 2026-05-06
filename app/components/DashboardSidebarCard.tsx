@@ -1,7 +1,7 @@
 "use client";
-import { ReactNode } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface Item {
@@ -9,7 +9,7 @@ interface Item {
   name: string;
   symbol: string;
   value: string;
-  changePercent: number;
+  changePercent?: number;
   image?: string;
   href: string;
 }
@@ -19,9 +19,22 @@ interface Props {
   icon: ReactNode;
   items: Item[];
   viewAllHref: string;
+  shuffle?: boolean;
 }
 
-export default function DashboardSidebarCard({ title, icon, items, viewAllHref }: Props) {
+export default function DashboardSidebarCard({ title, icon, items, viewAllHref, shuffle = false }: Props) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!shuffle || items.length <= 1) return;
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % items.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [shuffle, items.length]);
+
+  const displayItems = shuffle ? [items[index]] : items;
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -78,50 +91,59 @@ export default function DashboardSidebarCard({ title, icon, items, viewAllHref }
           View all
         </Link>
       </div>
-      <div>
-        {items.map((item, idx) => {
-          const pos = item.changePercent >= 0;
-          return (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, x: 10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.05 }}
-              viewport={{ once: true }}
-            >
+      <div style={{ position: "relative", minHeight: shuffle ? "110px" : "auto" }}>
+        <AnimatePresence mode="wait">
+          {displayItems.map((item, idx) => {
+            const hasChange = item.changePercent !== undefined;
+            const pos = (item.changePercent ?? 0) >= 0;
+            
+            return (
+              <motion.div
+                key={shuffle ? index : item.id}
+                initial={{ opacity: 0, x: shuffle ? 20 : 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ 
+                  delay: shuffle ? 0 : idx * 0.05,
+                  duration: shuffle ? 0.5 : 0.3
+                }}
+                viewport={{ once: true }}
+                style={shuffle ? { position: "absolute", top: 0, left: 0, right: 0 } : {}}
+              >
               <Link
                 href={item.href}
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "0.9rem 1.25rem",
+                  gap: "1rem",
+                  alignItems: hasChange ? "center" : "flex-start",
+                  padding: "1rem 1.25rem",
                   textDecoration: "none",
                   borderBottom: "1px solid rgba(51, 65, 85, 0.15)",
                   transition: "all 0.2s",
                 }}
                 className="sidebar-row-hover"
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                {/* Icon/Image Section */}
+                <div style={{ flexShrink: 0, marginTop: hasChange ? 0 : "4px" }}>
                   {item.image ? (
                     <img
                       src={item.image}
                       alt={item.name}
-                      width={28}
-                      height={28}
-                      style={{ borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)" }}
+                      width={32}
+                      height={32}
+                      style={{ borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)", objectFit: "cover" }}
                     />
                   ) : (
                     <div
                       style={{
-                        width: "28px",
-                        height: "28px",
+                        width: "32px",
+                        height: "32px",
                         borderRadius: "8px",
                         background: "rgba(59, 130, 246, 0.1)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: "0.6rem",
+                        fontSize: "0.65rem",
                         fontWeight: 800,
                         color: "#3b82f6",
                         border: "1px solid rgba(59, 130, 246, 0.2)",
@@ -130,38 +152,69 @@ export default function DashboardSidebarCard({ title, icon, items, viewAllHref }
                       {item.symbol.substring(0, 2)}
                     </div>
                   )}
-                  <div>
-                    <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#f1f5f9", lineHeight: 1.2 }}>
-                      {item.symbol}
-                    </div>
-                    <div style={{ fontSize: "0.68rem", color: "#64748b", fontWeight: 500 }}>
-                      {item.name}
-                    </div>
-                  </div>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "#f8fafc", fontFamily: "monospace" }}>
-                    {item.value}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      color: pos ? "#10b981" : "#ef4444",
-                      fontFamily: "monospace",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      gap: "2px",
-                    }}
-                  >
-                    {pos ? "▲" : "▼"}{Math.abs(item.changePercent).toFixed(2)}%
-                  </div>
+
+                {/* Content Section */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  {!hasChange ? (
+                    /* NEWS LAYOUT (Vertical Stack) */
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      <div style={{ 
+                        fontSize: "0.9rem", 
+                        fontWeight: 700, 
+                        color: "#f1f5f9", 
+                        lineHeight: 1.4,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden"
+                      }}>
+                        {item.value}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.7rem", fontWeight: 600 }}>
+                        <span style={{ color: "#3b82f6", textTransform: "uppercase" }}>{item.symbol}</span>
+                        <span style={{ color: "#334155" }}>•</span>
+                        <span style={{ color: "#64748b" }}>{item.name}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    /* STOCK LAYOUT (Side-by-Side) */
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#f1f5f9", lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {item.symbol}
+                        </div>
+                        <div style={{ fontSize: "0.68rem", color: "#64748b", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {item.name}
+                        </div>
+                      </div>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#f8fafc", fontFamily: "monospace" }}>
+                          {item.value}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: "0.72rem",
+                            fontWeight: 700,
+                            color: pos ? "#10b981" : "#ef4444",
+                            fontFamily: "monospace",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            gap: "2px",
+                          }}
+                        >
+                          {pos ? "▲" : "▼"}{Math.abs(item.changePercent ?? 0).toFixed(2)}%
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Link>
             </motion.div>
           );
         })}
+        </AnimatePresence>
       </div>
       <style jsx global>{`
         .sidebar-row-hover:hover {

@@ -6,7 +6,9 @@ import { getHomeMeta } from "@/lib/meta";
 import { fetchMultipleQuotes } from "@/lib/stocks";
 import { fetchCryptoList } from "@/lib/crypto";
 import { fetchAllForexRates } from "@/lib/forex";
+import { fetchMarketNews } from "@/lib/news";
 import { NIFTY50_STOCKS, CRYPTO_LIST, GLOBAL_INDICES, ADANI_STOCKS, RELIANCE_STOCKS } from "@/lib/constants";
+import { IntelligenceCard } from "@/components/VisualCards";
 import MarketTable from "@/components/MarketTable";
 import JsonLd, { websiteSchema, organizationSchema, breadcrumbSchema, faqSchema } from "@/components/JsonLd";
 import HeroV2 from "@/components/HeroV2";
@@ -160,12 +162,13 @@ export default async function HomePage() {
             { label: "Top Losers", href: "/top-stocks/losers", Icon: ICON_MAP.losers },
             { label: "Most Active", href: "/top-stocks/most-active", Icon: ICON_MAP.active },
             { label: "Adani Stocks", href: "/conglomerates/adani", Icon: ICON_MAP.adani },
-            { label: "Reliance Stocks", href: "/conglomerates/reliance", Icon: ICON_MAP.reliance },
+            { label: "Reliance", href: "/conglomerates/reliance", Icon: ICON_MAP.reliance },
             { label: "Tata Stocks", href: "/conglomerates/tata", Icon: ICON_MAP.tata },
             { label: "Crypto", href: "/crypto", Icon: ICON_MAP.crypto },
             { label: "Forex", href: "/forex", Icon: ICON_MAP.forex },
             { label: "Gold", href: "/commodities/gold", Icon: ICON_MAP.gold },
             { label: "IPO", href: "/ipo", Icon: ICON_MAP.ipo },
+            { label: "News", href: "/news", Icon: FileText },
           ].map((link) => (
             <Link
               key={link.href}
@@ -178,8 +181,50 @@ export default async function HomePage() {
             </Link>
           ))}
         </div>
+        {/* ── Market Intelligence Hub ── */}
+        <section style={{ marginBottom: "4rem" }}>
+          <div className="intelligence-grid">
+            <IntelligenceCard
+              title="Global Markets"
+              href="/markets/global"
+              accentColor="#3b82f6"
+              icon={<Globe size={20} />}
+              messages={[
+                "Track S&P 500, Dow Jones, and NASDAQ in real-time.",
+                "Monitor US market hours and global sentiment in IST time.",
+                "Analyze European (FTSE, DAX) and Asian (Nikkei) indices.",
+                "Real-time volatility alerts and global market correlations."
+              ]}
+            />
+            <IntelligenceCard
+              title="Crypto Hub"
+              href="/crypto"
+              accentColor="#f59e0b"
+              icon={<Coins size={20} />}
+              messages={[
+                "Bitcoin, Ethereum, and 1000+ altcoins with live data.",
+                "Real-time INR prices and 24h market cap analysis.",
+                "Track DeFi tokens, Layer 2s, and NFT floor prices.",
+                "Monitor whale movements and social sentiment for digital assets."
+              ]}
+            />
+            <IntelligenceCard
+              title="Forex Terminal"
+              href="/forex"
+              accentColor="#10b981"
+              icon={<DollarSign size={20} />}
+              messages={[
+                "USD to INR, EUR, and GBP. Live exchange rates.",
+                "RBI reference data and global currency pair movements.",
+                "Track emerging market currencies and G10 volatility.",
+                "Monitor central bank rate decisions and inflation data."
+              ]}
+            />
+          </div>
+        </section>
+
         {/* Content Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "2rem" }} className="content-grid">
+        <div className="content-grid">
           {/* LEFT COLUMN */}
           <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
             {/* Adani Group Preview */}
@@ -236,6 +281,22 @@ export default async function HomePage() {
 
           {/* RIGHT SIDEBAR */}
           <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {/* News Widget - Driving traffic to News Hub */}
+            <DashboardSidebarCard
+              title="Market Intelligence"
+              icon={<FileText size={18} color="#10b981" />}
+              viewAllHref="/news"
+              shuffle={true}
+              items={(await fetchMarketNews("All")).slice(0, 15).map((n) => ({
+                id: n.id.toString(),
+                name: n.author,
+                symbol: n.category,
+                value: n.title,
+                href: "/news",
+                image: n.category === "Crypto" ? "https://cdn-icons-png.flaticon.com/512/6001/6001331.png" : "https://cdn-icons-png.flaticon.com/512/2965/2965306.png"
+              }))}
+            />
+
             {/* Crypto Widget */}
             <DashboardSidebarCard
               title="Top Crypto — INR"
@@ -273,6 +334,7 @@ export default async function HomePage() {
       <style>{`
         @media (max-width: 1024px) {
           .content-grid { grid-template-columns: 1fr !important; }
+          .intelligence-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </>

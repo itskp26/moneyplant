@@ -218,6 +218,7 @@ export default function HeroV2({ statCards }: HeroV2Props) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.8 }}
               style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3rem" }}
+              className="hero-btns"
             >
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
                 <Link href="/markets/india" style={{
@@ -261,14 +262,16 @@ export default function HeroV2({ statCards }: HeroV2Props) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
             style={{
-              height: "540px",
+              height: "clamp(320px, 45vh, 540px)",
               position: "relative",
               transform: globeTransform,
+              margin: "0 auto",
+              width: "100%",
             }}
           >
             {/* Glow behind globe */}
             <div style={{
-              position: "absolute", inset: "10%",
+              position: "absolute", inset: "15%",
               borderRadius: "50%",
               background: "radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(59,130,246,0.1) 50%, transparent 80%)",
               filter: "blur(20px)",
@@ -280,14 +283,14 @@ export default function HeroV2({ statCards }: HeroV2Props) {
 
             {/* Floating market data cards around globe */}
             {[
-              { label: "NIFTY 50", value: "24,350", up: true, top: "5%", left: "-10%" },
-              { label: "BTC/INR", value: "₹71.2L", up: true, bottom: "10%", right: "-5%" },
-              { label: "GOLD", value: "₹89,400", up: true, bottom: "20%", left: "-12%" },
+              { label: "NIFTY 50", value: "24,350", up: true, top: "5%", left: "0%" },
+              { label: "BTC/INR", value: "₹71.2L", up: true, bottom: "10%", right: "0%" },
+              { label: "GOLD", value: "₹89,400", up: true, bottom: "25%", left: "-5%" },
             ].map((badge, i) => (
               <motion.div
                 key={badge.label}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2 + i * 0.2, duration: 0.6 }}
                 style={{
                   position: "absolute",
@@ -296,12 +299,13 @@ export default function HeroV2({ statCards }: HeroV2Props) {
                   left: (badge as any).left,
                   right: (badge as any).right,
                   padding: "8px 14px",
-                  background: "rgba(10, 22, 40, 0.85)",
-                  border: `1px solid ${badge.up ? "rgba(16,185,129,0.4)" : "rgba(239,68,68,0.4)"}`,
+                  background: "rgba(10, 22, 40, 0.9)",
+                  border: `1px solid ${badge.up ? "rgba(16,185,129,0.3)" : "rgba(239,68,68,0.3)"}`,
                   borderRadius: "12px",
                   backdropFilter: "blur(12px)",
                   zIndex: 10,
                   whiteSpace: "nowrap",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                 }}
               >
                 <div style={{ fontSize: "0.65rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase" }}>{badge.label}</div>
@@ -341,13 +345,16 @@ export default function HeroV2({ statCards }: HeroV2Props) {
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
         @media (max-width: 1024px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .bottom-stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 640px) {
           .stat-grid { grid-template-columns: 1fr !important; }
           .bottom-stat-grid { grid-template-columns: 1fr !important; }
+          h1 { font-size: 2.25rem !important; line-height: 1.1 !important; }
+          .hero-btns > div { width: 100%; }
+          .hero-btns a { width: 100%; justify-content: center; }
         }
       `}</style>
     </section>

@@ -156,9 +156,11 @@ export default function Navbar() {
         position: "sticky",
         top: "36px",
         zIndex: 50,
+        width: "100%",
+        left: 0,
       }}
     >
-      <div className="container" style={{ display: "flex", alignItems: "center", height: "60px", gap: "2rem" }}>
+      <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "60px" }}>
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.7rem", textDecoration: "none" }}>
           {/* New Premium Logo */}

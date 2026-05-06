@@ -18,6 +18,7 @@ export function websiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "MoneyPlant",
+    alternateName: ["MoneyPlant24", "MoneyPlant Finance", "MoneyPlant India"],
     url: "https://moneyplant24.com",
     description:
       "India's premier live finance portal. Track Nifty 50, Sensex, BSE/NSE stocks, crypto prices in INR, forex rates, gold & silver prices, IPOs and global markets.",
@@ -32,6 +33,7 @@ export function websiteSchema() {
     publisher: {
       "@type": "Organization",
       name: "MoneyPlant",
+      alternateName: "MoneyPlant24",
       url: "https://moneyplant24.com",
       logo: {
         "@type": "ImageObject",
@@ -52,6 +54,7 @@ export function organizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "MoneyPlant",
+    alternateName: ["MoneyPlant24", "MoneyPlant India"],
     url: "https://moneyplant24.com",
     logo: "https://moneyplant24.com/logo.png",
     description:

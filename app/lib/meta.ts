@@ -50,6 +50,7 @@ export const baseMetadata: Metadata = {
         height: 630,
         alt: `${SITE_NAME} — Live Finance Data India`,
       },
+      OG_IMAGE,
     ],
   },
   twitter: {
@@ -111,6 +112,10 @@ export function getHomeMeta(): Metadata {
     "global investment news today", "world markets live today",
     `world finance ${y()}`, `global investment ${y()}`,
     `top 20 stocks world ${y()}`, `best global assets ${y()}`,
+    "stock market news usa today", "nasdaq live india time", "s&p 500 live in ist",
+    "investing in us stocks from india", "how to buy nvidia stock in india",
+    "global stock market ranking", "best finance portals world",
+    "world market watch live", "international stock tracker"
   ];
   const finalKeywords = mixWithGlobalKeywords(keywords, ["finance", "stock market", "investment", "bitcoin price", "gold rate"]);
   return {
@@ -122,7 +127,10 @@ export function getHomeMeta(): Metadata {
       description,
       url: SITE_URL,
       type: "website",
-      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "MoneyPlant Live Finance India" }],
+      images: [
+        { url: OG_IMAGE, width: 1200, height: 630, alt: "MoneyPlant Live Finance India" },
+        OG_IMAGE,
+      ],
     },
     twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
     alternates: { canonical: SITE_URL },
@@ -324,7 +332,11 @@ export function getCryptoMeta(
       "crypto prices across countries", "bitcoin price in all currencies",
       "crypto in dollars euros pounds dirhams",
       `best crypto to buy worldwide ${y()}`,
-      `global crypto market ${y()}`
+      `global crypto market ${y()}`,
+      "bitcoin price usa today", "ethereum price london", "crypto prices australia",
+      "crypto news germany", "bitcoin rate netherlands", "crypto regulation eu",
+      "buy bitcoin in iceland", "crypto market ireland", "top 10 crypto 2026",
+      "crypto price prediction 2026", "next crypto bull run 2026"
     ];
     const keywords = mixWithGlobalKeywords(specificKeywords, ["Crypto", "Bitcoin", "Ethereum", "Cryptocurrency"]);
     const url = `${SITE_URL}/crypto`;
@@ -772,6 +784,10 @@ export function getMarketsMeta(type: "global" | "india" | "all"): Metadata {
       "global market crash today", "global market rally today",
       `world stock markets ${y()}`, `global market overview ${y()}`,
       "india stock market world ranking", "top stock exchanges ranking", "world's largest stock markets",
+      "us market hours in ist", "nyse opening time india", "nasdaq closing time ist",
+      "london market ist time", "german stock market news in english",
+      "best global stock tracker", "world markets real time quotes",
+      "international indices dashboard", "global finance portal 2026"
     ];
   }
 
