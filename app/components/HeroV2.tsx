@@ -113,12 +113,11 @@ export default function HeroV2({ statCards }: HeroV2Props) {
         borderBottom: "1px solid rgba(51,65,85,0.4)",
         padding: "5rem 0 3.5rem",
         position: "relative",
-        overflow: "hidden",
         minHeight: "640px",
       }}
     >
-      {/* Animated mesh gradient bg */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {/* Animated mesh gradient bg — clipped to section */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
         <motion.div
           animate={{ scale: [1, 1.05, 1], opacity: [0.06, 0.12, 0.06] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -152,7 +151,7 @@ export default function HeroV2({ statCards }: HeroV2Props) {
       </div>
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 480px", gap: "3rem", alignItems: "center" }} className="hero-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 480px", gap: "2rem", alignItems: "flex-start" }} className="hero-grid">
 
           {/* LEFT: Text + Stats */}
           <div>
@@ -256,17 +255,17 @@ export default function HeroV2({ statCards }: HeroV2Props) {
             </div>
           </div>
 
-          {/* RIGHT: 3D Globe */}
+          {/* RIGHT: 3D Globe — bottom-aligned to fill the lower space */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             style={{
-              height: "clamp(320px, 45vh, 540px)",
               position: "relative",
-              transform: globeTransform,
-              margin: "0 auto",
               width: "100%",
+              height: "480px",
+              alignSelf: "end",
+              overflow: "visible",
             }}
           >
             {/* Glow behind globe */}
@@ -281,11 +280,11 @@ export default function HeroV2({ statCards }: HeroV2Props) {
               <Globe3D />
             </div>
 
-            {/* Floating market data cards around globe */}
+            {/* Floating market data cards — tucked inside container, no overflow */}
             {[
-              { label: "NIFTY 50", value: "24,350", up: true, top: "5%", left: "0%" },
-              { label: "BTC/INR", value: "₹71.2L", up: true, bottom: "10%", right: "0%" },
-              { label: "GOLD", value: "₹89,400", up: true, bottom: "25%", left: "-5%" },
+              { label: "NIFTY 50", value: "24,350", up: true, top: "5%", left: "8%" },
+              { label: "BTC/INR",  value: "₹71.2L",  up: true, bottom: "12%", right: "8%" },
+              { label: "GOLD",     value: "₹89,400", up: true, bottom: "30%", left: "8%" },
             ].map((badge, i) => (
               <motion.div
                 key={badge.label}
@@ -344,11 +343,20 @@ export default function HeroV2({ statCards }: HeroV2Props) {
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 1024px) {
+
+        /* ── Desktop: left content fixed, globe 480px ── */
+        @media (min-width: 1024px) {
+          .hero-grid { grid-template-columns: 1fr 480px !important; gap: 2rem !important; }
+        }
+
+        /* ── Tablet: stack vertically ── */
+        @media (max-width: 1023px) {
           .hero-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .bottom-stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
+
+        /* ── Mobile ── */
         @media (max-width: 640px) {
           .stat-grid { grid-template-columns: 1fr !important; }
           .bottom-stat-grid { grid-template-columns: 1fr !important; }
