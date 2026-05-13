@@ -5,7 +5,7 @@ import {
   SBI_STOCKS, KOTAK_STOCKS, GODREJ_STOCKS, JSW_STOCKS, VEDANTA_STOCKS, 
   ITC_STOCKS, LT_STOCKS, WIPRO_STOCKS, INFOSYS_STOCKS, HCL_STOCKS, 
   MARUTI_STOCKS, PSU_STOCKS, PHARMA_STOCKS, IT_STOCKS, BANK_STOCKS, 
-  AUTO_STOCKS, FMCG_STOCKS, REALTY_STOCKS, INDICES, GLOBAL_INDICES,
+  AUTO_STOCKS, FMCG_STOCKS, REALTY_STOCKS, INDICES, GLOBAL_INDICES, US_STOCKS,
   CRYPTO_LIST, FOREX_PAIRS, COMMODITIES, SITE_URL 
 } from '@/lib/constants';
 
@@ -77,6 +77,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     AUTO_STOCKS.filter((s: any) => !s.unlisted).map(s => s.symbol),
     FMCG_STOCKS.filter((s: any) => !s.unlisted).map(s => s.symbol),
     REALTY_STOCKS.filter((s: any) => !s.unlisted).map(s => s.symbol),
+    US_STOCKS.map(s => s.symbol),
   ];
 
   const uniqueStocks = Array.from(new Set(allStockGroups.flat()));
