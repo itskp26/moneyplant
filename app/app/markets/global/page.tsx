@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { fetchMultipleQuotes } from "@/lib/stocks";
-import { US_INDICES, EUROPE_INDICES, ASIA_INDICES, MEA_INDICES } from "@/lib/constants";
+import { US_INDICES, EUROPE_INDICES, ASIA_INDICES, MEA_INDICES, US_STOCKS } from "@/lib/constants";
 import JsonLd, { breadcrumbSchema, faqSchema } from "@/components/JsonLd";
+import { 
+  Globe, TrendingUp, TrendingDown, Clock, Activity, 
+  MapPin, ChevronRight, BarChart3, Search, Zap,
+  Compass
+} from "lucide-react";
 
 export const revalidate = 120;
 
@@ -10,62 +15,100 @@ import { getMarketsMeta } from "@/lib/meta";
 
 export const metadata: Metadata = getMarketsMeta("global");
 
-const FLAG: Record<string, string> = {
-  USA: "🇺🇸", UK: "🇬🇧", Germany: "🇩🇪", France: "🇫🇷", Spain: "🇪🇸",
-  Switzerland: "🇨🇭", Italy: "🇮🇹", Netherlands: "🇳🇱", Eurozone: "🇪🇺",
-  Japan: "🇯🇵", "Hong Kong": "🇭🇰", China: "🇨🇳", Australia: "🇦🇺",
-  "South Korea": "🇰🇷", Taiwan: "🇹🇼", Singapore: "🇸🇬", Malaysia: "🇲🇾",
-  Indonesia: "🇮🇩", India: "🇮🇳", Thailand: "🇹🇭", Philippines: "🇵🇭",
-  "Saudi Arabia": "🇸🇦", "UAE (Dubai)": "🇦🇪", "UAE (Abu Dhabi)": "🇦🇪",
-  Qatar: "🇶🇦", Israel: "🇮🇱", Egypt: "🇪🇬", Canada: "🇨🇦",
-  Brazil: "🇧🇷", Mexico: "🇲🇽",
+// Professional country codes/badges instead of toy emojis
+const COUNTRY_CODE: Record<string, string> = {
+  USA: "US", UK: "UK", Germany: "DE", France: "FR", Spain: "ES",
+  Switzerland: "CH", Italy: "IT", Netherlands: "NL", Eurozone: "EU",
+  Japan: "JP", "Hong Kong": "HK", China: "CN", Australia: "AU",
+  "South Korea": "KR", Taiwan: "TW", Singapore: "SG", Malaysia: "MY",
+  Indonesia: "ID", India: "IN", Thailand: "TH", Philippines: "PH",
+  "Saudi Arabia": "SA", "UAE (Dubai)": "AE", "UAE (Abu Dhabi)": "AE",
+  Qatar: "QA", Israel: "IL", Egypt: "EG", Canada: "CA",
+  Brazil: "BR", Mexico: "MX",
 };
 
 function IndexCard({ name, country, value, changePercent, id }: {
   name: string; country: string; value?: number; changePercent?: number; id?: string;
 }) {
   const pos = (changePercent ?? 0) >= 0;
+  const accentColor = pos ? "#10b981" : "#ef4444";
+  
   return (
-    <div className="card" style={{ padding: "1rem" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-        <span style={{ fontSize: "0.7rem", color: "#64748b", fontWeight: 600 }}>
-          {FLAG[country] ?? "🌐"} {country}
-        </span>
+    <div className="card" style={{ 
+      padding: "1.25rem",
+      background: "rgba(15, 23, 42, 0.4)",
+      border: `1px solid rgba(255, 255, 255, 0.05)`,
+      borderRadius: "20px",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      position: "relative",
+      overflow: "hidden"
+    }}>
+      {/* Accent glow on hover — subtle */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+        background: `linear-gradient(90deg, transparent, ${accentColor}66, transparent)`
+      }} />
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div style={{ 
+            fontSize: "0.65rem", fontWeight: 800, color: "#f8fafc",
+            background: "rgba(59, 130, 246, 0.15)", padding: "2px 6px", borderRadius: "4px",
+            border: "1px solid rgba(59, 130, 246, 0.2)",
+            letterSpacing: "0.05em"
+          }}>
+            {COUNTRY_CODE[country] || "INTL"}
+          </div>
+          <span style={{ fontSize: "0.65rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
+            {country}
+          </span>
+        </div>
         {id && (
-          <Link href={`/indices/${id}`} style={{ fontSize: "0.7rem", color: "#3b82f6", textDecoration: "none" }}>
-            Details →
+          <Link href={`/indices/${id}`} style={{ 
+            width: "24px", height: "24px", borderRadius: "50%",
+            background: "rgba(255,255,255,0.03)", display: "flex", alignItems: "center", justifyContent: "center",
+            color: "#94a3b8", textDecoration: "none", border: "1px solid rgba(255,255,255,0.05)"
+          }}>
+            <ChevronRight size={14} />
           </Link>
         )}
       </div>
-      <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#e2e8f0", marginBottom: "4px" }}>{name}</div>
+
+      <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", letterSpacing: "-0.01em" }}>{name}</div>
+      
       {value != null ? (
-        <>
-          <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#f1f5f9", fontFamily: "var(--font-sora)" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+          <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#f8fafc", fontFamily: "var(--font-sora)", letterSpacing: "-0.02em" }}>
             {value.toLocaleString("en-US", { maximumFractionDigits: 2 })}
           </div>
-          <div style={{ fontSize: "0.78rem", fontWeight: 700, color: pos ? "#10b981" : "#ef4444" }}>
-            {pos ? "▲" : "▼"} {Math.abs(changePercent ?? 0).toFixed(2)}%
+          <div style={{ 
+            fontSize: "0.85rem", fontWeight: 800, color: accentColor,
+            display: "flex", alignItems: "center", gap: "2px"
+          }}>
+            {pos ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+            {Math.abs(changePercent ?? 0).toFixed(2)}%
           </div>
-        </>
+        </div>
       ) : (
-        <div className="shimmer" style={{ height: "36px", borderRadius: "6px", marginTop: "4px" }} />
+        <div className="shimmer" style={{ height: "36px", borderRadius: "8px", marginTop: "4px" }} />
       )}
     </div>
   );
 }
 
 async function getData() {
-  const [us, europe, asia, mea] = await Promise.all([
+  const [us, europe, asia, mea, usStocks] = await Promise.all([
     fetchMultipleQuotes(US_INDICES.map((i) => i.symbol)),
     fetchMultipleQuotes(EUROPE_INDICES.map((i) => i.symbol)),
     fetchMultipleQuotes(ASIA_INDICES.map((i) => i.symbol)),
     fetchMultipleQuotes(MEA_INDICES.slice(0, 4).map((i) => i.symbol)),
+    fetchMultipleQuotes(US_STOCKS.map((s) => s.symbol)),
   ]);
-  return { us, europe, asia, mea };
+  return { us, europe, asia, mea, usStocks };
 }
 
-function mergeWithData(
-  indices: { symbol: string; name: string; country: string; id: string }[],
+function mergeWithData<T extends { symbol: string }>(
+  indices: T[],
   quotes: { symbol: string; price: number; changePercent: number }[]
 ) {
   return indices.map((idx) => {
@@ -75,12 +118,13 @@ function mergeWithData(
 }
 
 export default async function GlobalMarketsPage() {
-  const { us, europe, asia, mea } = await getData();
+  const { us, europe, asia, mea, usStocks } = await getData();
 
   const usData = mergeWithData(US_INDICES, us);
   const euData = mergeWithData(EUROPE_INDICES, europe);
   const asData = mergeWithData(ASIA_INDICES, asia);
   const meaData = mergeWithData(MEA_INDICES, mea);
+  const stockData = mergeWithData(US_STOCKS.map(s => ({ ...s, id: "", country: "USA" })), usStocks);
 
   return (
     <>
@@ -106,39 +150,124 @@ export default async function GlobalMarketsPage() {
           <span style={{ color: "#94a3b8" }}>Global</span>
         </nav>
 
-        <h1 style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", marginBottom: "0.75rem" }}>
-          🌍 Global Stock Markets — Live Today
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "#3b82f6", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+          <Globe size={16} /> Global Market Terminal
+        </div>
+        <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 900, marginBottom: "1rem", letterSpacing: "-0.03em" }}>
+          World Stock Markets
         </h1>
-        <p style={{ color: "#64748b", fontSize: "0.95rem", maxWidth: "800px", lineHeight: 1.8, marginBottom: "2.5rem" }}>
-          Real-time coverage of world stock market indices across Americas, Europe, Asia-Pacific, and Middle East & Africa.
-          Track S&P 500, Dow Jones, NASDAQ, FTSE 100, DAX, Nikkei 225, Hang Seng, and 30+ global indices in one view.
+        <p style={{ color: "#64748b", fontSize: "1.1rem", maxWidth: "850px", lineHeight: 1.7, marginBottom: "3rem" }}>
+          Real-time coverage of 30+ global indices across major financial hubs. Monitor liquidity, performance trends, and opening hours for the world&apos;s decentralized economy.
         </p>
 
-        {/* Jump links */}
-        <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginBottom: "2.5rem" }}>
+        {/* Jump links - Modern Pills */}
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "3.5rem" }}>
           {[
-            { label: "🇺🇸 Americas", href: "#americas" },
-            { label: "🇪🇺 Europe", href: "#europe" },
-            { label: "🌏 Asia-Pacific", href: "#asia" },
-            { label: "🌍 Middle East & Africa", href: "#mea" },
+            { label: "Americas", icon: <Compass size={14} />, href: "#americas" },
+            { label: "Europe", icon: <Zap size={14} />, href: "#europe" },
+            { label: "Asia-Pacific", icon: <Globe size={14} />, href: "#asia" },
+            { label: "MEA", icon: <Activity size={14} />, href: "#mea" },
           ].map((l) => (
             <a key={l.label} href={l.href} style={{
-              background: "rgba(30,41,59,0.8)", border: "1px solid rgba(51,65,85,0.5)",
-              borderRadius: "8px", padding: "0.4rem 0.9rem",
-              fontSize: "0.82rem", fontWeight: 600, color: "#94a3b8", textDecoration: "none",
-            }}>{l.label}</a>
+              background: "rgba(30,41,59,0.5)", border: "1px solid rgba(255,255,255,0.05)",
+              borderRadius: "12px", padding: "0.6rem 1.2rem",
+              fontSize: "0.85rem", fontWeight: 700, color: "#f1f5f9", textDecoration: "none",
+              display: "flex", alignItems: "center", gap: "8px", transition: "all 0.2s"
+            }}>
+              {l.icon} {l.label}
+            </a>
           ))}
           <Link href="/markets/india" style={{
-            background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)",
-            borderRadius: "8px", padding: "0.4rem 0.9rem",
-            fontSize: "0.82rem", fontWeight: 600, color: "#10b981", textDecoration: "none",
-          }}>🇮🇳 Indian Markets</Link>
+            background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)",
+            borderRadius: "12px", padding: "0.6rem 1.2rem",
+            fontSize: "0.85rem", fontWeight: 700, color: "#10b981", textDecoration: "none",
+            display: "flex", alignItems: "center", gap: "8px"
+          }}>
+            <BarChart3 size={14} /> Indian Markets
+          </Link>
         </div>
 
+        {/* Top US Stocks Quick Reference - Premium Grid */}
+        <section style={{ marginBottom: "4rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "1.5rem" }}>
+             <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(59, 130, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Zap size={18} color="#3b82f6" />
+             </div>
+             <h2 style={{ fontSize: "1.5rem", fontWeight: 900, color: "#f8fafc", margin: 0 }}>Wall Street Leaders</h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem" }}>
+            {stockData.map((s) => {
+              const pos = (s.changePercent ?? 0) >= 0;
+              const accentColor = pos ? "#10b981" : "#ef4444";
+              return (
+                <div key={s.symbol} className="card stock-card" style={{ 
+                  padding: "1.25rem",
+                  background: "rgba(15, 23, 42, 0.4)",
+                  border: "1px solid rgba(255, 255, 255, 0.05)",
+                  borderRadius: "20px",
+                  transition: "all 0.3s",
+                  position: "relative",
+                  overflow: "hidden"
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+                    <span style={{ fontWeight: 900, fontSize: "1.1rem", color: "#3b82f6", fontFamily: "var(--font-sora)", letterSpacing: "-0.01em" }}>{s.symbol}</span>
+                    <div style={{ 
+                      fontSize: "0.75rem", fontWeight: 800, color: accentColor,
+                      background: pos ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)", 
+                      padding: "4px 10px", borderRadius: "8px",
+                      border: `1px solid ${pos ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
+                      display: "flex", alignItems: "center", gap: "4px"
+                    }}>
+                      {pos ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                      {Math.abs(s.changePercent ?? 0).toFixed(2)}%
+                    </div>
+                  </div>
+                  
+                  <div style={{ fontSize: "1rem", fontWeight: 700, color: "#f1f5f9", marginBottom: "2px" }}>{s.name}</div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 600, marginBottom: "1.25rem" }}>{s.desc}</div>
+
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
+                    <div style={{ fontSize: "1.75rem", fontWeight: 900, color: "#f8fafc", fontFamily: "var(--font-sora)", letterSpacing: "-0.02em" }}>
+                      {s.value ? `$${s.value.toLocaleString("en-US", { maximumFractionDigits: 2 })}` : "—"}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "#475569", fontWeight: 700 }}>USD</div>
+                  </div>
+                  
+                {/* Modern visual touch: tiny sparkline-like bar */}
+                <div style={{ marginTop: "1.25rem", width: "100%", height: "2px", background: "rgba(255,255,255,0.03)", borderRadius: "1px", overflow: "hidden", position: "relative" }}>
+                   <div className="sparkline-pulse" style={{ width: "60%", height: "100%", background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)`, position: "absolute" }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <style>{`
+          .stock-card:hover {
+            transform: translateY(-5px);
+            background: rgba(30, 41, 59, 0.6) !important;
+            border-color: rgba(59, 130, 246, 0.3) !important;
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.7), 0 0 15px rgba(59, 130, 246, 0.1) !important;
+          }
+          @keyframes spark-slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+          }
+          .sparkline-pulse {
+            animation: spark-slide 3s infinite linear;
+          }
+        `}</style>
+      </section>
+
         {/* Americas */}
-        <section id="americas" style={{ marginBottom: "3rem" }}>
-          <h2 className="section-title">🇺🇸 Americas</h2>
-          <p className="section-subtitle">NYSE, NASDAQ, TSX, B3 — Major American indices</p>
+        <section id="americas" style={{ marginBottom: "4rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "1.5rem" }}>
+             <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(59, 130, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <MapPin size={18} color="#3b82f6" />
+             </div>
+             <h2 style={{ fontSize: "1.5rem", fontWeight: 900, color: "#f8fafc", margin: 0 }}>Americas Indices</h2>
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "0.85rem" }}>
             {usData.map((idx) => (
               <IndexCard key={idx.symbol} {...idx} />
@@ -149,40 +278,14 @@ export default async function GlobalMarketsPage() {
           </div>
         </section>
 
-        {/* Top US Stocks Quick Reference */}
-        <section style={{ marginBottom: "3rem" }}>
-          <h2 className="section-title">🇺🇸 Top US Stocks (Quick Reference)</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "0.75rem" }}>
-            {[
-              { name: "Apple Inc.", sym: "AAPL", desc: "iPhone, Mac, Services" },
-              { name: "Microsoft", sym: "MSFT", desc: "Cloud, Windows, Xbox" },
-              { name: "Nvidia", sym: "NVDA", desc: "AI GPUs, Chips" },
-              { name: "Amazon", sym: "AMZN", desc: "E-commerce, AWS" },
-              { name: "Meta (Facebook)", sym: "META", desc: "Social Media, VR" },
-              { name: "Google (Alphabet)", sym: "GOOGL", desc: "Search, YouTube, GCP" },
-              { name: "Tesla", sym: "TSLA", desc: "EVs, Energy, Robotics" },
-              { name: "Berkshire Hathaway", sym: "BRK-B", desc: "Buffett — Insurance, Value" },
-              { name: "JPMorgan Chase", sym: "JPM", desc: "Banking, Finance" },
-              { name: "Eli Lilly", sym: "LLY", desc: "Pharma — Ozempic rival" },
-              { name: "Visa Inc.", sym: "V", desc: "Payments Network" },
-              { name: "UnitedHealth", sym: "UNH", desc: "Healthcare Insurance" },
-            ].map((s) => (
-              <div key={s.sym} className="card" style={{ padding: "0.9rem 1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                  <span style={{ fontWeight: 700, fontSize: "0.85rem", color: "#3b82f6", fontFamily: "var(--font-sora)" }}>{s.sym}</span>
-                  <span className="badge badge-blue" style={{ fontSize: "0.65rem" }}>NYSE/NASDAQ</span>
-                </div>
-                <div style={{ fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>{s.name}</div>
-                <div style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "3px" }}>{s.desc}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* Europe */}
-        <section id="europe" style={{ marginBottom: "3rem" }}>
-          <h2 className="section-title">🇪🇺 Europe</h2>
-          <p className="section-subtitle">FTSE, DAX, CAC 40, IBEX, SMI, AEX — European indices</p>
+        <section id="europe" style={{ marginBottom: "4rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "1.5rem" }}>
+             <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(139, 92, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Zap size={18} color="#8b5cf6" />
+             </div>
+             <h2 style={{ fontSize: "1.5rem", fontWeight: 900, color: "#f8fafc", margin: 0 }}>Europe & UK</h2>
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "0.85rem" }}>
             {euData.map((idx) => (
               <IndexCard key={idx.symbol} {...idx} />
@@ -224,62 +327,94 @@ export default async function GlobalMarketsPage() {
               { name: "JSE (Johannesburg)", country: "South Africa" },
               { name: "Nigeria Stock Exchange (NGX)", country: "Nigeria" },
             ].map((idx) => (
-              <div key={idx.name} className="card" style={{ padding: "1rem" }}>
-                <div style={{ fontSize: "0.7rem", color: "#64748b", marginBottom: "4px" }}>
-                  {FLAG[idx.country] ?? "🌍"} {idx.country}
+              <div key={idx.name} className="card" style={{ 
+                padding: "1.25rem",
+                background: "rgba(15, 23, 42, 0.4)",
+                border: "1px solid rgba(255, 255, 255, 0.05)",
+                borderRadius: "20px"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "1rem" }}>
+                   <div style={{ 
+                     fontSize: "0.6rem", fontWeight: 800, color: "#94a3b8",
+                     background: "rgba(255, 255, 255, 0.05)", padding: "2px 5px", borderRadius: "4px"
+                   }}>
+                     {COUNTRY_CODE[idx.country] || "INTL"}
+                   </div>
+                   <span style={{ fontSize: "0.65rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase" }}>
+                     {idx.country}
+                   </span>
                 </div>
-                <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#e2e8f0" }}>{idx.name}</div>
-                <div className="shimmer" style={{ height: "28px", borderRadius: "6px", marginTop: "8px" }} />
+                <div style={{ fontSize: "0.9rem", fontWeight: 700, color: "#e2e8f0" }}>{idx.name}</div>
+                <div className="shimmer" style={{ height: "24px", borderRadius: "8px", marginTop: "1rem" }} />
               </div>
             ))}
           </div>
         </section>
 
-        {/* Global Market Hours Reference */}
-        <section style={{ marginBottom: "2rem" }}>
-          <h2 className="section-title">⏰ World Market Hours (in IST)</h2>
-          <div style={{ overflowX: "auto" }}>
-            <table className="data-table">
+        {/* Global Market Hours Reference - High Contrast Terminal */}
+        <section style={{ marginBottom: "4rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "2rem" }}>
+             <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(245, 158, 11, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Clock size={18} color="#f59e0b" />
+             </div>
+             <h2 style={{ fontSize: "1.5rem", fontWeight: 900, color: "#f8fafc", margin: 0 }}>Market Sessions Terminal</h2>
+          </div>
+          
+          <div style={{ 
+            background: "rgba(15, 23, 42, 0.5)", 
+            borderRadius: "24px", 
+            border: "1px solid rgba(255, 255, 255, 0.05)",
+            overflow: "hidden",
+            boxShadow: "0 20px 40px -20px rgba(0,0,0,0.5)"
+          }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
               <thead>
-                <tr>
-                  <th>Exchange</th>
-                  <th>Country</th>
-                  <th>Open (IST)</th>
-                  <th>Close (IST)</th>
-                  <th>Index</th>
+                <tr style={{ background: "rgba(30, 41, 59, 0.5)", borderBottom: "1px solid rgba(255, 255, 255, 0.05)" }}>
+                  <th style={{ padding: "1.25rem 1.5rem", textAlign: "left", color: "#64748b", fontWeight: 800, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em" }}>Exchange</th>
+                  <th style={{ padding: "1.25rem 1.5rem", textAlign: "left", color: "#64748b", fontWeight: 800, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em" }}>Session Status</th>
+                  <th style={{ padding: "1.25rem 1.5rem", textAlign: "left", color: "#64748b", fontWeight: 800, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em" }}>Hours (IST)</th>
+                  <th style={{ padding: "1.25rem 1.5rem", textAlign: "left", color: "#64748b", fontWeight: 800, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em" }}>Key Index</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { exchange: "Tokyo Stock Exchange", country: "🇯🇵 Japan", open: "5:30 AM", close: "12:00 PM", index: "Nikkei 225" },
-                  { exchange: "Shanghai Stock Exchange", country: "🇨🇳 China", open: "6:30 AM", close: "12:30 PM", index: "Shanghai Composite" },
-                  { exchange: "Hong Kong Stock Exchange", country: "🇭🇰 Hong Kong", open: "6:45 AM", close: "1:30 PM", index: "Hang Seng" },
-                  { exchange: "Singapore Exchange (SGX)", country: "🇸🇬 Singapore", open: "6:30 AM", close: "2:00 PM", index: "STI" },
-                  { exchange: "Bombay Stock Exchange", country: "🇮🇳 India", open: "9:15 AM", close: "3:30 PM", index: "Sensex" },
-                  { exchange: "National Stock Exchange", country: "🇮🇳 India", open: "9:15 AM", close: "3:30 PM", index: "Nifty 50" },
-                  { exchange: "Australian Securities Exchange", country: "🇦🇺 Australia", open: "4:00 AM", close: "12:30 PM", index: "ASX 200" },
-                  { exchange: "Tadawul (Saudi Arabia)", country: "🇸🇦 Saudi", open: "12:00 PM", close: "4:00 PM", index: "TASI" },
-                  { exchange: "DFM (Dubai)", country: "🇦🇪 UAE", open: "11:30 AM", close: "3:30 PM", index: "DFMGI" },
-                  { exchange: "London Stock Exchange", country: "🇬🇧 UK", open: "2:30 PM", close: "11:00 PM", index: "FTSE 100" },
-                  { exchange: "Frankfurt (XETRA)", country: "🇩🇪 Germany", open: "2:30 PM", close: "11:30 PM", index: "DAX" },
-                  { exchange: "Euronext Paris", country: "🇫🇷 France", open: "2:30 PM", close: "11:00 PM", index: "CAC 40" },
-                  { exchange: "NYSE / NASDAQ", country: "🇺🇸 USA", open: "7:00 PM*", close: "1:30 AM*", index: "S&P 500 / Dow / NASDAQ" },
-                  { exchange: "Toronto Stock Exchange", country: "🇨🇦 Canada", open: "7:30 PM*", close: "2:00 AM*", index: "S&P/TSX" },
-                  { exchange: "B3 Bovespa", country: "🇧🇷 Brazil", open: "6:30 PM*", close: "1:00 AM*", index: "Bovespa" },
-                ].map((row) => (
-                  <tr key={row.exchange}>
-                    <td style={{ fontWeight: 600 }}>{row.exchange}</td>
-                    <td>{row.country}</td>
-                    <td style={{ color: "#10b981", fontWeight: 600 }}>{row.open}</td>
-                    <td style={{ color: "#ef4444", fontWeight: 600 }}>{row.close}</td>
-                    <td style={{ color: "#94a3b8", fontSize: "0.82rem" }}>{row.index}</td>
+                  { exchange: "Tokyo Stock Exchange", country: "JP", open: "5:30 AM", close: "12:00 PM", index: "Nikkei 225" },
+                  { exchange: "Shanghai Stock Exchange", country: "CN", open: "6:30 AM", close: "12:30 PM", index: "Shanghai Composite" },
+                  { exchange: "Hong Kong Stock Exchange", country: "HK", open: "6:45 AM", close: "1:30 PM", index: "Hang Seng" },
+                  { exchange: "National Stock Exchange", country: "IN", open: "9:15 AM", close: "3:30 PM", index: "Nifty 50" },
+                  { exchange: "Australian Securities Exchange", country: "AU", open: "4:00 AM", close: "12:30 PM", index: "ASX 200" },
+                  { exchange: "London Stock Exchange", country: "UK", open: "2:30 PM", close: "11:00 PM", index: "FTSE 100" },
+                  { exchange: "Frankfurt (XETRA)", country: "DE", open: "2:30 PM", close: "11:30 PM", index: "DAX" },
+                  { exchange: "NYSE / NASDAQ", country: "US", open: "7:00 PM*", close: "1:30 AM*", index: "S&P 500 / Dow" },
+                ].map((row, i) => (
+                  <tr key={row.exchange} style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.03)", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)" }}>
+                    <td style={{ padding: "1.25rem 1.5rem" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "#94a3b8", background: "rgba(255,255,255,0.05)", padding: "2px 5px", borderRadius: "4px" }}>{row.country}</div>
+                        <span style={{ fontWeight: 700, color: "#f1f5f9" }}>{row.exchange}</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: "1.25rem 1.5rem" }}>
+                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }} />
+                          <span style={{ fontSize: "0.85rem", color: "#10b981", fontWeight: 700 }}>LIVE</span>
+                       </div>
+                    </td>
+                    <td style={{ padding: "1.25rem 1.5rem" }}>
+                       <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "0.95rem", fontFamily: "monospace" }}>
+                          <span style={{ color: "#60a5fa", fontWeight: 700 }}>{row.open}</span>
+                          <span style={{ color: "#475569" }}>→</span>
+                          <span style={{ color: "#f87171", fontWeight: 700 }}>{row.close}</span>
+                       </div>
+                    </td>
+                    <td style={{ padding: "1.25rem 1.5rem", color: "#94a3b8", fontWeight: 600 }}>{row.index}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p style={{ fontSize: "0.75rem", color: "#475569", marginTop: "0.75rem" }}>
-            * Times with asterisk are for summer (daylight saving). Add 30 min during winter for US/Canada/Brazil. All times are IST (UTC+5:30).
+          <p style={{ fontSize: "0.8rem", color: "#475569", marginTop: "1.25rem", display: "flex", alignItems: "center", gap: "6px" }}>
+            <Activity size={14} /> * Times adjusted for Daylight Saving (Summer). View local winter adjustments in settings.
           </p>
         </section>
       </div>

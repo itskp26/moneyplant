@@ -4,66 +4,33 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-// ─── World map dot cloud using detailed landmass polygons ───────────────────
-// Each entry: [latMin, latMax, lonMin, lonMax, density]
-// Density 1 = sparse ... 3 = dense
-const LANDMASS_REGIONS: [number, number, number, number, number][] = [
-  // North America
-  [60, 72, -140, -60, 2],  // Canada wide
-  [48, 60, -130, -60, 2],  // Canada south / Great Lakes
-  [25, 48, -125, -65, 3],  // Continental US
-  [15, 30, -115, -88, 2],  // Mexico & southern tip
-  [7, 18, -90, -78, 1],    // Central America narrow isthmus
+// ─── High-Fidelity Textured Globe ───────────────────────────────────────────
+function TexturedGlobe() {
+  const ref = useRef<THREE.Mesh>(null);
+  
+  // Use a high-quality world map texture
+  const texture = useMemo(() => {
+    const loader = new THREE.TextureLoader();
+    // Using a high-res topographical map for realism
+    return loader.load("https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg");
+  }, []);
 
-  // Greenland
-  [60, 83, -58, -18, 1],
+  useFrame((_, delta) => {
+    if (ref.current) ref.current.rotation.y += delta * 0.10;
+  });
 
-  // Caribbean (sparse islands)
-  [10, 24, -85, -60, 1],
-
-  // South America
-  [8, 12, -73, -60, 1],    // Venezuela / Guyana
-  [-5, 8, -78, -50, 2],    // Colombia / Brazil north
-  [-15, -5, -76, -35, 3],  // Brazil central
-  [-35, -15, -73, -40, 2], // Brazil south / Bolivia / Argentina north
-  [-55, -35, -72, -53, 2], // Argentina / Chile
-
-  // Europe
-  [50, 71, -25, 32, 2],    // Scandinavia + British Isles
-  [36, 50, -10, 28, 3],    // Western + Central Europe
-  [36, 45, 28, 42, 2],     // Turkey + Eastern Med
-  [44, 60, 20, 60, 2],     // Eastern Europe + Ukraine
-
-  // Africa
-  [30, 37, -6, 12, 2],     // Northwest Africa (Maghreb)
-  [5, 30, -18, 45, 3],     // Sub-Saharan North Africa + Egypt
-  [-5, 5, 10, 45, 2],      // Equatorial Africa
-  [-35, -5, 12, 52, 3],    // Southern + East Africa
-
-  // Middle East
-  [20, 38, 36, 62, 2],
-  [14, 24, 42, 60, 1],     // Arabian Peninsula south
-
-  // Asia - Central
-  [40, 72, 50, 140, 2],    // Russia (vast but sparse)
-  [30, 40, 50, 90, 2],     // Central Asia steppe
-  [20, 40, 62, 100, 3],    // India + Pakistan + subcontinent
-  [8, 20, 68, 92, 2],      // South India / Sri Lanka region
-  [15, 25, 100, 122, 2],   // Southeast Asia mainland
-  [-8, 8, 95, 145, 2],     // Indonesia / Philippines arcs
-  [35, 44, 100, 132, 2],   // China south / Korea
-  [44, 55, 80, 140, 2],    // China north / Mongolia
-  [30, 45, 130, 145, 1],   // Japan
-  [1, 6, 100, 120, 1],     // Malaysia / Singapore
-
-  // Australia
-  [-10, -25, 130, 155, 2],
-  [-25, -40, 114, 154, 3],
-  [-40, -45, 144, 148, 1], // Tasmania
-
-  // Antarctica fringe
-  [-72, -62, -180, 180, 1],
-];
+  return (
+    <mesh ref={ref}>
+      <sphereGeometry args={[1.005, 64, 64]} />
+      <meshPhongMaterial 
+        map={texture} 
+        shininess={5}
+        emissive="#112233"
+        emissiveIntensity={0.2}
+      />
+    </mesh>
+  );
+}
 
 function latLonToXYZ(lat: number, lon: number, r: number): THREE.Vector3 {
   const phi   = (90 - lat) * (Math.PI / 180);
@@ -75,50 +42,6 @@ function latLonToXYZ(lat: number, lon: number, r: number): THREE.Vector3 {
   );
 }
 
-// High-fidelity world map point cloud
-function WorldMapDots({ count = 6000 }: { count?: number }) {
-  const ref = useRef<THREE.Group>(null);
-
-  const positions = useMemo(() => {
-    const pts: number[] = [];
-    const totalWeight = LANDMASS_REGIONS.reduce((s, r) => s + r[4], 0);
-
-    for (let i = 0; i < count; i++) {
-      // Weighted random region pick
-      let roll = Math.random() * totalWeight;
-      let region = LANDMASS_REGIONS[0];
-      for (const r of LANDMASS_REGIONS) {
-        roll -= r[4];
-        if (roll <= 0) { region = r; break; }
-      }
-      const [latMin, latMax, lonMin, lonMax] = region;
-      const lat = latMin + Math.random() * (latMax - latMin);
-      const lon = lonMin + Math.random() * (lonMax - lonMin);
-      const v = latLonToXYZ(lat, lon, 1.005);
-      pts.push(v.x, v.y, v.z);
-    }
-    return new Float32Array(pts);
-  }, [count]);
-
-  useFrame((_, delta) => {
-    if (ref.current) ref.current.rotation.y += delta * 0.10;
-  });
-
-  return (
-    <group ref={ref}>
-      <Points positions={positions} stride={3} frustumCulled={false}>
-        <PointMaterial
-          transparent
-          color="#34d399"
-          size={0.016}
-          sizeAttenuation
-          depthWrite={false}
-          opacity={0.9}
-        />
-      </Points>
-    </group>
-  );
-}
 
 // Particle field
 function Particles({ count = 2200 }: { count?: number }) {
@@ -325,11 +248,11 @@ export default function Globe3D() {
       <pointLight position={[0, 5, -5]}  intensity={0.5} color="#8b5cf6" />
 
       <GlobeShell />
-      <WorldMapDots count={7000} />
+      <TexturedGlobe />
       <GlobeArcs />
       <CityMarkers />
       <Atmosphere />
-      <Particles />
+      <Particles count={5000} />
     </Canvas>
   );
 }

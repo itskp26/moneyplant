@@ -15,16 +15,28 @@ export interface Quote {
   dayLow?: number;
   pe?: number;
   exchange?: string;
+  currency?: string;
+  currencySymbol?: string;
 }
 
 const YF_BASE = "https://query1.finance.yahoo.com";
 
+// Symbols that should NOT get .NS suffix (Top US Stocks)
+const GLOBAL_SYMBOLS = ["AAPL", "MSFT", "NVDA", "AMZN", "META", "GOOGL", "TSLA", "BRK-B", "JPM", "LLY", "V", "UNH"];
+
 // Add .NS suffix for NSE-traded stocks
 function toNseSymbol(symbol: string) {
-  // Exclude indices (^), forex (=X), already-suffixed (.NS/.BO etc.)
-  // and futures contracts (=F) like GC=F, SI=F, CL=F, BZ=F
   const upper = symbol.toUpperCase();
-  if (upper.startsWith("^") || upper.includes("=X") || upper.includes("=F") || upper.includes(".")) return upper;
+  // Exclude indices (^), forex (=X), already-suffixed (.NS/.BO etc.),
+  // futures contracts (=F), and explicitly defined Global US symbols
+  if (
+    upper.startsWith("^") || 
+    upper.includes("=X") || 
+    upper.includes("=F") || 
+    upper.includes(".") || 
+    GLOBAL_SYMBOLS.includes(upper)
+  ) return upper;
+  
   return `${upper}.NS`;
 }
 
@@ -48,6 +60,19 @@ export async function fetchQuote(symbol: string): Promise<Quote | null> {
     const change = price - prev;
     const changePercent = prev !== 0 ? (change / prev) * 100 : 0;
     
+    const CURRENCY_SYMBOLS: Record<string, string> = {
+      USD: "$",
+      INR: "₹",
+      EUR: "€",
+      GBP: "£",
+      JPY: "¥",
+      AUD: "A$",
+      CAD: "C$",
+      CHF: "Fr",
+      HKD: "HK$",
+      SGD: "S$",
+    };
+
     return {
       symbol: meta.symbol,
       price,
@@ -63,6 +88,8 @@ export async function fetchQuote(symbol: string): Promise<Quote | null> {
       dayHigh: meta.regularMarketDayHigh,
       dayLow: meta.regularMarketDayLow,
       exchange: meta.exchangeName,
+      currency: meta.currency,
+      currencySymbol: CURRENCY_SYMBOLS[meta.currency] ?? meta.currency,
     };
   } catch {
     return null;

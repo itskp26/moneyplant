@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -7,16 +7,6 @@ import { Activity, FileText, TrendingUp, TrendingDown, BarChart2, Coins, DollarS
 
 import { StatWidget } from "@/components/VisualCards";
 
-const MARKET_PILLS = [
-  { label: "NIFTY 50", value: "24,350", change: "+0.65%", up: true },
-  { label: "SENSEX", value: "78,493", change: "+0.65%", up: true },
-  { label: "BANK NIFTY", value: "56,565", change: "+0.85%", up: true },
-  { label: "BTC/INR", value: "₹71.2L", change: "+2.39%", up: true },
-  { label: "USD/INR", value: "₹92.58", change: "-0.46%", up: false },
-  { label: "GOLD 10g", value: "₹89,400", change: "+0.30%", up: true },
-  { label: "ADANI", value: "₹2,218", change: "+0.66%", up: true },
-  { label: "ETH/INR", value: "₹2.2L", change: "+2.88%", up: true },
-];
 
 // Lazy-load the 3D globe (no SSR)
 const Globe3D = dynamic(() => import("@/components/Globe3D"), {
@@ -35,34 +25,29 @@ const Globe3D = dynamic(() => import("@/components/Globe3D"), {
   ),
 });
 
-// Smooth horizontal infinite scroll ticker
-function InfiniteScroll() {
+// Bottom ticker rail — continuous smooth scroll
+function ScrollableStatRail({ statCards }: { statCards: HeroV2Props["statCards"] }) {
+  // Double the cards for seamless looping
+  const doubledCards = [...statCards, ...statCards];
+
   return (
-    <div style={{ overflow: "hidden", width: "100%", maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)" }}>
-      <motion.div
-        style={{ display: "flex", gap: "1rem", width: "max-content" }}
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-      >
-        {[...MARKET_PILLS, ...MARKET_PILLS].map((t, i) => (
-          <div key={i} style={{
-            padding: "5px 16px",
-            borderRadius: "999px",
-            background: t.up ? "rgba(16,185,129,0.08)" : "rgba(239,68,68,0.08)",
-            border: `1px solid ${t.up ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"}`,
-            fontSize: "0.72rem",
-            fontWeight: 700,
-            color: t.up ? "#10b981" : "#ef4444",
-            fontFamily: "monospace",
-            display: "flex", alignItems: "center", gap: "8px",
-            whiteSpace: "nowrap",
-          }}>
-            <span style={{ color: "#64748b", fontWeight: 400 }}>{t.label}</span>
-            <span style={{ color: "#e2e8f0" }}>{t.value}</span>
-            <span>{t.change}</span>
+    <div
+      style={{
+        overflow: "hidden",
+        position: "relative",
+        width: "100%",
+        paddingTop: "6px",
+        paddingBottom: "8px",
+      }}
+      className="stat-ticker-rail"
+    >
+      <div className="ticker-cards-track" style={{ gap: "0.75rem" }}>
+        {doubledCards.map((card, i) => (
+          <div key={`${card.label}-${i}`} style={{ flexShrink: 0 }}>
+            <StatWidget {...card} delay={0} compact />
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -102,8 +87,8 @@ export default function HeroV2({ statCards }: HeroV2Props) {
     return () => window.removeEventListener("mousemove", handleMouse);
   }, [mouseX, mouseY]);
 
-  const words = ["India's", "Live", "Finance", "Hub"];
-  const gradientWords = [false, false, true, true];
+  const words = ["Global", "Live", "Finance", "Hub"];
+  const gradientWords = [true, false, true, true];
 
   return (
     <section
@@ -179,7 +164,14 @@ export default function HeroV2({ statCards }: HeroV2Props) {
             </motion.div>
 
             {/* Headline with staggered word animation */}
-            <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em", marginBottom: "1.25rem" }}>
+            <h1 style={{ 
+              fontSize: "clamp(2.5rem, 6vw, 4.2rem)", 
+              fontWeight: 900, 
+              lineHeight: 1.05, 
+              letterSpacing: "-0.05em", 
+              marginBottom: "1.5rem",
+              textShadow: "0 20px 50px rgba(0,0,0,0.5)"
+            }}>
               {words.map((word, i) => (
                 <motion.span
                   key={word}
@@ -187,13 +179,14 @@ export default function HeroV2({ statCards }: HeroV2Props) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 + i * 0.12, ease: [0.25, 0.4, 0.25, 1] }}
                   style={{
-                    display: "inline-block", marginRight: "0.4em",
+                    display: "inline-block", marginRight: "0.35em",
                     ...(gradientWords[i] ? {
                       background: "linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
-                    } : { color: "#f1f5f9" }),
+                      filter: "drop-shadow(0 0 20px rgba(16,185,129,0.2))"
+                    } : { color: "#f8fafc" }),
                   }}
                 >
                   {word}
@@ -207,8 +200,8 @@ export default function HeroV2({ statCards }: HeroV2Props) {
               transition={{ duration: 0.7, delay: 0.6 }}
               style={{ fontSize: "1.05rem", color: "#64748b", maxWidth: "520px", lineHeight: 1.75, marginBottom: "2rem" }}
             >
-              Real-time Nifty 50, Sensex, NSE/BSE stocks, Bitcoin price in INR,
-              USD to INR, Gold rates & IPOs — all in one place.
+              Real-time Global Stocks, Bitcoin (USD), Forex Markets, Gold & Silver rates, 
+              and Top Cryptocurrencies — tracked globally with second-by-second updates.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -216,33 +209,43 @@ export default function HeroV2({ statCards }: HeroV2Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.8 }}
-              style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3rem" }}
+              style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap", marginBottom: "3.5rem" }}
               className="hero-btns"
             >
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Link href="/markets/india" style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
-                  padding: "0.8rem 1.8rem",
-                  background: "linear-gradient(135deg, #10b981, #3b82f6)",
-                  color: "white", borderRadius: "12px",
-                  fontWeight: 700, fontSize: "0.95rem",
+              <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
+                <Link href="/markets/global" className="btn-shine" style={{
+                  display: "inline-flex", alignItems: "center", gap: "12px",
+                  padding: "1.1rem 2.8rem",
+                  background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                  color: "white", borderRadius: "16px",
+                  fontWeight: 800, fontSize: "1.1rem",
+                  fontFamily: "var(--font-sora)",
                   textDecoration: "none",
-                  boxShadow: "0 0 40px rgba(16,185,129,0.3)",
+                  boxShadow: "0 20px 40px -10px rgba(16,185,129,0.5), 0 0 20px rgba(16,185,129,0.2)",
+                  border: "2px solid rgba(255,255,255,0.2)",
+                  letterSpacing: "0.02em",
+                  position: "relative",
+                  overflow: "hidden"
                 }}>
-                  <Activity size={18} /> Explore Markets
+                  <Activity size={22} /> Explore Markets
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Link href="/ipo" style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
-                  padding: "0.8rem 1.8rem",
-                  background: "rgba(30,41,59,0.8)", color: "#94a3b8",
-                  borderRadius: "12px", fontWeight: 700, fontSize: "0.95rem",
+              <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
+                <Link href="/ipo" className="btn-shine" style={{
+                  display: "inline-flex", alignItems: "center", gap: "12px",
+                  padding: "1.1rem 2.8rem",
+                  background: "rgba(30,41,59,0.4)", color: "#ffffff",
+                  borderRadius: "16px", fontWeight: 700, fontSize: "1.1rem",
+                  fontFamily: "var(--font-sora)",
                   textDecoration: "none",
-                  border: "1px solid rgba(51,65,85,0.6)",
-                  backdropFilter: "blur(10px)",
+                  border: "2px solid rgba(255,255,255,0.15)",
+                  backdropFilter: "blur(24px)",
+                  boxShadow: "0 15px 30px -5px rgba(0,0,0,0.4)",
+                  letterSpacing: "0.02em",
+                  position: "relative",
+                  overflow: "hidden"
                 }}>
-                  <FileText size={18} /> IPO Tracker
+                  <FileText size={22} /> IPO Tracker
                 </Link>
               </motion.div>
             </motion.div>
@@ -282,9 +285,9 @@ export default function HeroV2({ statCards }: HeroV2Props) {
 
             {/* Floating market data cards — tucked inside container, no overflow */}
             {[
-              { label: "NIFTY 50", value: "24,350", up: true, top: "5%", left: "8%" },
-              { label: "BTC/INR",  value: "₹71.2L",  up: true, bottom: "12%", right: "8%" },
-              { label: "GOLD",     value: "₹89,400", up: true, bottom: "30%", left: "8%" },
+              { label: "S&P 500", value: "5,450", up: true, top: "5%", left: "8%" },
+              { label: "BTC/USD",  value: "$65,240",  up: true, bottom: "12%", right: "8%" },
+              { label: "GOLD",     value: "$2,350", up: true, bottom: "30%", left: "8%" },
             ].map((badge, i) => (
               <motion.div
                 key={badge.label}
@@ -317,31 +320,58 @@ export default function HeroV2({ statCards }: HeroV2Props) {
           </motion.div>
         </div>
 
-        {/* Bottom stat cards row (remaining) */}
+        {/* Middle scrollable rail — continuous smooth scroll */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 1.3 }}
-          style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.75rem", marginTop: "2.5rem" }}
-          className="bottom-stat-grid"
+          style={{ marginTop: "2.5rem", overflow: "hidden" }}
         >
-          {statCards.slice(4).map((card, i) => (
-            <StatWidget key={card.label} {...card} delay={1.4 + i * 0.08} />
-          ))}
+          <div className="ticker-cards-track-slow" style={{ gap: "1rem" }}>
+            {[...statCards, ...statCards].map((card, i) => (
+              <div key={`${card.label}-${i}`} style={{ flexShrink: 0, width: "300px" }}>
+                <StatWidget {...card} delay={0} compact={false} />
+              </div>
+            ))}
+          </div>
         </motion.div>
 
-        {/* Infinite scroll ticker */}
+        {/* Mouse-wheel scrollable ticker rail */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.6 }}
-          style={{ marginTop: "2rem" }}
+          style={{ marginTop: "1.5rem" }}
         >
-          <InfiniteScroll />
+          <ScrollableStatRail statCards={statCards} />
         </motion.div>
       </div>
 
       <style>{`
+        @keyframes ticker-cards {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+
+        .ticker-cards-track {
+          display: flex;
+          animation: ticker-cards 60s linear infinite;
+          width: max-content;
+        }
+
+        .ticker-cards-track-slow {
+          display: flex;
+          animation: ticker-cards 90s linear infinite;
+          width: max-content;
+          padding-top: 10px;
+          padding-bottom: 15px;
+        }
+
+        .ticker-cards-track:hover,
+        .ticker-cards-track-slow:hover {
+          animation-play-state: paused;
+        }
+
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ── Desktop: left content fixed, globe 480px ── */
@@ -363,6 +393,33 @@ export default function HeroV2({ statCards }: HeroV2Props) {
           h1 { font-size: 2.25rem !important; line-height: 1.1 !important; }
           .hero-btns > div { width: 100%; }
           .hero-btns a { width: 100%; justify-content: center; }
+        }
+
+        /* Scrollable rail: hide scrollbar ── */
+        .stat-rail-hide-scroll::-webkit-scrollbar { display: none; }
+        .stat-rail-hide-scroll { -ms-overflow-style: none; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+
+        /* Button Shine Effect */
+        .btn-shine::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(
+            to right,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+          );
+          transform: skewX(-25deg);
+          animation: shine 4s infinite;
+        }
+        @keyframes shine {
+          100% {
+            left: 200%;
+          }
         }
       `}</style>
     </section>

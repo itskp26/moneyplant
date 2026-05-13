@@ -9,6 +9,7 @@ import { getCryptoMeta } from "@/lib/meta";
 import CryptoTable from "@/components/CryptoTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { StatWidget } from "@/components/VisualCards";
+import CryptoMoverCard from "@/components/CryptoMoverCard";
 
 export const metadata: Metadata = getCryptoMeta();
 
@@ -22,7 +23,7 @@ export default async function CryptoHubPage() {
   const losers = [...coins].sort((a, b) => a.change24h - b.change24h).slice(0, 5);
 
   const numFmt = (n: number | undefined, d = 2) => 
-    n !== undefined ? n.toLocaleString("en-IN", { maximumFractionDigits: d }) : "—";
+    n !== undefined ? n.toLocaleString("en-US", { maximumFractionDigits: d }) : "—";
 
   return (
     <>
@@ -36,63 +37,49 @@ export default async function CryptoHubPage() {
           <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "#3b82f6", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", marginBottom: "0.5rem" }}>
             <Coins size={16} /> Digital Assets Hub
           </div>
-          <h1 style={{ fontSize: "2.75rem", fontWeight: 800, marginBottom: "0.75rem" }}>Cryptocurrency Market</h1>
+          <h1 style={{ fontSize: "2.75rem", fontWeight: 800, marginBottom: "0.75rem" }}>Global Crypto Hub</h1>
           <p style={{ color: "#64748b", fontSize: "1.1rem", maxWidth: "800px" }}>
-            Real-time tracking of 500+ digital currencies in INR. Compare prices across Indian exchanges and monitor global liquidity.
+            Real-time tracking of 500+ digital currencies in USD. Monitor global liquidity, market trends, and top movers across the decentralized economy.
           </p>
         </div>
 
         {/* Top Movers Bar */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "3rem" }} className="movers-grid">
-           {/* Gainers */}
-           <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                 <h3 style={{ fontSize: "0.85rem", fontWeight: 800, color: "#10b981", display: "flex", alignItems: "center", gap: "6px", textTransform: "uppercase" }}>
-                   <TrendingUp size={16} /> 24h Top Gainers
+            {/* Gainers */}
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                 <h3 style={{ fontSize: "1rem", fontWeight: 900, color: "#10b981", display: "flex", alignItems: "center", gap: "8px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                   <div style={{ padding: "6px", background: "rgba(16,185,129,0.15)", borderRadius: "8px" }}>
+                    <TrendingUp size={18} />
+                   </div>
+                   Top Gainers
                  </h3>
-                 <Link href="/crypto/gainers" style={{ fontSize: "0.75rem", color: "#64748b", textDecoration: "none" }}>View all</Link>
+                 <Link href="/crypto/gainers" style={{ fontSize: "0.82rem", color: "#3b82f6", fontWeight: 600, textDecoration: "none" }}>View All →</Link>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.25rem" }}>
                  {gainers.map((c, i) => (
-                   <StatWidget 
-                     key={c.id}
-                     label={c.symbol}
-                     value={c.priceInr}
-                     changePercent={c.change24h}
-                     href={`/crypto/${c.id}`}
-                     icon={<Coins />}
-                     compact
-                     delay={0.1 + i * 0.05}
-                     prefix="₹"
-                   />
+                   <CryptoMoverCard key={c.id} coin={c} up={true} delay={0.1 + i * 0.08} />
                  ))}
               </div>
-           </div>
+            </div>
 
-           {/* Losers */}
-           <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                 <h3 style={{ fontSize: "0.85rem", fontWeight: 800, color: "#ef4444", display: "flex", alignItems: "center", gap: "6px", textTransform: "uppercase" }}>
-                   <TrendingDown size={16} /> 24h Top Losers
+            {/* Losers */}
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                 <h3 style={{ fontSize: "1rem", fontWeight: 900, color: "#ef4444", display: "flex", alignItems: "center", gap: "8px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                   <div style={{ padding: "6px", background: "rgba(239,68,68,0.15)", borderRadius: "8px" }}>
+                    <TrendingDown size={18} />
+                   </div>
+                   Top Losers
                  </h3>
-                 <Link href="/crypto/losers" style={{ fontSize: "0.75rem", color: "#64748b", textDecoration: "none" }}>View all</Link>
+                 <Link href="/crypto/losers" style={{ fontSize: "0.82rem", color: "#3b82f6", fontWeight: 600, textDecoration: "none" }}>View All →</Link>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.25rem" }}>
                  {losers.map((c, i) => (
-                   <StatWidget 
-                     key={c.id}
-                     label={c.symbol}
-                     value={c.priceInr}
-                     changePercent={c.change24h}
-                     href={`/crypto/${c.id}`}
-                     icon={<Coins />}
-                     compact
-                     delay={0.4 + i * 0.05}
-                     prefix="₹"
-                   />
+                   <CryptoMoverCard key={c.id} coin={c} up={false} delay={0.4 + i * 0.08} />
                  ))}
               </div>
-           </div>
+            </div>
         </div>
 
         {/* Global Market Overview */}
@@ -151,9 +138,9 @@ export default async function CryptoHubPage() {
                textAlign: "center"
              }}>
                <ShieldCheck size={32} color="#10b981" style={{ margin: "0 auto 1rem" }} />
-               <h3 style={{ fontSize: "0.95rem", marginBottom: "0.5rem" }}>Safe Trading</h3>
-               <p style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "1.25rem" }}>Always use regulated Indian exchanges for INR deposits.</p>
-               <Link href="/crypto/exchanges" className="btn btn-primary" style={{ width: "100%", textAlign: "center" }}>Compare Exchanges</Link>
+               <h3 style={{ fontSize: "0.95rem", marginBottom: "0.5rem" }}>Global Security</h3>
+               <p style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "1.25rem" }}>Always use regulated global exchanges for secure digital asset management.</p>
+               <Link href="/crypto/exchanges" className="btn btn-primary" style={{ width: "100%", textAlign: "center" }}>Explore Exchanges</Link>
              </div>
           </aside>
 
@@ -182,6 +169,7 @@ export default async function CryptoHubPage() {
         }
         @media (max-width: 1024px) {
           .content-grid { grid-template-columns: 1fr !important; }
+          .movers-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </>

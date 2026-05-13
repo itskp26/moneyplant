@@ -23,7 +23,7 @@ export interface CryptoQuote {
 export async function fetchCryptoList(ids?: string[]): Promise<CryptoQuote[]> {
   try {
     const idsParam = ids?.join(",") ?? "bitcoin,ethereum,tether,binancecoin,solana,ripple,usd-coin,cardano,avalanche-2,dogecoin,tron,polkadot,matic-network,shiba-inu,chainlink,litecoin,uniswap,cosmos,stellar,staked-ether";
-    const url = `${CG_BASE}/coins/markets?vs_currency=inr&ids=${idsParam}&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h&locale=en`;
+    const url = `${CG_BASE}/coins/markets?vs_currency=usd&ids=${idsParam}&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h&locale=en`;
     const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const data = await res.json();
@@ -32,15 +32,15 @@ export async function fetchCryptoList(ids?: string[]): Promise<CryptoQuote[]> {
       symbol: (c.symbol as string).toUpperCase(),
       name: c.name as string,
       image: c.image as string,
-      priceInr: (c.current_price as number) ?? 0,
-      priceUsd: 0, // fetched separately if needed
+      priceInr: 0, 
+      priceUsd: (c.current_price as number) ?? 0,
       change24h: (c.price_change_percentage_24h as number) ?? 0,
-      marketCapInr: (c.market_cap as number) ?? 0,
-      volume24hInr: (c.total_volume as number) ?? 0,
-      high24hInr: (c.high_24h as number) ?? 0,
-      low24hInr: (c.low_24h as number) ?? 0,
-      allTimeHighInr: (c.ath as number) ?? undefined,
-      allTimeLowInr: (c.atl as number) ?? undefined,
+      marketCapInr: 0,
+      volume24hInr: 0,
+      high24hInr: 0,
+      low24hInr: 0,
+      allTimeHighInr: undefined,
+      allTimeLowInr: undefined,
       circulatingSupply: (c.circulating_supply as number) ?? undefined,
       totalSupply: (c.total_supply as number) ?? undefined,
       marketCapRank: (c.market_cap_rank as number) ?? undefined,

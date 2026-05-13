@@ -8,6 +8,7 @@ import { fetchAllForexRates } from "@/lib/forex";
 import ForexTable from "@/components/ForexTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { getForexMeta } from "@/lib/meta";
+import ForexConverter from "@/components/ForexConverter";
 
 export const metadata: Metadata = getForexMeta();
 
@@ -43,20 +44,21 @@ export default async function ForexHubPage() {
           </div>
           <h1 style={{ fontSize: "2.75rem", fontWeight: 800, marginBottom: "0.75rem" }}>Forex Markets</h1>
           <p style={{ color: "#64748b", fontSize: "1.1rem", maxWidth: "800px" }}>
-            Real-time exchange rates for major global currencies. Monitor INR performance against the Dollar, Euro, Pound, and more.
+            Real-time exchange rates for major global currencies. Monitor international performance across the Dollar, Euro, Pound, and more.
           </p>
         </div>
 
         {/* Major Pair Spotlight */}
-        <div style={{ marginBottom: "3.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "2rem", marginBottom: "3.5rem" }} className="content-grid">
            <WideStatCard 
-             label="US DOLLAR TO INDIAN RUPEE"
-             value={usdInr?.rate ? `₹${usdInr.rate.toFixed(4)}` : "—"}
-             changePercent={usdInr?.changePercent || 0}
-             change={0} // pts not applicable for forex usually in this format, or 0
-             href="/forex/usd-to-inr"
+             label="EURO TO US DOLLAR"
+             value={rates.find(r => r.pair === "EURUSD=X")?.rate ? `$${rates.find(r => r.pair === "EURUSD=X")?.rate.toFixed(4)}` : "—"}
+             changePercent={rates.find(r => r.pair === "EURUSD=X")?.changePercent || 0}
+             change={0}
+             href="/forex/eur-to-usd"
              delay={0.1}
            />
+           <ForexConverter initialRates={rates} />
         </div>
 
         {/* Global Market Overview */}

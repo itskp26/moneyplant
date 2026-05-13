@@ -104,6 +104,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  // 6.5. CRYPTO MOVERS
+  const cryptoMovers = ['gainers', 'losers'].map(type => ({
+    url: `${SITE_URL}/crypto/${encodeURIComponent(type)}`,
+    lastModified,
+    changeFrequency: 'always' as const,
+    priority: 0.8,
+  }));
+
   // 7. INDIVIDUAL FOREX
   const forex = FOREX_PAIRS.map(pair => ({
     url: `${SITE_URL}/forex/${encodeURIComponent(pair.id)}`,
@@ -127,6 +135,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...stocks,
     ...indices,
     ...cryptos,
+    ...cryptoMovers,
     ...forex,
     ...commodities,
   ];

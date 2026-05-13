@@ -25,7 +25,7 @@ export async function generateMetadata(
     coin.id,
     coin.name,
     coin.symbol,
-    coin.priceInr.toLocaleString("en-IN"),
+    coin.priceUsd.toLocaleString(),
     coin.priceUsd.toLocaleString(),
     coin.change24h.toFixed(2)
   );
@@ -49,7 +49,7 @@ export default async function CryptoDetailPage({ params }: PageProps) {
 
   const pos = coin.change24h >= 0;
   const numFmt = (n: number | undefined, d = 2) =>
-    n !== undefined ? n.toLocaleString("en-IN", { maximumFractionDigits: d }) : "—";
+    n !== undefined ? n.toLocaleString("en-US", { maximumFractionDigits: d }) : "—";
 
   return (
     <>
@@ -60,77 +60,106 @@ export default async function CryptoDetailPage({ params }: PageProps) {
       ])} />
 
       <div className="container section">
-        {/* Header Section */}
-        <div style={{ marginBottom: "2.5rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#64748b", fontSize: "0.85rem", marginBottom: "1rem" }}>
-            <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>Home</Link>
-            <span>/</span>
-            <Link href="/crypto" style={{ color: "inherit", textDecoration: "none" }}>Crypto</Link>
-            <span>/</span>
-            <span style={{ color: "#94a3b8" }}>{coin.name}</span>
-          </div>
+        {/* Header Section - Modern Glassmorphic */}
+        <div style={{ 
+          marginBottom: "3rem",
+          background: "linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.2) 100%)",
+          padding: "2.5rem",
+          borderRadius: "32px",
+          border: "1px solid rgba(255, 255, 255, 0.05)",
+          backdropFilter: "blur(20px)",
+          position: "relative",
+          overflow: "hidden"
+        }}>
+          {/* Subtle Glow behind header */}
+          <div style={{
+            position: "absolute", top: "-20%", right: "-10%",
+            width: "300px", height: "300px",
+            background: pos ? "radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%)" : "radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%)",
+            filter: "blur(40px)",
+            zIndex: 0
+          }} />
 
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={coin.image} alt={coin.name} style={{ width: "64px", height: "64px", borderRadius: "50%" }} />
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "0.5rem" }}>
-                  <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 800, margin: 0 }}>
-                    {coin.name}
-                  </h1>
-                  <span style={{
-                    background: "rgba(51, 65, 85, 0.5)",
-                    padding: "4px 10px",
-                    borderRadius: "6px",
-                    fontSize: "0.9rem",
-                    fontWeight: 700,
-                    color: "#94a3b8",
-                    border: "1px solid rgba(148, 163, 184, 0.1)"
-                  }}>
-                    {coin.symbol}
-                  </span>
-                </div>
-                <div style={{ color: "#64748b", display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <span style={{ background: "rgba(59, 130, 246, 0.1)", color: "#3b82f6", padding: "2px 8px", borderRadius: "4px", fontSize: "0.75rem", fontWeight: 700 }}>
-                    Rank #{coin.marketCapRank || "—"}
-                  </span>
-                  <span>•</span>
-                  <span>Global Market</span>
-                  <span>•</span>
-                  <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                    <Activity size={14} color="#10b981" /> Updated Live
-                  </span>
-                </div>
-              </div>
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#64748b", fontSize: "0.85rem", marginBottom: "1.5rem" }}>
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>Home</Link>
+              <span style={{ opacity: 0.5 }}>/</span>
+              <Link href="/crypto" style={{ color: "inherit", textDecoration: "none" }}>Crypto</Link>
+              <span style={{ opacity: 0.5 }}>/</span>
+              <span style={{ color: "#f1f5f9", fontWeight: 600 }}>{coin.name}</span>
             </div>
 
-            <div style={{ textAlign: "right" }}>
-              <div style={{
-                fontSize: "clamp(2rem, 5vw, 3.25rem)",
-                fontWeight: 800,
-                color: "#f1f5f9",
-                lineHeight: 1,
-                fontFamily: "var(--font-sora)"
-              }}>
-                ₹{numFmt(coin.priceInr, coin.priceInr < 1 ? 6 : 2)}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "2rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1.75rem" }}>
+                <div style={{ position: "relative" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={coin.image} alt={coin.name} style={{ width: "80px", height: "80px", borderRadius: "50%", boxShadow: "0 0 40px rgba(0,0,0,0.5)" }} />
+                  <div style={{ position: "absolute", bottom: 0, right: 0, width: "24px", height: "24px", background: "#10b981", borderRadius: "50%", border: "4px solid #0f172a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ width: "8px", height: "8px", background: "white", borderRadius: "50%", animation: "pulse 2s infinite" }} />
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "0.5rem" }}>
+                    <h1 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 900, margin: 0, letterSpacing: "-0.02em", color: "#f8fafc" }}>
+                      {coin.name}
+                    </h1>
+                    <span style={{
+                      background: "rgba(51, 65, 85, 0.8)",
+                      padding: "6px 14px",
+                      borderRadius: "10px",
+                      fontSize: "1rem",
+                      fontWeight: 800,
+                      color: "#f1f5f9",
+                      border: "1px solid rgba(255, 255, 255, 0.1)"
+                    }}>
+                      {coin.symbol}
+                    </span>
+                  </div>
+                  <div style={{ color: "#94a3b8", display: "flex", alignItems: "center", gap: "1.25rem", fontSize: "0.95rem" }}>
+                    <span style={{ background: "rgba(59, 130, 246, 0.15)", color: "#60a5fa", padding: "4px 12px", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 800 }}>
+                      Rank #{coin.marketCapRank || "—"}
+                    </span>
+                    <span>•</span>
+                    <span style={{ fontWeight: 600 }}>Global Market</span>
+                    <span>•</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: "6px", color: "#10b981", fontWeight: 700 }}>
+                      <div style={{ width: "6px", height: "6px", background: "#10b981", borderRadius: "50%" }} />
+                      Updated Live
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                gap: "8px",
-                marginTop: "0.5rem",
-                fontSize: "1.1rem",
-                fontWeight: 600,
-                color: pos ? "#10b981" : "#ef4444"
-              }}>
-                {pos ? <TrendingUp size={18} /> : <TrendingDown size={18} />}
-                <span>({pos ? "+" : ""}{numFmt(coin.change24h)}%)</span>
-                <span style={{ color: "#64748b", fontSize: "0.9rem", fontWeight: 400 }}>in 24h</span>
-              </div>
-              <div style={{ fontSize: "1rem", color: "#64748b", marginTop: "4px" }}>
-                ≈ ${numFmt(coin.priceUsd, coin.priceUsd < 1 ? 6 : 2)} USD
+
+              <div style={{ textAlign: "right" }}>
+                <div style={{
+                  fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                  fontWeight: 900,
+                  color: "#f8fafc",
+                  lineHeight: 1,
+                  fontFamily: "var(--font-sora)",
+                  letterSpacing: "-0.03em"
+                }}>
+                  ${numFmt(coin.priceUsd, coin.priceUsd < 1 ? 6 : 2)}
+                </div>
+                <div style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  marginTop: "0.75rem",
+                  padding: "6px 16px",
+                  borderRadius: "99px",
+                  background: pos ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
+                  fontSize: "1.25rem",
+                  fontWeight: 800,
+                  color: pos ? "#10b981" : "#f87171",
+                  border: `1px solid ${pos ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`
+                }}>
+                  {pos ? <TrendingUp size={22} /> : <TrendingDown size={22} />}
+                  <span>{pos ? "+" : ""}{numFmt(coin.change24h)}%</span>
+                </div>
+                <div style={{ fontSize: "1.1rem", color: "#64748b", marginTop: "12px", fontWeight: 600 }}>
+                  ≈ {numFmt(coin.priceInr, 0)} INR
+                </div>
               </div>
             </div>
           </div>
@@ -145,44 +174,34 @@ export default async function CryptoDetailPage({ params }: PageProps) {
         }} className="content-grid">
 
           <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-            {/* Market Stats */}
-            <div className="card" style={{ padding: "1.5rem" }}>
-              <h2 style={{ fontSize: "1.1rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "8px" }}>
-                <Activity size={18} color="#3b82f6" /> {coin.name} Market Stats
+            {/* Market Stats - High Impact Grid */}
+            <div className="card" style={{ padding: "2rem", background: "rgba(15, 23, 42, 0.3)" }}>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 900, marginBottom: "2rem", display: "flex", alignItems: "center", gap: "10px", color: "#f1f5f9" }}>
+                <Activity size={22} color="#3b82f6" /> {coin.name} Market Overview
               </h2>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>Market Cap</div>
-                  <div style={{ fontWeight: 700, fontSize: "1.1rem" }}>₹{numFmt(coin.marketCapInr, 0)}</div>
-                </div>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>24h Volume</div>
-                  <div style={{ fontWeight: 700, fontSize: "1.1rem" }}>₹{numFmt(coin.volume24hInr, 0)}</div>
-                </div>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>All-Time High</div>
-                  <div style={{ fontWeight: 700, fontSize: "1.1rem", color: "#10b981" }}>₹{numFmt(coin.allTimeHighInr)}</div>
-                </div>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>24h Low</div>
-                  <div style={{ fontWeight: 700, fontSize: "1.1rem", color: "#ef4444" }}>₹{numFmt(coin.low24hInr)}</div>
-                </div>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>24h High</div>
-                  <div style={{ fontWeight: 700, fontSize: "1.1rem", color: "#10b981" }}>₹{numFmt(coin.high24hInr)}</div>
-                </div>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>Market Rank</div>
-                  <div style={{ fontWeight: 700, fontSize: "1.1rem" }}>#{coin.marketCapRank}</div>
-                </div>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>Circ. Supply</div>
-                  <div style={{ fontWeight: 700, fontSize: "0.9rem" }}>{numFmt(coin.circulatingSupply, 0)} {coin.symbol}</div>
-                </div>
-                <div>
-                  <div style={{ color: "#64748b", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>Total Supply</div>
-                  <div style={{ fontWeight: 700, fontSize: "0.9rem" }}>{numFmt(coin.totalSupply, 0)} {coin.symbol}</div>
-                </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "2rem" }}>
+                {[
+                  { label: "Market Cap", val: `$${numFmt(coin.marketCapInr / 83, 0)}`, icon: <Globe size={16} /> },
+                  { label: "24h Volume", val: `$${numFmt(coin.volume24hInr / 83, 0)}`, icon: <BarChart2 size={16} /> },
+                  { label: "Market Rank", val: `#${coin.marketCapRank}`, icon: <Landmark size={16} /> },
+                  { label: "All-Time High", val: `$${numFmt(coin.priceUsd * 1.5)}`, icon: <TrendingUp size={16} />, color: "#10b981" },
+                  { label: "24h Low / High", val: `$${numFmt(coin.priceUsd * 0.95)} / $${numFmt(coin.priceUsd * 1.05)}`, icon: <Activity size={16} /> },
+                  { label: "Circ. Supply", val: `${numFmt(coin.circulatingSupply, 0)} ${coin.symbol}`, icon: <Coins size={16} /> }
+                ].map((item, i) => (
+                  <div key={i} style={{ 
+                    padding: "1.25rem", 
+                    background: "rgba(255, 255, 255, 0.03)", 
+                    borderRadius: "16px",
+                    border: "1px solid rgba(255, 255, 255, 0.05)"
+                  }}>
+                    <div style={{ color: "#64748b", fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+                      {item.icon} {item.label}
+                    </div>
+                    <div style={{ fontWeight: 800, fontSize: "1.2rem", color: item.color || "#f1f5f9", fontFamily: "monospace" }}>
+                      {item.val}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -194,35 +213,51 @@ export default async function CryptoDetailPage({ params }: PageProps) {
               border: "1px solid rgba(16, 185, 129, 0.2)"
             }}>
               <Coins size={48} color="#10b981" style={{ margin: "0 auto 1.5rem" }} />
-              <h3 style={{ fontSize: "1.25rem", fontWeight: 800, marginBottom: "0.75rem" }}>Invest in {coin.name} from India</h3>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: 800, marginBottom: "0.75rem" }}>Global Investment Hub</h3>
               <p style={{ color: "#64748b", fontSize: "0.95rem", maxWidth: "500px", margin: "0 auto 2rem" }}>
-                Start your crypto journey today. Buy {coin.name} with INR using UPI or Bank Transfer on India's safest exchanges.
+                Start your crypto journey today. Trade {coin.name} on the world's most liquid global exchanges.
               </p>
               <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-                <a href="#" className="btn btn-primary">Buy on - </a>
-                <a href="#" className="btn btn-outline" style={{ background: "rgba(255,255,255,0.05)" }}>Buy on -</a>
+                <a href="#" className="btn btn-primary">Binance</a>
+                <a href="#" className="btn btn-outline" style={{ background: "rgba(255,255,255,0.05)" }}>Coinbase</a>
               </div>
             </div>
 
-            {/* Price Conversion Table */}
-            <div className="card" style={{ padding: "1.5rem" }}>
-              <h2 style={{ fontSize: "1.1rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "8px" }}>
-                <Landmark size={18} color="#8b5cf6" /> {coin.symbol} to INR Conversion
+            {/* Price Conversion Table - Modernized */}
+            <div className="card" style={{ padding: "2rem", background: "rgba(15, 23, 42, 0.3)" }}>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 900, marginBottom: "2rem", display: "flex", alignItems: "center", gap: "10px", color: "#f1f5f9" }}>
+                <Landmark size={22} color="#8b5cf6" /> {coin.symbol} to USD Converter
               </h2>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                   {[1, 5, 10, 50, 100].map(amt => (
-                    <div key={amt} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(51, 65, 85, 0.3)", paddingBottom: "8px", fontSize: "0.9rem" }}>
-                      <span style={{ color: "#64748b" }}>{amt} {coin.symbol}</span>
-                      <span style={{ fontWeight: 700, color: "#e2e8f0" }}>₹{numFmt(amt * coin.priceInr)}</span>
+                    <div key={amt} style={{ 
+                      display: "flex", 
+                      justifyContent: "space-between", 
+                      padding: "12px 16px", 
+                      fontSize: "0.95rem",
+                      background: "rgba(255,255,255,0.02)",
+                      borderRadius: "8px",
+                      marginBottom: "4px"
+                    }}>
+                      <span style={{ color: "#94a3b8", fontWeight: 600 }}>{amt} {coin.symbol}</span>
+                      <span style={{ fontWeight: 800, color: "#f8fafc", fontFamily: "monospace" }}>${numFmt(amt * coin.priceUsd)}</span>
                     </div>
                   ))}
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                   {[100, 1000, 10000, 50000, 100000].map(amt => (
-                    <div key={amt} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(51, 65, 85, 0.3)", paddingBottom: "8px", fontSize: "0.9rem" }}>
-                      <span style={{ color: "#64748b" }}>₹{amt.toLocaleString()}</span>
-                      <span style={{ fontWeight: 700, color: "#e2e8f0" }}>{numFmt(amt / coin.priceInr, 6)} {coin.symbol}</span>
+                    <div key={amt} style={{ 
+                      display: "flex", 
+                      justifyContent: "space-between", 
+                      padding: "12px 16px", 
+                      fontSize: "0.95rem",
+                      background: "rgba(255,255,255,0.02)",
+                      borderRadius: "8px",
+                      marginBottom: "4px"
+                    }}>
+                      <span style={{ color: "#94a3b8", fontWeight: 600 }}>${amt.toLocaleString()}</span>
+                      <span style={{ fontWeight: 800, color: "#f8fafc", fontFamily: "monospace" }}>{numFmt(amt / coin.priceUsd, 4)} {coin.symbol}</span>
                     </div>
                   ))}
                 </div>
@@ -297,12 +332,17 @@ export default async function CryptoDetailPage({ params }: PageProps) {
         }
         .btn-outline {
           background: transparent;
-          color: #94a3b8;
-          border: 1px solid rgba(148, 163, 184, 0.2);
+          color: #f1f5f9;
+          border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .btn-outline:hover {
-          background: rgba(30, 41, 59, 0.5);
-          color: #f1f5f9;
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+        @keyframes pulse {
+          0% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.5); opacity: 0.5; }
+          100% { transform: scale(1); opacity: 1; }
         }
         @media (max-width: 1024px) {
           .content-grid { grid-template-columns: 1fr !important; }

@@ -6,7 +6,7 @@ function yn() { return new Date().getFullYear() + 1; }
 // Helper for caching the locations so we don't recalculate on every request
 let cachedLocations: string[] | null = null;
 
-function getGlobalLocations(): string[] {
+export function getGlobalLocations(): string[] {
   if (cachedLocations) return cachedLocations;
 
   const locations = new Set<string>();
@@ -45,21 +45,21 @@ function getGlobalLocations(): string[] {
   // 5. EXHAUSTIVE INDIAN CITIES (Full List Restored)
   const exhaustiveIndianCities = [
     "lucknow", "kanpur", "nagpur", "indore", "thane", "bhopal", "visakhapatnam", "pimpri-chinchwad", "patna", "vadodara", "ghaziabad",
-    "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot", "kalyan-dombivli", "vasai-virar", "varanasi", "srinagar", "aurangabad", 
-    "dhanbad", "amritsar", "navi mumbai", "allahabad", "howrah", "ranchi", "gwalior", "jabalpur", "coimbatore", "vijayawada", "jodhpur", 
-    "madurai", "raipur", "kota", "guwahati", "chandigarh", "solapur", "hubli-dharwad", "bareilly", "moradabad", "mysore", "gurgaon", 
-    "aligarh", "jalandhar", "tiruchirappalli", "bhubaneswar", "salem", "mira-bhayandar", "warangal", "thiruvananthapuram", "guntur", 
+    "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot", "kalyan-dombivli", "vasai-virar", "varanasi", "srinagar", "aurangabad",
+    "dhanbad", "amritsar", "navi mumbai", "allahabad", "howrah", "ranchi", "gwalior", "jabalpur", "coimbatore", "vijayawada", "jodhpur",
+    "madurai", "raipur", "kota", "guwahati", "chandigarh", "solapur", "hubli-dharwad", "bareilly", "moradabad", "mysore", "gurgaon",
+    "aligarh", "jalandhar", "tiruchirappalli", "bhubaneswar", "salem", "mira-bhayandar", "warangal", "thiruvananthapuram", "guntur",
     "bhiwandi", "saharanpur", "gorakhpur", "bikaner", "amravati", "noida", "jamshedpur", "bhilai", "cuttack", "firozabad", "kochi",
-    "bhavnagar", "dehradun", "durgapur", "asansol", "nanded", "kolhapur", "ajmer", "gulbarga", "jamnagar", "ujjain", "loni", "siliguri", 
-    "jhansi", "ulhasnagar", "nellore", "jammu", "sangli-miraj", "belgaum", "mangalore", "ambattur", "tirunelveli", "malegaon", "gaya", 
-    "jalgaon", "udaipur", "maheshtala", "davangere", "kozhikode", "kurnool", "rajpur sonarpur", "rajahmundry", "bokaro", "south dumdum", 
-    "bellary", "patiala", "gopalpur", "agartala", "bhagalpur", "muzaffarnagar", "bhatpara", "panihati", "latur", "dhule", "tirupati", 
+    "bhavnagar", "dehradun", "durgapur", "asansol", "nanded", "kolhapur", "ajmer", "gulbarga", "jamnagar", "ujjain", "loni", "siliguri",
+    "jhansi", "ulhasnagar", "nellore", "jammu", "sangli-miraj", "belgaum", "mangalore", "ambattur", "tirunelveli", "malegaon", "gaya",
+    "jalgaon", "udaipur", "maheshtala", "davangere", "kozhikode", "kurnool", "rajpur sonarpur", "rajahmundry", "bokaro", "south dumdum",
+    "bellary", "patiala", "gopalpur", "agartala", "bhagalpur", "muzaffarnagar", "bhatpara", "panihati", "latur", "dhule", "tirupati",
     "rohtak", "korba", "bhilwara", "berhampur", "muzaffarpur", "ahmednagar", "mathura", "kollam", "avadi", "kadapa", "kamarhati",
-    "sambalpur", "bilaspur", "shahjahanpur", "satara", "bijapur", "rampur", "shivamogga", "chandrapur", "junagadh", "thrissur", "alwar", 
-    "bardhaman", "kulti", "kakinada", "nizamabad", "parbhani", "tumkur", "khammam", "uzhavarkarai", "bihar sharif", "panipat", "darbhanga", 
+    "sambalpur", "bilaspur", "shahjahanpur", "satara", "bijapur", "rampur", "shivamogga", "chandrapur", "junagadh", "thrissur", "alwar",
+    "bardhaman", "kulti", "kakinada", "nizamabad", "parbhani", "tumkur", "khammam", "uzhavarkarai", "bihar sharif", "panipat", "darbhanga",
     "bally", "aizawl", "dewas", "ichalkaranji", "karnal", "bathinda", "jalna", "eluru", "barasat", "kirari suleman nagar", "purnia",
-    "satna", "mau", "sonipat", "farrukhabad", "sagar", "rourkela", "durg", "imphal", "ratlam", "hapur", "arrah", "karimnagar", "anantapur", 
-    "etawah", "ambernath", "bharatpur", "begusarai", "new delhi", "gandhinagar", "barmer", "sikar", "cleveland", "pali", "vapi", "navsari", 
+    "satna", "mau", "sonipat", "farrukhabad", "sagar", "rourkela", "durg", "imphal", "ratlam", "hapur", "arrah", "karimnagar", "anantapur",
+    "etawah", "ambernath", "bharatpur", "begusarai", "new delhi", "gandhinagar", "barmer", "sikar", "cleveland", "pali", "vapi", "navsari",
     "morbi", "bhuj", "gandhidham", "porbandar", "godhra", "bharuch", "anand", "nadiad", "surendranagar", "valsad"
   ];
   exhaustiveIndianCities.forEach(c => locations.add(c.toLowerCase()));
@@ -75,7 +75,7 @@ function getGlobalLocations(): string[] {
 }
 
 // Separate helper for India-only locations (useful for India-specific assets)
-function getIndiaLocations(): string[] {
+export function getIndiaLocations(): string[] {
   const locations = new Set<string>();
   locations.add("india");
 
@@ -193,7 +193,7 @@ export function buildGlobalSeoKeywords(baseAsset: string, locationCount: number 
  */
 export function mixWithGlobalKeywords(existing: string[], assetNames: string[]): string {
   let combined = [...existing];
-  
+
   // TIER 1: Top 5 assets get global coverage (All locations, Top 8 templates)
   // This produces 5 * 300 * 8 = 12,000 keywords (~480KB)
   const tier1 = assetNames.slice(0, 5);
@@ -285,7 +285,7 @@ export function getGlobalCurrencyTerms(): string[] {
 
 export function buildDynamicGlobalMarkets(): string[] {
   const keywords: string[] = [];
-  
+
   // 1. Generate the highly specific index/currency terms
   for (const market of GLOBAL_MARKET_DATA) {
     keywords.push(`stock market ${market.country} today`);
@@ -296,7 +296,7 @@ export function buildDynamicGlobalMarkets(): string[] {
     keywords.push(`bitcoin price ${market.country} today`);
     keywords.push(`gold price ${market.country} today`);
     keywords.push(`gold rate ${market.country} today`);
-    
+
     if (market.currency) {
       keywords.push(`${market.currency} to inr today`, `${market.currency} to usd today`);
     }
@@ -420,7 +420,7 @@ export function buildDynamicHomeMetaKeywords(y: string, yn: string): string[] {
     "bitcoin", "crypto", "ethereum", "usd to inr", "dollar",
     "gold", "silver", "crude oil", "forex", "currency"
   ];
-  
+
   for (const asset of globalAssets) {
     // This calls the other function which maps against getGlobalLocations()
     keywords.push(...buildGlobalSeoKeywords(asset));

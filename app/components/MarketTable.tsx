@@ -18,11 +18,11 @@ function fmt(price: number, symbol?: string) {
   return price.toLocaleString("en-IN", { maximumFractionDigits: 2 });
 }
 
-function fmtMcap(v?: number) {
+function fmtMcap(v?: number, symbol: string = "₹") {
   if (!v) return "—";
-  if (v >= 1e12) return `₹${(v / 1e12).toFixed(2)}L Cr`;
-  if (v >= 1e9) return `₹${(v / 1e9).toFixed(2)} Cr`;
-  return `₹${(v / 1e6).toFixed(0)} L`;
+  if (v >= 1e12) return `${symbol}${(v / 1e12).toFixed(2)}L Cr`;
+  if (v >= 1e9) return `${symbol}${(v / 1e9).toFixed(2)} Cr`;
+  return `${symbol}${(v / 1e6).toFixed(0)} L`;
 }
 
 function fmtVol(v: number) {
@@ -84,7 +84,7 @@ export default function MarketTable({ quotes, title, linkPrefix = "/stocks", sho
               {showRank && <th style={{ width: "60px", padding: "1rem" }}>#</th>}
               <th style={{ padding: "1rem", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b" }}>Symbol</th>
               <th style={{ padding: "1rem", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b" }}>Company</th>
-              <th style={{ padding: "1rem", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b", textAlign: "right" }}>Price (₹)</th>
+              <th style={{ padding: "1rem", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b", textAlign: "right" }}>Price ({quotes[0]?.currencySymbol ?? "₹"})</th>
               <th style={{ padding: "1rem", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b", textAlign: "right" }}>Change</th>
               <th style={{ padding: "1rem", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b", textAlign: "right" }}>% Change</th>
               <th style={{ padding: "1rem", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b", textAlign: "right", minWidth: "120px" }}>Market Cap</th>
@@ -161,7 +161,7 @@ export default function MarketTable({ quotes, title, linkPrefix = "/stocks", sho
                     </span>
                   </td>
                   <td style={{ padding: "1rem", textAlign: "right", color: "#64748b", fontSize: "0.8rem", fontWeight: 500 }}>
-                    {fmtMcap(q.marketCap)}
+                    {fmtMcap(q.marketCap, q.currencySymbol)}
                   </td>
                   <td style={{ padding: "1rem", textAlign: "right", color: "#64748b", fontSize: "0.8rem", fontWeight: 500 }}>
                     {fmtVol(q.volume)}

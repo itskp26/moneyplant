@@ -93,7 +93,8 @@ export default function DashboardSidebarCard({ title, icon, items, viewAllHref, 
       </div>
       <div style={{ position: "relative", minHeight: shuffle ? "110px" : "auto" }}>
         <AnimatePresence mode="wait">
-          {displayItems.map((item, idx) => {
+          <div style={{ maxHeight: shuffle ? "none" : "400px", overflowY: shuffle ? "visible" : "auto", position: "relative" }} className="custom-scrollbar">
+            {displayItems.map((item, idx) => {
             const hasChange = item.changePercent !== undefined;
             const pos = (item.changePercent ?? 0) >= 0;
             
@@ -214,9 +215,23 @@ export default function DashboardSidebarCard({ title, icon, items, viewAllHref, 
             </motion.div>
           );
         })}
+          </div>
         </AnimatePresence>
       </div>
       <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(51, 65, 85, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(51, 65, 85, 0.5);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(59, 130, 246, 0.5);
+        }
         .sidebar-row-hover:hover {
           background: rgba(51, 65, 85, 0.3);
           padding-left: 1.5rem !important;

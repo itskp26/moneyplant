@@ -45,7 +45,7 @@ interface StatWidgetProps {
 }
 
 export function StatWidget({
-  label, value, changePercent, change, icon, href, status, subtitle, delay = 0, prefix = "₹", compact = false
+  label, value, changePercent, change, icon, href, status, subtitle, delay = 0, prefix = "\u20b9", compact = false
 }: StatWidgetProps) {
   const isStringValue = typeof value === "string";
   const pos = (changePercent ?? 0) > 0 || status === "Greed";
@@ -53,9 +53,82 @@ export function StatWidget({
   const color = pos ? "#10b981" : neg ? "#ef4444" : "#94a3b8";
   
   const numericValue = isStringValue ? parseFloat(value.replace(/[^0-9.]/g, "")) : value;
-  const fmt = (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 1 });
+  const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 1 });
   const high = numericValue ? fmt(numericValue * 1.002) : "";
   const low = numericValue ? fmt(numericValue * 0.998) : "";
+
+  // Compact mode: modern horizontal trading-terminal pill
+  if (compact) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay }}
+        whileHover={{ scale: 1.03, transition: { duration: 0.15 } }}
+      >
+        <Link href={href} style={{ textDecoration: "none", display: "block" }}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            padding: "10px 16px",
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderLeft: `3px solid ${color}`,
+            borderRadius: "12px",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+            transition: "background 0.2s, box-shadow 0.2s",
+            backdropFilter: "blur(12px)",
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLDivElement).style.background = `rgba(255,255,255,0.06)`;
+            (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 20px ${color}22`;
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLDivElement).style.background = `rgba(255,255,255,0.03)`;
+            (e.currentTarget as HTMLDivElement).style.boxShadow = `none`;
+          }}
+          >
+            {/* Icon */}
+            <span style={{ color: color, opacity: 0.9, flexShrink: 0 }}>{icon}</span>
+
+            {/* Label + Price */}
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: "0.65rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", lineHeight: 1 }}>
+                {label}
+              </div>
+              <div style={{ fontSize: "1.15rem", fontWeight: 900, color: "#f8fafc", fontFamily: "monospace", letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+                {value}
+              </div>
+            </div>
+
+            {/* Change badge */}
+            <div style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "2px",
+              fontSize: "0.72rem",
+              fontWeight: 800,
+              color: color,
+              background: `${color}15`,
+              padding: "3px 8px",
+              borderRadius: "6px",
+              fontFamily: "monospace",
+              flexShrink: 0,
+            }}>
+              {pos ? "▲" : neg ? "▼" : ""} {changePercent !== undefined ? `${Math.abs(changePercent).toFixed(2)}%` : (status || "—")}
+            </div>
+
+            {/* Mini chart */}
+            <div style={{ opacity: 0.7, flexShrink: 0 }}>
+              <MiniChart color={color} up={pos} />
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -66,22 +139,22 @@ export function StatWidget({
     >
       <Link href={href} style={{ textDecoration: "none" }}>
         <div style={{
-          padding: compact ? "1rem" : "1.25rem",
-          background: "rgba(15, 23, 42, 0.45)",
-          border: `1px solid ${color}33`,
+          padding: "1.25rem",
+          background: "rgba(10, 18, 35, 0.75)",
+          border: `1px solid ${color}44`,
           borderRadius: "16px",
-          backdropFilter: "blur(24px)",
+          backdropFilter: "blur(30px)",
           cursor: "pointer",
-          transition: "all 0.3s ease",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           display: "flex", flexDirection: "column", gap: "0.5rem",
-          boxShadow: "0 4px 20px -5px rgba(0,0,0,0.5)",
+          boxShadow: `0 10px 30px -10px rgba(0,0,0,0.7), 0 0 15px ${color}11`,
           position: "relative",
           overflow: "hidden",
         }}>
           {/* Subtle accent light */}
           <div style={{
-            position: "absolute", top: 0, left: 0, right: 0, height: "1px",
-            background: `linear-gradient(90deg, transparent, ${color}66, transparent)`,
+            position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+            background: `linear-gradient(90deg, transparent, ${color}99, transparent)`,
           }} />
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -103,8 +176,8 @@ export function StatWidget({
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "4px" }}>
             <div>
-              <div style={{ fontSize: compact ? "1.5rem" : "1.85rem", fontWeight: 900, color: "#f8fafc", fontFamily: "monospace", letterSpacing: "-0.02em" }}>
-                {typeof value === 'number' ? `${prefix}${value.toLocaleString("en-IN")}` : value}
+              <div style={{ fontSize: "1.85rem", fontWeight: 900, color: "#f8fafc", fontFamily: "monospace", letterSpacing: "-0.02em" }}>
+                {typeof value === 'number' ? `${prefix}${value.toLocaleString("en-US")}` : value}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "0.2rem" }}>
                 {changePercent !== undefined ? (
@@ -124,16 +197,14 @@ export function StatWidget({
               </div>
             </div>
             
-            {!compact && (
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
-                <div style={{ fontSize: "0.65rem", color: "#334155", fontWeight: 700 }}>
-                  H: <span style={{ color: "#64748b" }}>{high}</span>
-                </div>
-                <div style={{ fontSize: "0.65rem", color: "#334155", fontWeight: 700 }}>
-                  L: <span style={{ color: "#64748b" }}>{low}</span>
-                </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
+              <div style={{ fontSize: "0.65rem", color: "#334155", fontWeight: 700 }}>
+                H: <span style={{ color: "#64748b" }}>{high}</span>
               </div>
-            )}
+              <div style={{ fontSize: "0.65rem", color: "#334155", fontWeight: 700 }}>
+                L: <span style={{ color: "#64748b" }}>{low}</span>
+              </div>
+            </div>
           </div>
         </div>
       </Link>

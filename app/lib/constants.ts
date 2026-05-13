@@ -439,6 +439,22 @@ export const MEA_INDICES = [
   { symbol: "EGX30.CA", name: "EGX 30",                 country: "Egypt",         exchange: "EGX", id: "egx30" },
 ];
 
+// ─── TOP GLOBAL STOCKS ───────────────────────────────────────────────────────
+export const US_STOCKS = [
+  { symbol: "AAPL",  name: "Apple Inc.",          desc: "iPhone, Mac, Services" },
+  { symbol: "MSFT",  name: "Microsoft",           desc: "Cloud, Windows, Xbox" },
+  { symbol: "NVDA",  name: "Nvidia",              desc: "AI GPUs, Chips" },
+  { symbol: "AMZN",  name: "Amazon",              desc: "E-commerce, AWS" },
+  { symbol: "META",  name: "Meta (Facebook)",     desc: "Social Media, VR" },
+  { symbol: "GOOGL", name: "Google (Alphabet)",   desc: "Search, YouTube, GCP" },
+  { symbol: "TSLA",  name: "Tesla",               desc: "EVs, Energy, Robotics" },
+  { symbol: "BRK-B", name: "Berkshire Hathaway",  desc: "Insurance, Value" },
+  { symbol: "JPM",   name: "JPMorgan Chase",      desc: "Banking, Finance" },
+  { symbol: "LLY",   name: "Eli Lilly",           desc: "Pharma — Biotech" },
+  { symbol: "V",     name: "Visa Inc.",           desc: "Payments Network" },
+  { symbol: "UNH",   name: "UnitedHealth",        desc: "Healthcare Tech" },
+];
+
 // All global indices combined
 export const GLOBAL_INDICES = [...US_INDICES, ...EUROPE_INDICES, ...ASIA_INDICES, ...MEA_INDICES];
 
