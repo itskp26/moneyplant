@@ -104,6 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="news_keywords" content="Nifty 50, Sensex, BSE, NSE, stock market India, bitcoin India, forex India, gold rate India" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <meta name="google-adsense-account" content="ca-pub-2567665577481409" />
         <GoogleAdSense />
       </head>
       <body className="bg-slate-950 text-slate-100 antialiased min-h-screen">
