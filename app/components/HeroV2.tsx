@@ -66,6 +66,11 @@ interface HeroV2Props {
 export default function HeroV2({ statCards }: HeroV2Props) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const [isIframe, setIsIframe] = useState(false);
+
+  useEffect(() => {
+    setIsIframe(window !== window.top);
+  }, []);
 
   const springConfig = { damping: 25, stiffness: 150 };
   const smoothX = useSpring(mouseX, springConfig);
@@ -280,7 +285,13 @@ export default function HeroV2({ statCards }: HeroV2Props) {
               zIndex: 0,
             }} />
             <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>
-              <Globe3D />
+              {isIframe ? (
+                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                   <div style={{ width: "200px", height: "200px", borderRadius: "50%", border: "2px solid rgba(16,185,129,0.3)", animation: "spin 3s linear infinite" }} />
+                </div>
+              ) : (
+                <Globe3D />
+              )}
             </div>
 
             {/* Floating market data cards — tucked inside container, no overflow */}
