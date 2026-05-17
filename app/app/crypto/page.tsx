@@ -98,18 +98,18 @@ export default async function CryptoHubPage() {
              <div className="card" style={{ padding: "1.5rem" }}>
                 <h3 style={{ fontSize: "0.95rem", fontWeight: 800, marginBottom: "1.25rem" }}>Crypto Resources</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                   <Link href="/crypto/learn/wallets" style={{ textDecoration: "none", color: "#94a3b8", fontSize: "0.9rem", display: "flex", justifyContent: "space-between" }}>
-                     <span>Best Wallets 2025</span>
-                     <span>↗</span>
-                   </Link>
-                   <Link href="/crypto/learn/exchanges" style={{ textDecoration: "none", color: "#94a3b8", fontSize: "0.9rem", display: "flex", justifyContent: "space-between" }}>
-                     <span>Top India Exchanges</span>
-                     <span>↗</span>
-                   </Link>
-                   <Link href="/crypto/tax-india" style={{ textDecoration: "none", color: "#94a3b8", fontSize: "0.9rem", display: "flex", justifyContent: "space-between" }}>
-                     <span>Crypto Tax Guide</span>
-                     <span>↗</span>
-                   </Link>
+                    <Link href="/news/crypto" style={{ textDecoration: "none", color: "#94a3b8", fontSize: "0.9rem", display: "flex", justifyContent: "space-between" }}>
+                      <span>Best Wallets 2025</span>
+                      <span>↗</span>
+                    </Link>
+                    <Link href="/news/crypto" style={{ textDecoration: "none", color: "#94a3b8", fontSize: "0.9rem", display: "flex", justifyContent: "space-between" }}>
+                      <span>Top India Exchanges</span>
+                      <span>↗</span>
+                    </Link>
+                    <Link href="/news/crypto" style={{ textDecoration: "none", color: "#94a3b8", fontSize: "0.9rem", display: "flex", justifyContent: "space-between" }}>
+                      <span>Crypto Tax Guide</span>
+                      <span>↗</span>
+                    </Link>
                 </div>
              </div>
 
@@ -140,7 +140,7 @@ export default async function CryptoHubPage() {
                <ShieldCheck size={32} color="#10b981" style={{ margin: "0 auto 1rem" }} />
                <h3 style={{ fontSize: "0.95rem", marginBottom: "0.5rem" }}>Global Security</h3>
                <p style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "1.25rem" }}>Always use regulated global exchanges for secure digital asset management.</p>
-               <Link href="/crypto/exchanges" className="btn btn-primary" style={{ width: "100%", textAlign: "center" }}>Explore Exchanges</Link>
+               <Link href="/news/crypto" className="btn btn-primary" style={{ width: "100%", textAlign: "center" }}>Explore Exchanges</Link>
              </div>
           </aside>
 

@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
 import { fetchMarketNews } from "@/lib/news";
+import { fetchMultipleQuotes } from "@/lib/stocks";
 import NewsImage from "@/components/NewsImage";
 
 import { getNewsMeta } from "@/lib/meta";
@@ -23,6 +24,7 @@ interface Props {
 export default async function NewsHubPage({ searchParams }: Props) {
   const { cat = "All" } = await searchParams;
   const news = await fetchMarketNews(cat);
+  const sidebarQuotes = await fetchMultipleQuotes(["^NSEI", "^BSESN", "^GSPC", "BTC-USD", "GC=F"]);
 
   const categories = ["All", "Markets", "Corporate", "Economy", "Crypto", "Forex"];
 
@@ -156,6 +158,56 @@ export default async function NewsHubPage({ searchParams }: Props) {
            </div>
 
            <aside style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+              {/* Live Market Pulse Panel */}
+              <div className="card" style={{ padding: "1.5rem", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
+                 <h3 style={{ fontSize: "1rem", fontWeight: 800, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "8px", color: "#10b981" }}>
+                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#10b981", display: "inline-block", animation: "pulse-green 2s infinite" }} />
+                    Live Market Pulse
+                 </h3>
+                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                    {sidebarQuotes.map((q) => {
+                       const pos = q.changePercent > 0;
+                       const neg = q.changePercent < 0;
+                       const symbol = q.symbol.replace(/\.NS$|\.BO$/i, "");
+                       const isIndex = q.symbol.startsWith("^");
+                       const linkTarget = isIndex 
+                         ? (q.symbol === "^NSEI" ? "/indices/nifty-50" : q.symbol === "^BSESN" ? "/indices/sensex" : q.symbol === "^GSPC" ? "/indices/sp500" : `/indices/${symbol.toLowerCase()}`)
+                         : q.symbol.includes("=F") ? "/commodities/gold" : q.symbol.includes("BTC") ? "/crypto/bitcoin" : `/stocks/${symbol.toLowerCase()}`;
+                       return (
+                          <Link 
+                             key={q.symbol} 
+                             href={linkTarget}
+                             style={{ 
+                                display: "flex", 
+                                justifyContent: "space-between", 
+                                alignItems: "center",
+                                textDecoration: "none",
+                                padding: "8px 12px",
+                                borderRadius: "8px",
+                                background: "rgba(30, 41, 59, 0.2)",
+                                border: "1px solid rgba(51, 65, 85, 0.4)",
+                                transition: "all 0.15s ease"
+                             }}
+                             className="pulse-row-hover"
+                          >
+                             <div>
+                                <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#f8fafc" }}>{q.name || symbol}</div>
+                                <div style={{ fontSize: "0.7rem", color: "#64748b", fontWeight: 500 }}>{symbol}</div>
+                             </div>
+                             <div style={{ textAlign: "right" }}>
+                                <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#f1f5f9", fontFamily: "monospace" }}>
+                                   {q.currencySymbol || "₹"}{q.price < 10 ? q.price.toFixed(4) : q.price.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+                                </div>
+                                <div style={{ fontSize: "0.72rem", fontWeight: 700, color: pos ? "#10b981" : neg ? "#ef4444" : "#94a3b8" }}>
+                                   {pos ? "+" : ""}{q.changePercent.toFixed(2)}%
+                                </div>
+                             </div>
+                          </Link>
+                       );
+                    })}
+                 </div>
+              </div>
+
               {/* Specialized News Hubs */}
               <div className="card bento-mini" style={{ padding: "1.5rem" }}>
                  <h3 style={{ fontSize: "1rem", fontWeight: 800, marginBottom: "1.25rem", color: "#f1f5f9" }}>Specialized Hubs</h3>
@@ -240,6 +292,14 @@ export default async function NewsHubPage({ searchParams }: Props) {
       </div>
 
       <style>{`
+        .pulse-row-hover {
+           transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .pulse-row-hover:hover {
+           background: rgba(30, 41, 59, 0.6) !important;
+           border-color: rgba(16, 185, 129, 0.4) !important;
+           transform: translateX(4px);
+        }
         .story-card {
            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }

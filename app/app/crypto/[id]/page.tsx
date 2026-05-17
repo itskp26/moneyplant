@@ -7,7 +7,8 @@ import {
 import { fetchCryptoDetail } from "@/lib/crypto";
 import { getCryptoMeta } from "@/lib/meta";
 import MarketTable from "@/components/MarketTable";
-import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
+import JsonLd, { breadcrumbSchema, cryptoSchema } from "@/components/JsonLd";
+import AdUnit from "@/components/AdUnit";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -58,6 +59,12 @@ export default async function CryptoDetailPage({ params }: PageProps) {
         { name: "Cryptocurrency", url: "/crypto" },
         { name: coin.name, url: `/crypto/${coin.id}` },
       ])} />
+      <JsonLd data={cryptoSchema(
+        coin.id,
+        coin.name,
+        coin.symbol,
+        coin.priceUsd
+      )} />
 
       <div className="container section">
         {/* Header Section - Modern Glassmorphic */}
@@ -222,6 +229,8 @@ export default async function CryptoDetailPage({ params }: PageProps) {
                 <a href="#" className="btn btn-outline" style={{ background: "rgba(255,255,255,0.05)" }}>Coinbase</a>
               </div>
             </div>
+
+            <AdUnit slot="7910283941" format="horizontal" />
 
             {/* Price Conversion Table - Modernized */}
             <div className="card" style={{ padding: "2rem", background: "rgba(15, 23, 42, 0.3)" }}>

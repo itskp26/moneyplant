@@ -7,7 +7,8 @@ import {
 import { fetchStockDetail } from "@/lib/stocks";
 import { getStockMeta } from "@/lib/meta";
 import MarketTable from "@/components/MarketTable";
-import JsonLd, { breadcrumbSchema, organizationSchema } from "@/components/JsonLd";
+import JsonLd, { breadcrumbSchema, organizationSchema, stockSchema } from "@/components/JsonLd";
+import AdUnit from "@/components/AdUnit";
 
 interface PageProps {
   params: Promise<{ symbol: string }>;
@@ -67,6 +68,12 @@ export default async function StockDetailPage({ params }: PageProps) {
         { name: "Stocks", url: "/stocks" },
         { name: stock.name || stock.symbol, url: `/stocks/${stock.symbol.toLowerCase()}` },
       ])} />
+      <JsonLd data={stockSchema(
+        stock.symbol,
+        stock.name || stock.symbol,
+        stock.price,
+        stock.exchange || "NSE"
+      )} />
 
       <div className="container section">
         {/* Header Section */}
@@ -250,6 +257,8 @@ export default async function StockDetailPage({ params }: PageProps) {
                 </div>
               </div>
             </div>
+
+            <AdUnit slot="4920491028" format="horizontal" />
 
             {/* Profile */}
             <div className="card" style={{ padding: "1.5rem" }}>

@@ -15,6 +15,7 @@ import HeroV2 from "@/components/HeroV2";
 import DashboardSidebarCard from "@/components/DashboardSidebarCard";
 import HomeFAQs from "@/components/HomeFAQs";
 import { getGlobalFaqs } from "@/lib/faqs";
+import AdUnit from "@/components/AdUnit";
 
 export const metadata: Metadata = getHomeMeta();
 export const revalidate = 60;
@@ -174,14 +175,19 @@ export default async function HomePage() {
             { label: "Top Gainers", href: "/top-stocks/gainers", Icon: ICON_MAP.gainers },
             { label: "Top Losers", href: "/top-stocks/losers", Icon: ICON_MAP.losers },
             { label: "Most Active", href: "/top-stocks/most-active", Icon: ICON_MAP.active },
+            { label: "CBOE VIX Index", href: "/indices/vix", Icon: Shield },
+            { label: "AUD to USD", href: "/forex/aud-to-usd", Icon: DollarSign },
+            { label: "Bitcoin Price", href: "/crypto/bitcoin", Icon: Bitcoin },
+            { label: "Stocks Directory", href: "/stocks/directory", Icon: BarChart2 },
             { label: "Adani Stocks", href: "/conglomerates/adani", Icon: ICON_MAP.adani },
             { label: "Reliance", href: "/conglomerates/reliance", Icon: ICON_MAP.reliance },
             { label: "Tata Stocks", href: "/conglomerates/tata", Icon: ICON_MAP.tata },
-            { label: "Crypto", href: "/crypto", Icon: ICON_MAP.crypto },
-            { label: "Forex", href: "/forex", Icon: ICON_MAP.forex },
-            { label: "Gold", href: "/commodities/gold", Icon: ICON_MAP.gold },
-            { label: "IPO", href: "/ipo", Icon: ICON_MAP.ipo },
-            { label: "News", href: "/news", Icon: FileText },
+            { label: "Crypto Hub", href: "/crypto", Icon: ICON_MAP.crypto },
+            { label: "Forex rates", href: "/forex", Icon: ICON_MAP.forex },
+            { label: "Gold Spot", href: "/commodities/gold", Icon: Gem },
+            { label: "Silver Spot", href: "/commodities/silver", Icon: RefreshCw },
+            { label: "IPO Tracker", href: "/ipo", Icon: ICON_MAP.ipo },
+            { label: "Market News", href: "/news", Icon: FileText },
           ].map((link) => (
             <Link
               key={link.href}
@@ -194,6 +200,9 @@ export default async function HomePage() {
             </Link>
           ))}
         </div>
+
+        <AdUnit slot="6022839401" format="horizontal" />
+
         {/* ── Market Intelligence Hub ── */}
         <section style={{ marginBottom: "4rem" }}>
           <div className="intelligence-grid">

@@ -10,6 +10,7 @@ import { getCommodityMeta } from "@/lib/meta";
 import { COMMODITIES } from "@/lib/constants";
 import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
+import AdUnit from "@/components/AdUnit";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -314,11 +315,7 @@ export default async function CommodityDetailPage({ params }: PageProps) {
             </div>
 
             {/* Ad Widget */}
-            <div style={{
-              background: "rgba(15, 23, 42, 0.8)", border: "1px dashed rgba(51, 65, 85, 0.6)",
-              borderRadius: "12px", padding: "4rem 1.5rem", textAlign: "center",
-              color: "#334155", fontSize: "0.8rem"
-            }}>Advertisement</div>
+            <AdUnit slot="4920384936" format="rectangle" />
 
             {/* Disclaimer */}
             <div className="card" style={{ padding: "1.25rem", border: "1px solid rgba(239, 68, 68, 0.1)" }}>

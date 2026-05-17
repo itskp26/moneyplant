@@ -4,6 +4,7 @@ import {
   TrendingUp, PiggyBank, PieChart as PieChartIcon, 
   HelpCircle, Info, RefreshCcw
 } from "lucide-react";
+import LeadCaptureForm from "./LeadCaptureForm";
 
 export default function SipCalculator() {
   const [monthlyInvestment, setMonthlyInvestment] = useState(5000);
@@ -157,6 +158,15 @@ export default function SipCalculator() {
                </div>
             </div>
          </div>
+
+         <LeadCaptureForm 
+           calculatorName="SIP Calculator"
+           calculationDetails={{
+             invested: `₹${numFmt(results.investedAmount)}`,
+             returns: `₹${numFmt(results.estReturns)}`,
+             total: `₹${numFmt(results.totalValue)}`
+           }}
+         />
       </div>
 
     </div>

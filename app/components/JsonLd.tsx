@@ -98,6 +98,26 @@ export function stockSchema(symbol: string, name: string, price: number, exchang
   };
 }
 
+export function cryptoSchema(id: string, name: string, symbol: string, priceUsd: number) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FinancialProduct",
+    name: `${name} (${symbol})`,
+    description: `Real-time ${name} (${symbol}) cryptocurrency price, volume, market cap, and live historical charts on MoneyPlant.`,
+    url: `https://moneyplant24.com/crypto/${id.toLowerCase()}`,
+    provider: {
+      "@type": "Organization",
+      name: "MoneyPlant",
+      url: "https://moneyplant24.com",
+    },
+    offers: {
+      "@type": "Offer",
+      price: priceUsd,
+      priceCurrency: "USD",
+    },
+  };
+}
+
 export function breadcrumbSchema(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",

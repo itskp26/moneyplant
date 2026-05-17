@@ -9,6 +9,7 @@ import { getIndexMeta } from "@/lib/meta";
 import { INDICES, GLOBAL_INDICES, NIFTY50_STOCKS, NIFTY_NEXT50, BANK_STOCKS, IT_STOCKS, PHARMA_STOCKS, AUTO_STOCKS, FMCG_STOCKS, REALTY_STOCKS, PSU_STOCKS } from "@/lib/constants";
 import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema } from "@/components/JsonLd";
+import AdUnit from "@/components/AdUnit";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -248,18 +249,7 @@ export default async function IndexDetailPage({ params }: PageProps) {
                </div>
              </div>
 
-             {/* Ad Widget */}
-             <div style={{ 
-               background: "rgba(15, 23, 42, 0.8)", 
-               border: "1px dashed rgba(51, 65, 85, 0.6)", 
-               borderRadius: "12px",
-               padding: "3rem 1.5rem",
-               textAlign: "center",
-               color: "#475569",
-               fontSize: "0.8rem"
-             }}>
-               Advertisement
-             </div>
+             <AdUnit slot="5920384902" format="rectangle" />
 
              {/* Quick Actions */}
              <div className="card" style={{ padding: "1.5rem", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
