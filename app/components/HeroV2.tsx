@@ -66,11 +66,6 @@ interface HeroV2Props {
 export default function HeroV2({ statCards }: HeroV2Props) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const [isIframe, setIsIframe] = useState(false);
-
-  useEffect(() => {
-    setIsIframe(window !== window.top);
-  }, []);
 
   const springConfig = { damping: 25, stiffness: 150 };
   const smoothX = useSpring(mouseX, springConfig);
@@ -169,11 +164,11 @@ export default function HeroV2({ statCards }: HeroV2Props) {
             </motion.div>
 
             {/* Headline with staggered word animation */}
-            <h1 style={{ 
-              fontSize: "clamp(2.5rem, 6vw, 4.2rem)", 
-              fontWeight: 900, 
-              lineHeight: 1.05, 
-              letterSpacing: "-0.05em", 
+            <h1 style={{
+              fontSize: "clamp(2.5rem, 6vw, 4.2rem)",
+              fontWeight: 900,
+              lineHeight: 1.05,
+              letterSpacing: "-0.05em",
               marginBottom: "1.5rem",
               textShadow: "0 20px 50px rgba(0,0,0,0.5)"
             }}>
@@ -205,7 +200,7 @@ export default function HeroV2({ statCards }: HeroV2Props) {
               transition={{ duration: 0.7, delay: 0.6 }}
               style={{ fontSize: "1.05rem", color: "#64748b", maxWidth: "520px", lineHeight: 1.75, marginBottom: "2rem" }}
             >
-              Real-time Global Stocks, Bitcoin (USD), Forex Markets, Gold & Silver rates, 
+              Real-time Global Stocks, Bitcoin (USD), Forex Markets, Gold & Silver rates,
               and Top Cryptocurrencies — tracked globally with second-by-second updates.
             </motion.p>
 
@@ -285,20 +280,14 @@ export default function HeroV2({ statCards }: HeroV2Props) {
               zIndex: 0,
             }} />
             <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>
-              {isIframe ? (
-                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                   <div style={{ width: "200px", height: "200px", borderRadius: "50%", border: "2px solid rgba(16,185,129,0.3)", animation: "spin 3s linear infinite" }} />
-                </div>
-              ) : (
-                <Globe3D />
-              )}
+              <Globe3D />
             </div>
 
             {/* Floating market data cards — tucked inside container, no overflow */}
             {[
               { label: "S&P 500", value: "5,450", up: true, top: "5%", left: "8%" },
-              { label: "BTC/USD",  value: "$65,240",  up: true, bottom: "12%", right: "8%" },
-              { label: "GOLD",     value: "$2,350", up: true, bottom: "30%", left: "8%" },
+              { label: "BTC/USD", value: "$65,240", up: true, bottom: "12%", right: "8%" },
+              { label: "GOLD", value: "$2,350", up: true, bottom: "30%", left: "8%" },
             ].map((badge, i) => (
               <motion.div
                 key={badge.label}

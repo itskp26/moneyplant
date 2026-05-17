@@ -4,33 +4,60 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-// ─── High-Fidelity Textured Globe ───────────────────────────────────────────
-function TexturedGlobe() {
-  const ref = useRef<THREE.Mesh>(null);
-  
-  // Use a high-quality world map texture
-  const texture = useMemo(() => {
-    const loader = new THREE.TextureLoader();
-    // Using a high-res topographical map for realism
-    return loader.load("https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg");
-  }, []);
+// Simplified world map representation (landmasses)
+function WorldMap({ count = 2500 }: { count?: number }) {
+  const ref = useRef<THREE.Group>(null);
+
+  const positions = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const radius = 1.005;
+
+    // Rough coordinates for major landmasses
+    const landmasses = [
+      { lat: [15, 70], lon: [-130, -60] },  // N America
+      { lat: [-50, 12], lon: [-80, -35] },   // S America
+      { lat: [35, 72], lon: [-10, 45] },    // Europe
+      { lat: [5, 75], lon: [45, 145] },     // Asia
+      { lat: [-35, 36], lon: [-18, 52] },   // Africa
+      { lat: [-42, -12], lon: [112, 152] }, // Australia
+      { lat: [5, 25], lon: [100, 130] },    // SE Asia
+    ];
+
+    for (let i = 0; i < count; i++) {
+      const land = landmasses[Math.floor(Math.random() * landmasses.length)];
+      const lat = Math.random() * (land.lat[1] - land.lat[0]) + land.lat[0];
+      const lon = Math.random() * (land.lon[1] - land.lon[0]) + land.lon[0];
+
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
+
+      pos[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3 + 1] = radius * Math.cos(phi);
+      pos[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+    }
+    return pos;
+  }, [count]);
 
   useFrame((_, delta) => {
     if (ref.current) ref.current.rotation.y += delta * 0.10;
   });
 
   return (
-    <mesh ref={ref}>
-      <sphereGeometry args={[1.005, 64, 64]} />
-      <meshPhongMaterial 
-        map={texture} 
-        shininess={5}
-        emissive="#112233"
-        emissiveIntensity={0.2}
-      />
-    </mesh>
+    <group ref={ref}>
+      <Points positions={positions} stride={3} frustumCulled={false}>
+        <PointMaterial
+          transparent
+          color="#34d399"
+          size={0.018}
+          sizeAttenuation
+          depthWrite={false}
+          opacity={0.85}
+        />
+      </Points>
+    </group>
   );
 }
+
 
 function latLonToXYZ(lat: number, lon: number, r: number): THREE.Vector3 {
   const phi   = (90 - lat) * (Math.PI / 180);
@@ -248,7 +275,7 @@ export default function Globe3D() {
       <pointLight position={[0, 5, -5]}  intensity={0.5} color="#8b5cf6" />
 
       <GlobeShell />
-      <TexturedGlobe />
+      <WorldMap />
       <GlobeArcs />
       <CityMarkers />
       <Atmosphere />
