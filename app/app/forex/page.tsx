@@ -15,7 +15,7 @@ export const metadata: Metadata = getForexMeta();
 
 import { StatWidget, WideStatCard } from "@/components/VisualCards";
 
-export const revalidate = 300; // Forex updates every 5 mins
+export const revalidate = 3600; // 1 hour
 
 export default async function ForexHubPage() {
   const rates = await fetchAllForexRates();

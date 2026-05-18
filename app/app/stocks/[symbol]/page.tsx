@@ -9,6 +9,8 @@ import { getStockMeta } from "@/lib/meta";
 import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema, organizationSchema, stockSchema } from "@/components/JsonLd";
 import AdUnit from "@/components/AdUnit";
+import LivePrice from "@/components/LivePrice";
+
 
 interface PageProps {
   params: Promise<{ symbol: string }>;
@@ -33,7 +35,7 @@ export async function generateMetadata(
   );
 }
 
-export const revalidate = 60;
+export const revalidate = 14400; // 4 hours
 
 export default async function StockDetailPage({ params }: PageProps) {
   const { symbol } = await params;
@@ -115,31 +117,12 @@ export default async function StockDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div style={{ textAlign: "right" }}>
-              <div style={{
-                fontSize: "clamp(2rem, 5vw, 3.25rem)",
-                fontWeight: 800,
-                color: "#f1f5f9",
-                lineHeight: 1,
-                fontFamily: "var(--font-sora)"
-              }}>
-                ₹{numFmt(stock.price)}
-              </div>
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                gap: "8px",
-                marginTop: "0.5rem",
-                fontSize: "1.1rem",
-                fontWeight: 600,
-                color: pos ? "#10b981" : "#ef4444"
-              }}>
-                {pos ? <TrendingUp size={18} /> : <TrendingDown size={18} />}
-                <span>{pos ? "+" : ""}{numFmt(stock.change)}</span>
-                <span>({pos ? "+" : ""}{numFmt(stock.changePercent)}%)</span>
-              </div>
-            </div>
+            <LivePrice 
+              symbol={stock.symbol} 
+              initialPrice={stock.price} 
+              initialChange={stock.change} 
+              initialChangePercent={stock.changePercent} 
+            />
           </div>
         </div>
 

@@ -15,7 +15,7 @@ import { getMarketsMeta } from "@/lib/meta";
 
 export const metadata: Metadata = getMarketsMeta("all");
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 // Internal component moved to top to ensure it's defined before usage
 function AssetLink({ title, desc, icon, href }: { title: string, desc: string, icon: React.ReactNode, href: string }) {

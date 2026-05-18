@@ -9,7 +9,7 @@ import {
   Compass
 } from "lucide-react";
 
-export const revalidate = 120;
+export const revalidate = 3600; // 1 hour
 
 import { getMarketsMeta } from "@/lib/meta";
 

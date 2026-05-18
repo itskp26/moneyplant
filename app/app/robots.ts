@@ -10,6 +10,24 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/'],
       },
       {
+        userAgent: [
+          'AhrefsBot', 
+          'SemrushBot', 
+          'DotBot', 
+          'PetalBot', 
+          'MJ12bot', 
+          'Rogerbot', 
+          'MegaIndex.ru', 
+          'BLEXBot', 
+          'CCBot', 
+          'GPTBot', 
+          'cohere-ai', 
+          'Anthropic-ai', 
+          'Google-Extended'
+        ],
+        disallow: '/',
+      },
+      {
         userAgent: 'facebookexternalhit',
         allow: '/',
       }

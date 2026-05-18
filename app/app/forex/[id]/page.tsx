@@ -34,7 +34,7 @@ export async function generateMetadata(
   );
 }
 
-export const revalidate = 300; // Forex updates every few mins
+export const revalidate = 14400; // 4 hours
 
 export default async function ForexDetailPage({ params }: PageProps) {
   const { id } = await params;

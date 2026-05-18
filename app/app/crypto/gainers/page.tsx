@@ -3,7 +3,7 @@ import { TrendingUp, Coins, ChevronLeft } from "lucide-react";
 import { fetchCryptoList } from "@/lib/crypto";
 import CryptoMoverCard from "@/components/CryptoMoverCard";
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 export default async function GainersPage() {
   const coins = await fetchCryptoList();

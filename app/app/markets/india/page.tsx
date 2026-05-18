@@ -15,7 +15,7 @@ import MarketTable from "@/components/MarketTable";
 import JsonLd, { breadcrumbSchema, faqSchema } from "@/components/JsonLd";
 import { MiniTrekCard, WideStatCard, GroupSidebar } from "@/components/VisualCards";
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 import { getMarketsMeta } from "@/lib/meta";
 

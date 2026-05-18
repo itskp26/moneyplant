@@ -50,7 +50,7 @@ export async function generateMetadata(
   );
 }
 
-export const revalidate = 60;
+export const revalidate = 14400; // 4 hours
 
 export default async function IndexDetailPage({ params }: PageProps) {
   const { id } = await params;

@@ -14,7 +14,7 @@ import { StatWidget, MiniTrekCard } from "@/components/VisualCards";
 export const metadata: Metadata = getIndexMeta();
 
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 export default async function IndicesHubPage() {
   const indiaIndices = await fetchMultipleQuotes(INDICES.map(i => i.symbol));

@@ -23,7 +23,7 @@ export async function generateMetadata(
   return getTopStocksMeta(pType === "active" ? "most-active" : pType);
 }
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 export default async function TopStocksPage({ params }: PageProps) {
   const { type: rawType } = await params;

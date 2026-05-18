@@ -37,7 +37,7 @@ export async function generateMetadata(
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 14400; // 4 hours
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   gold: <Gem size={28} color="#f59e0b" />,

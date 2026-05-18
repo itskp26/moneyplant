@@ -4,7 +4,7 @@ import { LT_STOCKS } from "@/lib/constants";
 import ConglomeratePage from "@/components/ConglomeratePage";
 
 export const metadata: Metadata = getConglomerateMeta("lt" as "adani", LT_STOCKS);
-export const revalidate = 60;
+export const revalidate = 86400; // 24 hours (daily)
 
 export default function LtPage() {
   return (

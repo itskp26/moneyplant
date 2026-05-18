@@ -14,7 +14,7 @@ import CryptoMoverCard from "@/components/CryptoMoverCard";
 export const metadata: Metadata = getCryptoMeta();
 
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 export default async function CryptoHubPage() {
   const coins = await fetchCryptoList();

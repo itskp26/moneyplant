@@ -18,7 +18,7 @@ import { getGlobalFaqs } from "@/lib/faqs";
 import AdUnit from "@/components/AdUnit";
 
 export const metadata: Metadata = getHomeMeta();
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 const HOMEPAGE_FAQS = [
   { q: "How can I track global market indices in real-time?", a: "MoneyPlant provides live data for major global indices including the S&P 500, NASDAQ Composite, Dow Jones, FTSE 100, and Nikkei 225. You can view real-time charts and technical analysis on our Global Markets page." },

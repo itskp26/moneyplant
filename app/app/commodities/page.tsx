@@ -15,7 +15,7 @@ import { StatWidget } from "@/components/VisualCards";
 export const metadata: Metadata = getCommoditiesMeta();
 
 
-export const revalidate = 300; // Commodities update every 5 mins
+export const revalidate = 3600; // 1 hour
 
 export default async function CommoditiesHubPage() {
   const symbols = ["GC=F", "SI=F", "CL=F", "BZ=F", "PL=F", "HG=F", "NG=F"];

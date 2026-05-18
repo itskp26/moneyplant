@@ -14,7 +14,7 @@ import { WideStatCard, GroupSidebar } from "@/components/VisualCards";
 export const metadata: Metadata = getStocksMeta();
 
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour
 
 export default async function StocksHubPage() {
   const [niftyQuote, sensexQuote] = await Promise.all([

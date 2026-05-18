@@ -14,13 +14,28 @@ export default function AdUnit({ slot, format = "auto", responsive = true }: AdU
 
   useEffect(() => {
     if (!slot) return;
-    try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error("AdSense error:", e);
-      setHasError(true);
-    }
+
+    // Delay initialization slightly to let Next.js layout calculate responsive availableWidth.
+    // This prevents the 'availableWidth=0' AdSense error.
+    const timer = setTimeout(() => {
+      try {
+        // Only push if there are uninitialized ad units on the page.
+        // Once AdSense initializes a slot, it adds a status attribute to it.
+        const uninitializedAds = document.querySelectorAll(
+          "ins.adsbygoogle:not([data-adsbygoogle-status])"
+        );
+
+        if (uninitializedAds.length > 0) {
+          // @ts-ignore
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      } catch (e) {
+        console.error("AdSense initialization error:", e);
+        setHasError(true);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [slot]);
 
   // If no slot is configured, render a premium glassmorphic ad placement placeholder
