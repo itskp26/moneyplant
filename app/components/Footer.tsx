@@ -166,6 +166,16 @@ export default function Footer() {
           </p>
         </div>
 
+        {/* Social Share Call to Action */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "2rem", flexWrap: "wrap" }}>
+          <a href="https://twitter.com/intent/tweet?url=https://moneyplant24.com&text=Check%20out%20MoneyPlant%20for%20live%20global%20stock%20prices,%20crypto,%20and%20forex%20rates!%20%24BTC%20%24SPX" target="_blank" rel="noreferrer" style={{ background: "rgba(15, 23, 42, 0.8)", border: "1px solid rgba(59, 130, 246, 0.3)", padding: "0.5rem 1rem", borderRadius: "8px", color: "#60a5fa", textDecoration: "none", fontSize: "0.85rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
+            𝕏 Share on Twitter
+          </a>
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://moneyplant24.com&title=MoneyPlant%20Live%20Global%20Markets" target="_blank" rel="noreferrer" style={{ background: "rgba(15, 23, 42, 0.8)", border: "1px solid rgba(14, 165, 233, 0.3)", padding: "0.5rem 1rem", borderRadius: "8px", color: "#38bdf8", textDecoration: "none", fontSize: "0.85rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
+            💼 Share on LinkedIn
+          </a>
+        </div>
+
         {/* Bottom bar */}
         <div
           style={{

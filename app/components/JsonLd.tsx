@@ -21,7 +21,7 @@ export function websiteSchema() {
     alternateName: ["MoneyPlant24", "MoneyPlant Finance", "MoneyPlant India"],
     url: "https://moneyplant24.com",
     description:
-      "India's premier live finance portal. Track Nifty 50, Sensex, BSE/NSE stocks, crypto prices in INR, forex rates, gold & silver prices, IPOs and global markets.",
+      "World's premier live finance portal. Track S&P 500, NASDAQ, Bitcoin, BSE/NSE stocks, crypto prices, forex rates, gold prices, and global markets.",
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -52,28 +52,28 @@ export function websiteSchema() {
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "FinancialService",
     name: "MoneyPlant",
-    alternateName: ["MoneyPlant24", "MoneyPlant India"],
+    alternateName: ["MoneyPlant24", "MoneyPlant Finance"],
     url: "https://moneyplant24.com",
     logo: "https://moneyplant24.com/logo.png",
     description:
-      "MoneyPlant is India's premier financial data and education platform providing live stock prices, crypto, forex, gold rates, and IPO tracking.",
+      "MoneyPlant is a global finance portal providing live stock market data, cryptocurrency tracking, forex exchange rates, and international market benchmarks.",
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
-      availableLanguage: ["English", "Hindi"],
+      availableLanguage: ["English", "Hindi", "Spanish", "French"],
     },
-    areaServed: "IN",
+    areaServed: "Worldwide",
+    serviceType: "Financial Market Data",
     knowsAbout: [
+      "Global Stock Market",
+      "S&P 500",
+      "NASDAQ",
+      "Cryptocurrency Tracker",
+      "Forex Rates",
+      "Gold Rate Live",
       "Stock Market India",
-      "Nifty 50",
-      "Sensex",
-      "Cryptocurrency",
-      "Forex",
-      "Gold Rate India",
-      "IPO",
-      "Mutual Funds India",
     ],
   };
 }

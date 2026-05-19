@@ -15,12 +15,9 @@ export default function AdUnit({ slot, format = "auto", responsive = true }: AdU
   useEffect(() => {
     if (!slot) return;
 
-    // Delay initialization slightly to let Next.js layout calculate responsive availableWidth.
-    // This prevents the 'availableWidth=0' AdSense error.
+    // Extend delay to let Next.js fully paint CSS widths, preventing availableWidth=0.
     const timer = setTimeout(() => {
       try {
-        // Only push if there are uninitialized ad units on the page.
-        // Once AdSense initializes a slot, it adds a status attribute to it.
         const uninitializedAds = document.querySelectorAll(
           "ins.adsbygoogle:not([data-adsbygoogle-status])"
         );
@@ -29,11 +26,15 @@ export default function AdUnit({ slot, format = "auto", responsive = true }: AdU
           // @ts-ignore
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         }
-      } catch (e) {
+      } catch (e: any) {
+        // Safely swallow known harmless Next.js hydration errors so they don't flood the terminal
+        if (e.message && e.message.includes("availableWidth=0")) {
+          return;
+        }
         console.error("AdSense initialization error:", e);
         setHasError(true);
       }
-    }, 300);
+    }, 600);
 
     return () => clearTimeout(timer);
   }, [slot]);

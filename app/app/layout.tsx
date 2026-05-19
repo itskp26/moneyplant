@@ -11,11 +11,11 @@ import Link from "next/link";
 export const metadata: Metadata = {
   ...baseMetadata,
   title: {
-    default: "MoneyPlant — Live Stock Market India | Nifty 50, Sensex, Crypto & Forex",
+    default: "MoneyPlant — Live Stock Prices: S&P 500, Bitcoin, NASDAQ, Forex",
     template: "%s | MoneyPlant",
   },
   description:
-    "MoneyPlant — India's premier live finance portal. Track Nifty 50, Sensex, BSE/NSE stocks, crypto prices in INR, forex rates, gold & silver prices, IPOs and global markets in real time.",
+    "MoneyPlant — World's premier live finance portal. Track S&P 500, NASDAQ, Bitcoin, Crypto, Forex, Gold, and Indian markets (Nifty 50/Sensex) in real time.",
   keywords: [
     "moneyplant",
     "nifty 50 today",
@@ -101,7 +101,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="MobileOptimized" content="320" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-TileColor" content="#0f172a" />
-        <meta name="news_keywords" content="Nifty 50, Sensex, BSE, NSE, stock market India, bitcoin India, forex India, gold rate India" />
+        <meta name="news_keywords" content="S&P 500, Bitcoin, NASDAQ, Forex, stock market, Nifty 50, Sensex, BSE, NSE, crypto, gold rate" />
+        
+        {/* Global SEO hreflang tags */}
+        <link rel="alternate" hrefLang="en" href="https://moneyplant24.com/" />
+        <link rel="alternate" hrefLang="x-default" href="https://moneyplant24.com/" />
+        <link rel="alternate" hrefLang="en-us" href="https://moneyplant24.com/markets/global" />
+        <link rel="alternate" hrefLang="en-gb" href="https://moneyplant24.com/markets/global" />
+        <link rel="alternate" hrefLang="en-in" href="https://moneyplant24.com/markets/india" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="google-adsense-account" content="ca-pub-2567665577481409" />

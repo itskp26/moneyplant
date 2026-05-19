@@ -99,9 +99,9 @@ export const baseMetadata: Metadata = {
 
 // ─── HOMEPAGE META ────────────────────────────────────────────────────────────
 export function getHomeMeta(): Metadata {
-  const title = `MoneyPlant — World Finance Portal | Stock Market India, Crypto, Forex & Commodities ${y()}`;
+  const title = `Live Stock Prices: S&P 500, Bitcoin, NASDAQ, Forex | MoneyPlant ${y()}`;
   const description =
-    `Real-time international market tracker and India's NSE/BSE live terminal. Access benchmark data for stocks, Bitcoin, Gold rates, and world exchange rates. Your universal finance dashboard ${y()}.`;
+    `Track global market prices in real-time: S&P 500, NASDAQ, Bitcoin, Ethereum, Gold, EUR/USD, FTSE 100. Free live data updated every second on MoneyPlant.`;
   const keywords = [
     ...buildDynamicHomeMetaKeywords(y().toString(), yn().toString()),
     ...buildDynamicGlobalMarkets(),
@@ -271,8 +271,8 @@ export function getCryptoMeta(
   coinId?: string, coinName?: string, symbol?: string, priceInr?: string, priceUsd?: string, change?: string
 ): Metadata {
   if (!coinId || !coinName || !symbol) {
-    const title = `Crypto Hub — Real-Time Cryptocurrency Prices INR & USD | Bitcoin, Ethereum ${y()}`;
-    const description = `Live cryptocurrency market terminal today ${y()}. Track Bitcoin, Ethereum, and 1000+ digital assets with real-time INR/USD exchange rates and world market cap trends.`;
+    const title = `Bitcoin Price Today: Live BTC, ETH & Crypto Tracker | MoneyPlant ${y()}`;
+    const description = `Live cryptocurrency market terminal today ${y()}. Track Bitcoin, Ethereum, and 1000+ digital assets with real-time USD/INR exchange rates and world market cap trends.`;
     const specificKeywords = [
       "crypto price today india", "bitcoin price india today", "bitcoin price inr",
       "btc price inr today", "ethereum price india", "ethereum to inr",
@@ -632,7 +632,7 @@ export function getCommoditiesMeta(): Metadata {
 
 // ─── STOCKS HUB META ─────────────────────────────────────────────────────────
 export function getStocksMeta(): Metadata {
-  const title = `Stocks Hub — Real-Time NSE & BSE Share Prices Today | Nifty 50, Sensex ${y()}`;
+  const title = `Nifty 50, Sensex Live: Indian Stock Market | MoneyPlant ${y()}`;
   const description = `Live Indian stock market dashboard today ${y()}. Track Nifty 50, Sensex benchmarks, top gainers, losers, and most active stocks with detailed share price charts.`;
   const specificKeywords = [
     "stock market today india", "share price today nse bse", "nifty 50 stocks today",
