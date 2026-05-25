@@ -245,29 +245,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* About MoneyPlant */}
-        <section style={{ marginBottom: "4rem", padding: "2rem", background: "rgba(15, 23, 42, 0.85)", borderRadius: "1.25rem", border: "1px solid rgba(56, 189, 248, 0.12)" }}>
-          <div style={{ maxWidth: "860px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-              <ICON_MAP.global size={22} className="text-gradient" />
-              <h2 className="section-title" style={{ marginBottom: 0 }}>About MoneyPlant</h2>
-            </div>
-            <p style={{ color: "#cbd5e1", lineHeight: 1.85 }}>
-              MoneyPlant is built for serious investors, traders, and market watchers who need one fast, trustworthy finance hub. We combine live global prices, exchange rates, commodities, crypto, and corporate stock insights into a single dashboard that refreshes automatically while you browse.
-            </p>
-            <p style={{ color: "#94a3b8", lineHeight: 1.85 }}>
-              Every page is designed to deliver meaningful market context, not just numbers. We help visitors compare performance across Indian and international markets, understand forex trends, and follow sector leaders like Adani, Reliance, and Tata. Our goal is to make market data actionable for everyday investors.
-            </p>
-            <p style={{ color: "#94a3b8", lineHeight: 1.85 }}>
-              Data on MoneyPlant is sourced from public finance APIs and updated consistently to reflect the latest market conditions. We also offer calculators, IPO tracking, and curated news summaries so users can make faster decisions without leaving the site.
-            </p>
-            <p style={{ color: "#94a3b8", lineHeight: 1.85 }}>
-              Whether you're checking live stock prices, tracking crypto momentum, or reviewing forex and commodities, MoneyPlant is intended to be a high-value reference destination with clear navigation and real-time market coverage.
-            </p>
-          </div>
-        </section>
-
-        {/* Content Grid */}
         <div className="content-grid">
           {/* LEFT COLUMN */}
           <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
@@ -400,12 +377,50 @@ export default async function HomePage() {
             />
           </div>
         </div>
+
+        <section style={{ marginTop: "4rem", marginBottom: "4rem", padding: "2rem", background: "rgba(8, 15, 33, 0.95)", borderRadius: "1.5rem", border: "1px solid rgba(148, 163, 184, 0.12)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "1.75rem", alignItems: "stretch" }} className="about-feature-grid">
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <ICON_MAP.global size={24} className="text-gradient" />
+                <div>
+                  <p style={{ fontSize: "0.88rem", color: "#7dd3fc", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: "0.5rem" }}>About MoneyPlant</p>
+                  <h2 style={{ fontSize: "2rem", fontWeight: 800, margin: 0, lineHeight: 1.1 }}>A smarter way to follow markets, from India to global finance.</h2>
+                </div>
+              </div>
+              <p style={{ color: "#cbd5e1", lineHeight: 1.8 }}>
+                MoneyPlant brings live market intelligence, quick calculators, and focused market summaries into a single platform. We build each page to help users discover opportunity — not just display numbers. The site is optimized for fast decision-making and strong context, whether you want Indian stock pulse, crypto outlooks, or forex momentum.
+              </p>
+              <p style={{ color: "#94a3b8", lineHeight: 1.8 }}>
+                This is a high-value finance portal with meaningful content, clear navigation, and a strong emphasis on unique original descriptions. We support active traders, long-term investors, and anyone who wants actual market insight without distractions.
+              </p>
+              <Link href="/about" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "fit-content", padding: "0.95rem 1.8rem", borderRadius: "999px", background: "linear-gradient(135deg, #22c55e, #3b82f6)", color: "white", fontWeight: 700, textDecoration: "none", boxShadow: "0 16px 40px -20px rgba(59, 130, 246, 0.55)" }}>
+                Learn more about us
+              </Link>
+            </div>
+
+            <div style={{ display: "grid", gap: "1rem" }}>
+              {[
+                { title: "Unique finance coverage", description: "Market insights across stocks, crypto, forex, commodities, and leading Indian conglomerates." },
+                { title: "Live updates with context", description: "Real-time quotes plus quick summaries so users understand the move right away." },
+                { title: "Tools built for investors", description: "SIP, EMI, lumpsum, and tax calculators designed for practical decision-making." },
+                { title: "Focused UX & SEO", description: "Clear page structure, quality headings, and dedicated legal content for better publisher compliance." },
+              ].map((card) => (
+                <div key={card.title} style={{ background: "rgba(15, 23, 42, 0.95)", border: "1px solid rgba(56, 189, 248, 0.1)", borderRadius: "1rem", padding: "1.35rem", minHeight: "120px" }}>
+                  <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.85rem", color: "#f8fafc" }}>{card.title}</h3>
+                  <p style={{ color: "#94a3b8", lineHeight: 1.75, margin: 0 }}>{card.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
 
       <style>{`
         @media (max-width: 1024px) {
           .content-grid { grid-template-columns: 1fr !important; }
           .intelligence-grid { grid-template-columns: 1fr !important; }
+          .about-feature-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </>
