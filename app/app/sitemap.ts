@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/markets/india', '/markets/global', '/commodities', '/news', 
     '/news/crypto', '/news/forex', '/tools', '/tools/emi-calculator', 
     '/tools/sip-calculator', '/tools/lumpsum-calculator', '/tools/tax-calculator',
-    '/privacy', '/terms'
+    '/privacy', '/terms', '/about'
   ].map(route => ({
     url: `${SITE_URL}${route}`,
     lastModified,

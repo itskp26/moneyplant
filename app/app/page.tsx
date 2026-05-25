@@ -245,6 +245,28 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* About MoneyPlant */}
+        <section style={{ marginBottom: "4rem", padding: "2rem", background: "rgba(15, 23, 42, 0.85)", borderRadius: "1.25rem", border: "1px solid rgba(56, 189, 248, 0.12)" }}>
+          <div style={{ maxWidth: "860px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+              <ICON_MAP.global size={22} className="text-gradient" />
+              <h2 className="section-title" style={{ marginBottom: 0 }}>About MoneyPlant</h2>
+            </div>
+            <p style={{ color: "#cbd5e1", lineHeight: 1.85 }}>
+              MoneyPlant is built for serious investors, traders, and market watchers who need one fast, trustworthy finance hub. We combine live global prices, exchange rates, commodities, crypto, and corporate stock insights into a single dashboard that refreshes automatically while you browse.
+            </p>
+            <p style={{ color: "#94a3b8", lineHeight: 1.85 }}>
+              Every page is designed to deliver meaningful market context, not just numbers. We help visitors compare performance across Indian and international markets, understand forex trends, and follow sector leaders like Adani, Reliance, and Tata. Our goal is to make market data actionable for everyday investors.
+            </p>
+            <p style={{ color: "#94a3b8", lineHeight: 1.85 }}>
+              Data on MoneyPlant is sourced from public finance APIs and updated consistently to reflect the latest market conditions. We also offer calculators, IPO tracking, and curated news summaries so users can make faster decisions without leaving the site.
+            </p>
+            <p style={{ color: "#94a3b8", lineHeight: 1.85 }}>
+              Whether you're checking live stock prices, tracking crypto momentum, or reviewing forex and commodities, MoneyPlant is intended to be a high-value reference destination with clear navigation and real-time market coverage.
+            </p>
+          </div>
+        </section>
+
         {/* Content Grid */}
         <div className="content-grid">
           {/* LEFT COLUMN */}

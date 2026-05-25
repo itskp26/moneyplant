@@ -32,7 +32,12 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 style={{ color: "#f1f5f9", fontSize: "1.25rem", marginBottom: "1rem" }}>5. Changes to Terms</h2>
+          <h2 style={{ color: "#f1f5f9", fontSize: "1.25rem", marginBottom: "1rem" }}>5. User Responsibilities</h2>
+          <p>By using MoneyPlant, you agree that you will not rely solely on the data presented here for financial decisions. You are responsible for verifying information independently and for seeking advice from qualified professionals before making investment decisions.</p>
+        </section>
+
+        <section>
+          <h2 style={{ color: "#f1f5f9", fontSize: "1.25rem", marginBottom: "1rem" }}>6. Changes to Terms</h2>
           <p>We reserve the right to modify or replace these Terms at any time. We will indicate the date of the latest revision at the top of this page. Your continued use of the Website after any changes constitutes acceptance of the new Terms.</p>
         </section>
       </div>

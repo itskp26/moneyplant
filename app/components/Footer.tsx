@@ -193,6 +193,7 @@ export default function Footer() {
           </p>
           <div style={{ display: "flex", gap: "1.5rem" }}>
             {[
+              { label: "About Us", href: "/about" },
               { label: "Privacy Policy", href: "/privacy" },
               { label: "Terms of Use", href: "/terms" },
               { label: "Sitemap", href: "/sitemap.xml" },

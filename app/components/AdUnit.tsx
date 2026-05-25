@@ -1,7 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Info } from "lucide-react";
+
+declare global {
+  interface Window {
+    adsbygoogle?: Record<string, unknown>[];
+  }
+}
 
 interface AdUnitProps {
   slot?: string;
@@ -11,6 +17,7 @@ interface AdUnitProps {
 
 export default function AdUnit({ slot, format = "auto", responsive = true }: AdUnitProps) {
   const [hasError, setHasError] = useState(false);
+  const adRef = useRef<HTMLModElement>(null);
 
   useEffect(() => {
     if (!slot) return;
@@ -18,17 +25,12 @@ export default function AdUnit({ slot, format = "auto", responsive = true }: AdU
     // Extend delay to let Next.js fully paint CSS widths, preventing availableWidth=0.
     const timer = setTimeout(() => {
       try {
-        const uninitializedAds = document.querySelectorAll(
-          "ins.adsbygoogle:not([data-adsbygoogle-status])"
-        );
-
-        if (uninitializedAds.length > 0) {
-          // @ts-ignore
+        if (adRef.current && !adRef.current.dataset.adsbygoogleStatus) {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         // Safely swallow known harmless Next.js hydration errors so they don't flood the terminal
-        if (e.message && e.message.includes("availableWidth=0")) {
+        if (e instanceof Error && e.message.includes("availableWidth=0")) {
           return;
         }
         console.error("AdSense initialization error:", e);
@@ -77,6 +79,7 @@ export default function AdUnit({ slot, format = "auto", responsive = true }: AdU
   return (
     <div className="my-6 flex justify-center overflow-hidden w-full">
       <ins
+        ref={adRef}
         className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client="ca-pub-2567665577481409"

@@ -30,6 +30,16 @@ export default function PrivacyPage() {
           <h2 style={{ color: "#f1f5f9", fontSize: "1.25rem", marginBottom: "1rem" }}>4. Third-Party Services</h2>
           <p>Our market data is sourced from third-party providers (such as Yahoo Finance API). These services may have their own privacy policies regarding the data they collect. MoneyPlant is not responsible for the privacy practices of these third-party providers.</p>
         </section>
+
+        <section>
+          <h2 style={{ color: "#f1f5f9", fontSize: "1.25rem", marginBottom: "1rem" }}>5. Data Security and Retention</h2>
+          <p>We retain only the analytics and performance data needed to improve the website experience. Personal data entered into calculators or tools is processed in your browser and is not stored on our servers unless explicitly submitted through a contact form.</p>
+        </section>
+
+        <section>
+          <h2 style={{ color: "#f1f5f9", fontSize: "1.25rem", marginBottom: "1rem" }}>6. Children’s Privacy</h2>
+          <p>MoneyPlant is not intended for children under the age of 13. We do not knowingly collect personal information from minors. If you believe a child under 13 has provided personal data, please contact us and we will take steps to delete it.</p>
+        </section>
       </div>
     </div>
   );
